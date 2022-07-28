@@ -1,12 +1,12 @@
 import React from 'react';
-import Component1 from './Component1';
-import Component1Modal from './Component1Modal';
+import ScheduleBox from './components/ScheduleBox';
+import ConfirmDeleteModal from './components/ConfirmDeleteModal';
 
 function App() {
   return (
     <>
-      <Component1 />
-      <Component1Modal />
+      <ScheduleBox />
+      <ConfirmDeleteModal />
     </>
   );
 }
