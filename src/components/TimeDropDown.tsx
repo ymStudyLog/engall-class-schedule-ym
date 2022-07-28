@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Background } from "./youmee/Background";
 
 type Props = {};
 
@@ -9,15 +10,10 @@ const TimeDropDown = () => {
   const [selectedMinute, setMinute] = React.useState<string>("00");
   const [selectedAmPm, setAmPm] = React.useState<"AM" | "PM" | null>("AM");
 
-  const handleClick = () => {
-    console.log("click!");
-  };
   const toggling = () => setIsOpen(!isOpen);
-
   const onOptionClicked = (value: any) => () => {
     setHour(value);
     setIsOpen(false);
-    console.log(selectedHour);
   };
   const options = [
     "00",
@@ -107,7 +103,8 @@ const ListItem = styled.li<{ selected: boolean }>`
   font-size: 20px;
   list-style: none;
 
-  background-color: ${(props) => (props.selected ? "gray" : "white")};
+  background-color: ${(props) =>
+    props.selected ? "rgba(180, 180, 180, 0.3)" : "white"};
 
   padding: 0;
   margin: 0;
