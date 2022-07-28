@@ -3,18 +3,19 @@ import styled from 'styled-components';
 
 type Props = {};
 
-const Component1 = (props: Props) => {
+const ScheduleBox = (props: Props) => {
   return (
-    <ScheduleBox>
+    <ScheduleBoxContainer>
+      {/* 하드코딩 된 시간 자리는 부모 컴포넌트로부터 전달 받은 {props} 자리 */}
       <ScheduleText>10:00 AM - 10:40 AM</ScheduleText>
       <CancelButton src='./images/cancel.png' />
-    </ScheduleBox>
+    </ScheduleBoxContainer>
   );
 };
 
-export default Component1;
+export default ScheduleBox;
 
-const ScheduleBox = styled.div`
+const ScheduleBoxContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
