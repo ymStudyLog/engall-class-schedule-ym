@@ -6,9 +6,9 @@ ${reset}
 
 html {
   font-family: var(--fontFamily);
+  font-size: var(--fontSize-root--normal);
   line-height: 23.38px;
   word-break: keep-all;
-
 
   * {/* 스크롤 바 제거 */
       -ms-overflow-style: none; /* IE and Edge */
@@ -33,7 +33,8 @@ button {
 }
 
 :root {
-    --fontFamily: IBMPlexSansKR-Text, system-ui;
+    --fontFamily: Karla-light;
+    --fontFamily--bold: Karla;
     --fontSize-root--large: 30px;
     --fontSize-root--normal: 20px;
     --color-border: #d4d4d4;

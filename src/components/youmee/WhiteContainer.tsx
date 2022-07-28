@@ -5,7 +5,7 @@ type Props = {
 }
 
 const ContainerDiv = styled.div`
-  width: 1298px; //95%랑 거의 같음
+  width: 95%; //1298px랑 거의 같음
   height: 340px; //이게 맞나?
   background: #ffffff;
   margin: 0 auto;
