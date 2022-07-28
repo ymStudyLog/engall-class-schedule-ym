@@ -12,12 +12,8 @@ export default Button;
 const BlueBtn = styled.button`
   width: 220px;
   height: 50px;
-  border: none;
-  border-radius: 10px;
+  font-size: var(--fontSize-root--normal);
+  border-radius: 8px;
   background-color: #3175d8;
-  color: #fff;
-  font-size: 20px;
-  :active {
-    transform: scale(1.03);
-  }
+  color: #ffffff;
 `;

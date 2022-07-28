@@ -1,10 +1,6 @@
 import styled from "styled-components";
 
-type Props = {
-    children: React.ReactNode;
-}
-
-const ContainerDiv = styled.div`
+export const WhiteContainer = styled.div`
   width: 95%; //1298px랑 거의 같음
   height: 340px; //이게 맞나?
   background: #ffffff;
@@ -13,5 +9,3 @@ const ContainerDiv = styled.div`
   /* left: calc(50% - 195.71px/2 - 586.14px);
 top: calc(50% - 340px/2 - 95px); 피그마에서는 마진 대신 position absolute으로 했음 */
 `;
-
-export const WhiteContainer = (props: Props) => <ContainerDiv {...props}>{props.children}</ContainerDiv>
