@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 type AmPmBtnProps = {
   children: React.ReactNode;
+  handleClick: () => void;
 };
 
 type AmPmTimeType = {
@@ -15,6 +16,9 @@ const AmPmButton = (props: AmPmBtnProps) => {
   const [click, setClick] = React.useState(false);
   const handleButtonClick = () => {
     setClick(!click);
+    //리코일에 AM PM 넣어두고 만약 클릭 value ==AM => console.log AM 이런식으로 ?
+
+    console.log("AM||PM");
   };
   return (
     <AmPmTime onClick={handleButtonClick} isClicked={click}>
@@ -36,4 +40,3 @@ const StyledButton = styled.button<{ isClicked: boolean }>`
 const AmPmTime = (props: AmPmTimeType) => (
   <StyledButton {...props}></StyledButton>
 );
-

@@ -4,30 +4,30 @@ import { Background } from "./youmee/Background";
 
 type Props = {};
 
-const TimeDropDown = () => {
+const HourDropDown = () => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  //리코일로 변경예정
   const [selectedHour, setHour] = React.useState<string>("00");
-  const [selectedMinute, setMinute] = React.useState<string>("00");
-  const [selectedAmPm, setAmPm] = React.useState<"AM" | "PM" | null>("AM");
 
   const toggling = () => setIsOpen(!isOpen);
   const onOptionClicked = (value: any) => () => {
     setHour(value);
     setIsOpen(false);
   };
+  console.log(selectedHour);
   const options = [
     "00",
+    "01",
+    "02",
+    "03",
+    "04",
     "05",
+    "06",
+    "07",
+    "08",
+    "09",
     "10",
-    "15",
-    "20",
-    "25",
-    "30",
-    "35",
-    "40",
-    "45",
-    "50",
-    "55",
+    "11",
   ];
 
   return (
@@ -55,7 +55,7 @@ const TimeDropDown = () => {
   );
 };
 
-export default TimeDropDown;
+export default HourDropDown;
 
 const UlWrapper = styled.div`
   height: 152px;
