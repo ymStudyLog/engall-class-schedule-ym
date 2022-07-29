@@ -2,22 +2,22 @@ import React from "react";
 import styled from "styled-components";
 import Button from "../components/Button";
 import { WhiteContainer } from "../layout/WhiteContainer";
-
 import {
   PageContainer,
   PageTitle,
   ElementContainer,
 } from "../styles/page.style";
-import { areIntervalsOverlapping, addMinutes } from "date-fns";
+import { areIntervalsOverlapping, addMinutes, getHours } from "date-fns";
 import WEEK_ARRAY from "../utils/weekArray";
 import { useRecoilValue } from "recoil";
-import { weekState } from "../store/weekAtom";
+import { weekState, scheduleState } from "../store/weekAtom";
 import { DayButton } from "../layout/DayButton";
 import MinDropDown from "../components/MinDropDown";
 import { AmPmButton } from "../components/AmPmButton";
 import { Link } from "react-router-dom";
 import HourDropDown from "../components/HourDropDown";
 import { postSchedule } from "../api/api";
+import { ScheduleType } from "../types/ScheduleType";
 
 type Props = {};
 
@@ -44,7 +44,10 @@ const AddSchedule = (props: Props) => {
   const endTime = addMinutes(startTime, 40);
 
   console.log("스타트", startTime);
-  // console.log(endTime);
+  
+  const endTimeAMorPM = getHours(endTime) >= 12 ? "PM" : "AM"; //이 값도 POST할때 같이 넣기 
+  console.log(endTimeAMorPM);
+
   const trueOrFalse = areIntervalsOverlapping(
     { start: startTime, end: endTime },
     { start: startTime, end: endTime }
@@ -75,7 +78,8 @@ const AddSchedule = (props: Props) => {
   };
 
   const week = useRecoilValue<Date[]>(weekState);
-
+  const schedules = useRecoilValue<ScheduleType[]>(scheduleState);
+  
   return (
     <PageContainer>
       <TitleContainer>
@@ -98,7 +102,7 @@ const AddSchedule = (props: Props) => {
           </DropDownContainer>
         </StartTimeContainer>
 
-        <div style={{ display: "flex" }}>
+        <Positioner>
           <RepeatOnText>Repeat on</RepeatOnText>
           {week.map((day: Date, index: number) => {
             return (
@@ -114,7 +118,7 @@ const AddSchedule = (props: Props) => {
               </DayButton>
             );
           })}
-        </div>
+        </Positioner>
       </WhiteContainer>
       <ButtonContainer>
         <Link to="/">
@@ -134,6 +138,10 @@ const TitleContainer = styled(ElementContainer)`
 const ButtonContainer = styled(ElementContainer)`
   justify-content: flex-end;
 `;
+
+const Positioner = styled.div`
+  display: flex;
+`
 
 const StartTimeContainer = styled.div`
   width: 100%;
