@@ -1,9 +1,62 @@
-import React from 'react';
+import React from  "react";
+import Button from "../layout/Button";
+import { DailyContainer } from "../layout/DailyContainer";
+import styled from "styled-components";
+import { useRecoilValue } from "recoil";
+import { weekState, scheduleState } from "../store/weekAtom";
+import { DayTitle } from "../layout/DayTitle";
+import DailySchedule from "../components/DailySchedule";
+import {
+  PageContainer,
+  PageTitle,
+  ElementContainer,
+} from "../styles/page.style";
+import { ScheduleType } from "../types/ScheduleType";
+import WEEK_ARRAY from "../utils/weekArray";
+import { Link } from "react-router-dom";
+import useSchedule from "../hooks/useSchedule";
 
-type Props = {};
+const WeeklySchedule = () => {
+  const week = useRecoilValue<Date[]>(weekState);
+  const schedule = useRecoilValue<ScheduleType[]>(scheduleState);
+  const { getWeeklySchedule } = useSchedule();
 
-const WeeklySchedule = (props: Props) => {
-  return <div>WeeklySchedule</div>;
+  React.useEffect(()=>{
+    getWeeklySchedule();
+  },[]); //TODO depentency
+
+  return (
+    <PageContainer>
+      <TitleAndButtonContainer>
+        <PageTitle>Class schedule</PageTitle>
+        <Link to="/addschedule">
+          <Button>Add Class Schedule</Button>
+        </Link>
+      </TitleAndButtonContainer>
+      <MainContainer>
+        {week.map((day: Date, index: number) => {
+          return (
+            <DailyContainer key={index}>
+              <DayTitle>{WEEK_ARRAY[day.getDay()]}</DayTitle>
+              <DailySchedule
+                dailySchedultData={schedule.filter(
+                  (each) => each.date === day.toLocaleDateString()
+                )}
+              />
+            </DailyContainer>
+          );
+        })}
+      </MainContainer>
+    </PageContainer>
+  );
 };
 
 export default WeeklySchedule;
+
+const TitleAndButtonContainer = styled(ElementContainer)`
+  justify-content: space-between;
+`;
+
+const MainContainer = styled.div`
+  display: flex;
+`;

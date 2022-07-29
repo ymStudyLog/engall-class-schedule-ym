@@ -1,26 +1,29 @@
-import { createGlobalStyle } from 'styled-components';
-import reset from 'styled-reset';
+import { createGlobalStyle } from "styled-components";
+import reset from "styled-reset";
 
 const GlobalStyle = createGlobalStyle`
 ${reset}
 
+* {
+ box-sizing: border-box;
+}
+
 html {
   font-family: var(--fontFamily);
+  font-size: var(--fontSize-root--normal);
   line-height: 23.38px;
   word-break: keep-all;
 
-
-  * {/* 스크롤 바 제거 */
-      -ms-overflow-style: none; /* IE and Edge */
-      scrollbar-width: none; /* Firefox */
+  * {
+      -ms-overflow-style: none; 
+      scrollbar-width: none; 
       ::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera*/
+        display: none; 
       }
     }
 }
 
 body, html, #root {
-  box-sizing: border-box;
   width: 100%;
   height: 100%;
 }
@@ -33,10 +36,16 @@ button {
 }
 
 :root {
-    --fontFamily: IBMPlexSansKR-Text, system-ui;
+    --fontFamily: Karla-light;
+    --fontFamily--bold: Karla;
     --fontSize-root--large: 30px;
     --fontSize-root--normal: 20px;
-    --color-border: #d4d4d4;
+    --color-border: #b4b4b4;
+    --color-white: #fff;
+    --color-blue:#3175d8;
+    --color-black: #000
+    --color-dark-gray: #959595;
+    --color-middle-gray: #747474;
   }
 
   @font-face {
