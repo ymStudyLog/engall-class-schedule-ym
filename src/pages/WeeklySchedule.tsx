@@ -13,9 +13,10 @@ import WEEK_ARRAY from "../utils/weekArray";
 const WeeklySchedule = () => {
   const week = useRecoilValue<Date[]>(weekState);
 
-  //testPost, testDelete는 삭제 예정 
+  //testPost, testDelete는 삭제 예정
   const testPost = () => {
     postSchedule({
+
       id:100,
       startTime:"10:00",
       endTime:"10:40",
@@ -59,6 +60,7 @@ const TitleAndButtonContainer = styled(ElementContainer)`
 
 const MainContainer = styled.div`
   display: flex;
+
 `; 
 
 const HorizontalLine = styled.div`
