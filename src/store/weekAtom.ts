@@ -1,5 +1,6 @@
 import { atom, selector } from "recoil";
 import { getDay, toDate, addDays } from "date-fns";
+import { scheduleService } from "../api/api";
 
 const getWeekStateSelector = selector({
   key: "getWeekStateSelector",
@@ -7,7 +8,7 @@ const getWeekStateSelector = selector({
     const now: Date = new Date();
     const day: number = getDay(now);
     const mondayMilliseconds: number = now.setDate(now.getDate() - (day - 1));
-    const monday : Date = toDate(mondayMilliseconds);
+    const monday: Date = toDate(mondayMilliseconds);
     return [
       monday,
       addDays(monday, 1),
@@ -27,15 +28,21 @@ export const weekState = atom({
 
 const getScheduleSelector = selector({
   key: "getScheduleSelector",
-  get:({get})=>{
-    const weekData = get(weekState); //[Date객체월, Date객체화, ...]
-    const data = [];
-  
-  }
-})
+  get: async ({ get }) => {
+    const weekData = get(weekState);
+    const requestUrlString = `?date_gte=${weekData[0].toLocaleDateString()}&date_lte=${weekData[
+      weekData.length - 1
+    ].toLocaleDateString()}`;
+    const weekSchedule = await scheduleService
+      .get(requestUrlString)
+      .then((response) => {
+        return response.data;
+      });
+    return weekSchedule;
+  },
+});
 
 export const scheduleState = atom({
   key: "scheduleState",
-  default: getScheduleSelector
+  default: getScheduleSelector,
 });
-

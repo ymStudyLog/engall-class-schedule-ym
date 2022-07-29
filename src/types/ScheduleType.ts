@@ -1,4 +1,4 @@
-export type ClassType = {
+export type ScheduleType = {
   id: number;
   startTime: string;
   endTime: string;

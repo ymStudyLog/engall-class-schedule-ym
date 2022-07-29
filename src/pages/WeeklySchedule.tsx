@@ -1,22 +1,22 @@
-import React from "react";
 import Button from "../components/Button";
 import { DailyContainer } from "../layout/DailyContainer";
 import styled from "styled-components";
 import { useRecoilValue } from "recoil";
-import { weekState } from "../store/weekAtom";
+import { weekState, scheduleState } from "../store/weekAtom";
 import { DayTitle } from "../layout/DayTitle";
 import DailySchedule from "../components/DailySchedule";
 import { postSchedule,deleteSchedule } from "../api/api";
 import { PageContainer, PageTitle, ElementContainer } from "../styles/page.style";
+import { ScheduleType } from "../types/ScheduleType";
 import WEEK_ARRAY from "../utils/weekArray";
 
 const WeeklySchedule = () => {
   const week = useRecoilValue<Date[]>(weekState);
+  const schedule = useRecoilValue<ScheduleType[]>(scheduleState);
 
   //testPost, testDelete는 삭제 예정
   const testPost = () => {
     postSchedule({
-
       id:100,
       startTime:"10:00",
       endTime:"10:40",
@@ -36,12 +36,11 @@ const WeeklySchedule = () => {
         <Button>Add Class Schedule</Button>
       </TitleAndButtonContainer>
       <MainContainer>
-        <HorizontalLine />
         {week.map((day: Date, index: number) => {
           return (
             <DailyContainer key={index}>
               <DayTitle>{WEEK_ARRAY[day.getDay()]}</DayTitle>
-              <DailySchedule date={day.toLocaleDateString()} />
+              <DailySchedule dailyData={schedule.filter((each)=>(each.date === day.toLocaleDateString()))} />
             </DailyContainer>
           );
         })}
@@ -60,14 +59,4 @@ const TitleAndButtonContainer = styled(ElementContainer)`
 
 const MainContainer = styled.div`
   display: flex;
-
-`; 
-
-const HorizontalLine = styled.div`
-  position: absolute;
-  width: 90%;
-  text-align: center;
-  border-bottom: 1px solid #b4b4b4;
-  top: calc(50% - 105px);
-  left: 70px;
 `;

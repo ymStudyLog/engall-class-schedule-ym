@@ -1,20 +1,15 @@
 import axios,{ AxiosInstance, AxiosResponse} from "axios";
-import { ClassType } from "../types/ClassType";
+import { ScheduleType } from "../types/ScheduleType";
 
 const DEFAULT_URL = "http://localhost:8000/classes";
 
-const classService : AxiosInstance = axios.create({baseURL: `${DEFAULT_URL}`});
-
-export const getScheduleByDate = async <T>(dateUrl : string = "") : Promise<T>=> {
-    const response : AxiosResponse<T> = await classService.get(`?date=${dateUrl}`);
-    return response.data;
-}
+export const scheduleService : AxiosInstance = axios.create({baseURL: `${DEFAULT_URL}`});
 
 export const deleteSchedule= async (id:number) => {
-    await classService.delete(`/${id}`);
+    await scheduleService.delete(`/${id}`);
 }
 
-export const postSchedule = async <T>(schedule : ClassType) : Promise<T> => {
-    const response : AxiosResponse<T> = await classService.post("",schedule);
+export const postSchedule = async <T>(schedule : ScheduleType) : Promise<T> => {
+    const response : AxiosResponse<T> = await scheduleService.post("",schedule);
     return response.data;
 }

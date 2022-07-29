@@ -1,23 +1,27 @@
+import React from "react";
 import styled from "styled-components";
 import Button from "../components/Button";
 import { WhiteContainer } from "../layout/WhiteContainer";
-
-import { PageContainer, PageTitle, ElementContainer } from "../styles/page.style";
+import {
+  PageContainer,
+  PageTitle,
+  ElementContainer,
+} from "../styles/page.style";
 import { areIntervalsOverlapping, addMinutes } from "date-fns";
 import WEEK_ARRAY from "../utils/weekArray";
 import { useRecoilValue } from "recoil";
-import { weekState } from "../store/weekAtom";
+import { weekState, scheduleState } from "../store/weekAtom";
 import { DayButton } from "../layout/DayButton";
 import HourDropDown from "../components/HourDropDown";
 import MinDropDown from "../components/MinDropDown";
 import AmPmButton from "../components/AmPmButton";
+import { ScheduleType } from "../types/ScheduleType";
 
 type Props = {};
 
 const AddSchedule = (props: Props) => {
   const startTime = new Date(2014, 1, 10, 1, 0);
   const endTime = addMinutes(startTime, 40);
-
   // console.log(endTime);
   const trueOrFalse = areIntervalsOverlapping(
     { start: startTime, end: endTime },
@@ -32,7 +36,10 @@ const AddSchedule = (props: Props) => {
   // console.log(trueOrFalse);
 
   const week = useRecoilValue<Date[]>(weekState);
+  const schedules = useRecoilValue<ScheduleType[]>(scheduleState);
 
+  console.log(schedules); //각 날짜에 있는 모든 스케줄 불러옴 [{id, startTime, endTime, date}, ... ]
+  
   return (
     <PageContainer>
       <TitleContainer>
@@ -52,10 +59,8 @@ const AddSchedule = (props: Props) => {
             <AmPmButton handleClick={handlePmClick}>PM</AmPmButton>
           </DropDownContainer>
         </StartTimeContainer>
-    
-        
 
-        <div style={{ display: "flex" }}>
+        <Positioner>
           <RepeatOnText>Repeat on</RepeatOnText>
           {week.map((day: Date, index: number) => {
             return (
@@ -71,7 +76,7 @@ const AddSchedule = (props: Props) => {
               </DayButton>
             );
           })}
-        </div>
+        </Positioner>
       </WhiteContainer>
       <ButtonContainer>
         <Button>Save</Button>
@@ -89,6 +94,10 @@ const TitleContainer = styled(ElementContainer)`
 const ButtonContainer = styled(ElementContainer)`
   justify-content: flex-end;
 `;
+
+const Positioner = styled.div`
+  display: flex;
+`
 
 const StartTimeContainer = styled.div`
   width: 100%;
@@ -120,8 +129,7 @@ const ColoneText = styled.div`
   position: absolute;
   /* top: 205px;
   left: 250px; */
-`
-
+`;
 
 const RepeatOnText = styled.div`
   display: flex;

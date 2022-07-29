@@ -1,27 +1,19 @@
-import React from "react";
-import { getScheduleByDate } from "../api/api";
 import ScheduleBox from "./ScheduleBox";
-import { ClassType } from "../types/ClassType";
+import { ScheduleType } from "../types/ScheduleType";
 import styled from "styled-components";
 
 type Props = {
-  date: string;
+  dailyData: ScheduleType[];
 };
 
-//TODO : 스케줄박스 사이사이 띄우기
 const DailySchedule = (props: Props) => {
-  const { date } = props;
-  const [schedules, setSchedules] = React.useState<ClassType[]>([]);
-
-  React.useEffect(() => {
-    getScheduleByDate<ClassType[]>(date).then((data) => setSchedules(data));
-  }, [date]);
+  const { dailyData } = props;
 
   return (
     <ScheduleContainer>
-      {schedules.map((classTime: ClassType, index: number) => {
-        const time = `${classTime.startTime} ${classTime.startTimeAMorPM}-${classTime.endTime}`;
-        return <ScheduleBox key={index} time={time} id={classTime.id}/>;
+      {dailyData?.map((data: ScheduleType, index: number) => {
+        const time = `${data.startTime} ${data.startTimeAMorPM}-${data.endTime}`;
+        return <ScheduleBox key={index} time={time} id={data.id}/>;
       })}
     </ScheduleContainer>
   );
@@ -32,4 +24,7 @@ export default DailySchedule;
 const ScheduleContainer = styled.div`
   margin: 10px 0;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap:20px;
 `;
