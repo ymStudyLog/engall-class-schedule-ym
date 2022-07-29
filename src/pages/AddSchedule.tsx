@@ -18,6 +18,7 @@ import { Link } from "react-router-dom";
 import HourDropDown from "../components/HourDropDown";
 import { postSchedule } from "../api/api";
 import { ScheduleType } from "../types/ScheduleType";
+import * as AddPage from "../styles/AddPage.styled";
 
 type Props = {};
 
@@ -65,7 +66,7 @@ const AddSchedule = (props: Props) => {
   };
   const newStartTime = startTime.toString();
   const newEndTime = endTime.toString();
-  
+
   const CreateSchedule = () => {
     postSchedule({
       id: parseInt(new Date().toUTCString()),
@@ -82,29 +83,29 @@ const AddSchedule = (props: Props) => {
 
   return (
     <PageContainer>
-      <TitleContainer>
+      <AddPage.TitleContainer>
         <PageTitle>Add class schedule</PageTitle>
-      </TitleContainer>
+      </AddPage.TitleContainer>
       <WhiteContainer>
-        <StartTimeContainer>
-          <StartTimeText>Start time</StartTimeText>
-          <DropDownContainer>
-            <HourMinContainer>
+        <AddPage.StartTimeContainer>
+          <AddPage.StartTimeText>Start time</AddPage.StartTimeText>
+          <AddPage.DropDownContainer>
+            <AddPage.HourMinContainer>
               <HourDropDown changeHour={changeHour} hour={hour} />
-              <ColoneText>:</ColoneText>
+              <AddPage.ColoneText>:</AddPage.ColoneText>
               <MinDropDown changeMin={changeMin} min={min} />
-            </HourMinContainer>
+            </AddPage.HourMinContainer>
             <AmPmButton onClick={handleAmClick} isClicked={isAmClicked}>
               AM
             </AmPmButton>
             <AmPmButton onClick={handlePmClick} isClicked={isPmClicked}>
               PM
             </AmPmButton>
-          </DropDownContainer>
-        </StartTimeContainer>
+          </AddPage.DropDownContainer>
+        </AddPage.StartTimeContainer>
 
-        <Positioner>
-          <RepeatOnText>Repeat on</RepeatOnText>
+        <AddPage.Positioner>
+          <AddPage.RepeatOnText>Repeat on</AddPage.RepeatOnText>
           {week.map((day: Date, index: number) => {
             return (
               <DayButton
@@ -118,82 +119,15 @@ const AddSchedule = (props: Props) => {
               </DayButton>
             );
           })}
-        </Positioner>
+        </AddPage.Positioner>
       </WhiteContainer>
-      <ButtonContainer>
+      <AddPage.ButtonContainer>
         <Link to="/">
           <Button onClick={CreateSchedule}>Save</Button>
         </Link>
-      </ButtonContainer>
+      </AddPage.ButtonContainer>
     </PageContainer>
   );
 };
 
 export default AddSchedule;
-
-const TitleContainer = styled(ElementContainer)`
-  justify-content: flex-start;
-`;
-
-const ButtonContainer = styled(ElementContainer)`
-  justify-content: flex-end;
-`;
-
-const Positioner = styled.div`
-  width: 100%;
-  height: 100px;
-  margin-left: 36px;
-  display: flex;
-  flex-direction: row;
-  position: absolute;
-  bottom: 50px;
-  align-items: center;
-`;
-
-const StartTimeContainer = styled.div`
-  width: 100%;
-  height: 100px;
-  margin-left: 36px;
-  display: flex;
-  flex-direction: row;
-  position: absolute;
-  top: 10px;
-`;
-
-const DropDownContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin: 10px;
-  justify-content: space-around;
-  width: 350px;
-  margin-top: 40px;
-`;
-
-const StartTimeText = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: 25px;
-  margin-top: 30px;
-  padding-left: 5px;
-  box-sizing: border-box;
-`;
-
-const ColoneText = styled.div`
-  position: absolute;
-  bottom: 17px;
-  left: 77px;
-`;
-
-const RepeatOnText = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: 25px;
-  padding-left: 5px;
-`;
-
-const HourMinContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 160px;
-  position: relative;
-`;

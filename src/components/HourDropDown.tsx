@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { AiFillCaretDown } from "react-icons/ai";
-
+import * as DropDownStyled from "../styles/DropDown.styled"
 type Props = {
   changeHour: (value: string) => void;
   hour: string;
@@ -33,8 +33,8 @@ const HourDropDown = (props: Props) => {
   ];
 
   return (
-    <UlWrapper>
-      <DropDownContainer>
+    <DropDownStyled.UlWrapper>
+      <DropDownStyled.DropDownContainer>
         <DropDownHeader isOpen={isOpen} onClick={toggling}>
           {hour || "00"}
           {isOpen ? <AiFillCaretDown /> : ""}
@@ -44,52 +44,18 @@ const HourDropDown = (props: Props) => {
             if (hour === `00` && option === "00") return null;
             else
               return (
-                <ListItem onClick={onOptionClicked(option)} key={`${index}`}>
+                <DropDownStyled.ListItem onClick={onOptionClicked(option)} key={`${index}`}>
                   {option}
-                </ListItem>
+                </DropDownStyled.ListItem>
               );
           })}
-      </DropDownContainer>
-    </UlWrapper>
+      </DropDownStyled.DropDownContainer>
+    </DropDownStyled.UlWrapper>
   );
 };
 
 export default HourDropDown;
 
-const UlWrapper = styled.div`
-  height: 152px;
-
-  display: inline-block;
-
-  overflow: scroll;
-`;
-
-const DropDownContainer = styled.ul`
-  display: inline-flex;
-  flex-direction: column;
-
-  list-style: none;
-  overflow-y: scroll;
-
-  margin: 0 auto;
-`;
-const StyledLi = styled.li<{ isOpen: boolean }>`
-  width: 75px;
-  height: 50px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background-color: ${(props) =>
-    props.isOpen ? "rgba(180, 180, 180, 0.3)" : "#fff"};
-
-  font-size: 20px;
-  color: var(--color-black);
-
-  margin: 0 auto;
-  border: 1px solid var(--color-border);
-`;
 
 type DropDownHeaderType = {
   isOpen: boolean;
@@ -98,21 +64,6 @@ type DropDownHeaderType = {
 };
 
 const DropDownHeader = (props: DropDownHeaderType) => (
-  <StyledLi {...props}>{props.children}</StyledLi>
+  <DropDownStyled.StyledLi {...props}>{props.children}</DropDownStyled.StyledLi>
 );
 
-const ListItem = styled.li`
-  width: 75px;
-  height: 50px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  font-size: 20px;
-  list-style: none;
-
-  padding: 0;
-  margin: 0;
-  border: 1px solid var(--color-border);
-`;
