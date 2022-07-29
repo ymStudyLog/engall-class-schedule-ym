@@ -1,6 +1,7 @@
 import { atom, selector } from "recoil";
 import { getDay, toDate, addDays } from "date-fns";
 import { scheduleService } from "../api/api";
+import { ScheduleType } from "../types/ScheduleType";
 
 const getWeekStateSelector = selector({
   key: "getWeekStateSelector",
@@ -33,12 +34,10 @@ const getScheduleSelector = selector({
     const requestUrlString = `?date_gte=${weekData[0].toLocaleDateString()}&date_lte=${weekData[
       weekData.length - 1
     ].toLocaleDateString()}`;
-    const weekSchedule = await scheduleService
-      .get(requestUrlString)
-      .then((response) => {
-        return response.data;
-      });
-    return weekSchedule;
+    const schedule = scheduleService.get(requestUrlString).then((response) => {
+      return response.data;
+    });
+    return schedule;
   },
 });
 

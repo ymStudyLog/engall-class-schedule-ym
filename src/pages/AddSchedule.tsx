@@ -35,6 +35,9 @@ const AddSchedule = (props: Props) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
+  console.log("year month day", year, month, day);
+  console.log("hour", hour);
+  console.log("min", min);
 
   //const userStartTime = new Date(year, month - 1, day, parseInt(hour), parseInt(min));
   const userStartTime = new Date(2022, 7, 30, 2, 0);
@@ -42,8 +45,6 @@ const AddSchedule = (props: Props) => {
   const classDuration = 40;
 
   const userEndTime = addMinutes(userStartTime, classDuration);
-
-  //const endTimeAMorPM = getHours(userEndTime) >= 12 ? 'PM' : 'AM'; //이 값도 POST할때 같이 넣기
 
   const week = useRecoilValue<Date[]>(weekState);
 
@@ -75,7 +76,6 @@ const AddSchedule = (props: Props) => {
   };
 
   const userStartTimeToString = userStartTime.toString();
-
   const userEndTimeToString = userEndTime.toString();
 
   const testPost2 = () => {

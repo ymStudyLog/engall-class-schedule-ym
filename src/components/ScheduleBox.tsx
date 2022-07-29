@@ -12,17 +12,14 @@ const ScheduleBox = (props: Props) => {
   const { time, id } = props;
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const handleDelete = () => {
-    setIsModalOpen(true);
+    setIsModalOpen(!isModalOpen);
   };
 
   return (
     <ScheduleBoxContainer>
       <ScheduleText>{time}</ScheduleText>
-      {isModalOpen ? (
-        <ConfirmDeleteModal id={id} setIsModalOpen={setIsModalOpen} />
-      ) : (
-        <DeleteButton src="./images/cancel.png" onClick={handleDelete} />
-      )}
+      <DeleteButton src="./images/cancel.png" onClick={handleDelete} />
+      {isModalOpen && <ConfirmDeleteModal id={id} setIsModalOpen={setIsModalOpen} /> }
     </ScheduleBoxContainer>
   );
 };
@@ -31,27 +28,21 @@ export default ScheduleBox;
 
 const ScheduleBoxContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
   padding: 4px;
-  gap: 7px;
-  width: 133px;
-  height: 53px;
-  left: 20px;
-  top: 18px;
+  width: 130px;
+  height: 60px;
   background-color: #efefef;
   border-radius: 8px;
+  position: relative;
 `;
 
 const ScheduleText = styled.div`
-  width: 100px;
-  height: 44.62px;
+  width: 120px;
+  height: 50px;
+  padding: 2px;
   display: flex;
   align-items: center;
   color: #747474;
-  flex: none;
-  order: 0;
-  flex-grow: 0;
 `;
 
 const DeleteButton = styled.img`
