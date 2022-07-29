@@ -1,6 +1,6 @@
-import ScheduleBox from "./ScheduleBox";
-import { ScheduleType } from "../types/ScheduleType";
-import styled from "styled-components";
+import ScheduleBox from './ScheduleBox';
+import { ScheduleType } from '../types/ScheduleType';
+import styled from 'styled-components';
 
 type Props = {
   dailyData: ScheduleType[];
@@ -11,10 +11,10 @@ const DailySchedule = (props: Props) => {
 
   return (
     <ScheduleContainer>
-      {dailyData?.map((data: ScheduleType, index: number) => {
+      {/* {dailyData?.map((data: ScheduleType, index: number) => {
         const time = `${data.startTime} ${data.startTimeAMorPM}-${data.endTime} ${data.endTimeAMorPM}`;
         return <ScheduleBox key={index} time={time} id={data.id}/>;
-      })}
+      })} */}
     </ScheduleContainer>
   );
 };
@@ -26,5 +26,5 @@ const ScheduleContainer = styled.div`
   padding: 10px;
   display: flex;
   flex-direction: column;
-  gap:20px;
+  gap: 20px;
 `;
