@@ -22,27 +22,33 @@ import { postSchedule } from "../api/api";
 type Props = {};
 
 const AddSchedule = (props: Props) => {
-  const startTime = new Date(2014, 1, 10, 1, 0);
-  const endTime = addMinutes(startTime, 40);
-  console.log(startTime);
-  // console.log(endTime);
-  const trueOrFalse = areIntervalsOverlapping(
-    { start: startTime, end: endTime },
-    { start: startTime, end: endTime }
-  );
-
   const [amPm, setAmPm] = React.useState("");
   const [isAmClicked, setIsAmClicked] = React.useState(false);
   const [isPmClicked, setIsPmClicked] = React.useState(false);
 
-  const [hour, setHour] = React.useState("");
-  const [min, setMin] = React.useState("");
+  const [hour, setHour] = React.useState("00");
+  const [min, setMin] = React.useState("00");
   const changeHour = (value: string) => {
     setHour(value);
   };
   const changeMin = (value: string) => {
     setMin(value);
   };
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  console.log("year month day", year, month, day)
+
+  const startTime = new Date(year, month-1, day, parseInt(hour), parseInt(min));
+  const endTime = addMinutes(startTime, 40);
+
+  console.log("스타트", startTime);
+  // console.log(endTime);
+  const trueOrFalse = areIntervalsOverlapping(
+    { start: startTime, end: endTime },
+    { start: startTime, end: endTime }
+  );
   console.log("hour", hour);
   console.log("min", min);
   const handleAmClick = () => {
@@ -60,18 +66,14 @@ const AddSchedule = (props: Props) => {
 
   const testPost2 = () => {
     postSchedule({
-      id: parseInt(new Date().toUTCString() + 1),
-      startTime: `${hour}:${min}`,
-      endTime: "10:40",
+      id: parseInt(new Date().toUTCString() + 1), //수정예정
+      startTime: startTime,
+      endTime: endTime,
       startTimeAMorPM: `${amPm}`,
       date: new Date().toLocaleDateString(),
     }).then(() => console.log("post 성공"));
   };
 
-  // id 값 변경
-  // starttime 넣기 endTime 넣기
-  // 퍼블리싱
-  
   const week = useRecoilValue<Date[]>(weekState);
 
   return (
