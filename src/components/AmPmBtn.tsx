@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 type Props = {
   children: React.ReactNode;
@@ -10,6 +10,7 @@ const AmPmBtn = (props: Props) => {
   const handleBtnClick = () => {
     setClick(!click);
   };
+
   return <AmPmTime onClick={handleBtnClick} isClicked={click}></AmPmTime>;
 };
 
