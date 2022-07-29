@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import Button from "../components/Button";
-import { WhiteContainer } from "../layout/WhiteContainer";
-import { PageContainer, PageTitle, ElementContainer } from "../styles/page.style";
+import Button from '../components/Button';
+import { WhiteContainer } from '../layout/WhiteContainer';
+import { PageContainer, PageTitle, ElementContainer } from '../styles/page.style';
 import { areIntervalsOverlapping, addMinutes } from 'date-fns';
 
 type Props = {};
@@ -14,17 +14,15 @@ const AddSchedule = (props: Props) => {
   console.log(trueOrFalse);
 
   return (
-    <WeeklyContainer>
+    <PageContainer>
       <TitleContainer>
-        <Title>Add class schedule</Title>
+        <PageTitle>Add class schedule</PageTitle>
       </TitleContainer>
-      <WhiteContainer>
-
-      </WhiteContainer>
+      <WhiteContainer></WhiteContainer>
       <ButtonContainer>
         <Button>Save</Button>
       </ButtonContainer>
-    </WeeklyContainer>
+    </PageContainer>
   );
 };
 

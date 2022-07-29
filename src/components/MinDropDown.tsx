@@ -1,13 +1,12 @@
-import React from "react";
-import styled from "styled-components";
-import { Background } from "./youmee/Background";
+import React from 'react';
+import styled from 'styled-components';
 
 type Props = {};
 
 const MinDropDown = () => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   //리코일 변경 예정
-  const [selectedMinute, setMinute] = React.useState<string>("00");
+  const [selectedMinute, setMinute] = React.useState<string>('00');
 
   const toggling = () => setIsOpen(!isOpen);
   const onOptionClicked = (value: any) => () => {
@@ -15,37 +14,18 @@ const MinDropDown = () => {
     setIsOpen(false);
   };
   console.log(selectedMinute);
-  const options = [
-    "00",
-    "05",
-    "10",
-    "15",
-    "20",
-    "25",
-    "30",
-    "35",
-    "40",
-    "45",
-    "50",
-    "55",
-  ];
+  const options = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'];
 
   return (
     <UlWrapper>
       <DropDownContainer>
-        <DropDownHeader onClick={toggling}>
-          {selectedMinute || "00"}
-        </DropDownHeader>
+        <DropDownHeader onClick={toggling}>{selectedMinute || '00'}</DropDownHeader>
         {isOpen &&
           options.map((option, index) => {
-            if (selectedMinute === "00" && option === "00") return null;
+            if (selectedMinute === '00' && option === '00') return null;
             else
               return (
-                <ListItem
-                  onClick={onOptionClicked(option)}
-                  key={`${index}`}
-                  selected={option === selectedMinute}
-                >
+                <ListItem onClick={onOptionClicked(option)} key={`${index}`} selected={option === selectedMinute}>
                   {option}
                 </ListItem>
               );
@@ -103,8 +83,7 @@ const ListItem = styled.li<{ selected: boolean }>`
   font-size: 20px;
   list-style: none;
 
-  background-color: ${(props) =>
-    props.selected ? "rgba(180, 180, 180, 0.3)" : "white"};
+  background-color: ${(props) => (props.selected ? 'rgba(180, 180, 180, 0.3)' : 'white')};
 
   padding: 0;
   margin: 0;

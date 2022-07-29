@@ -1,13 +1,12 @@
-import React from "react";
-import styled from "styled-components";
-import { Background } from "./youmee/Background";
+import React from 'react';
+import styled from 'styled-components';
 
 type Props = {};
 
 const HourDropDown = () => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   //리코일로 변경예정
-  const [selectedHour, setHour] = React.useState<string>("00");
+  const [selectedHour, setHour] = React.useState<string>('00');
 
   const toggling = () => setIsOpen(!isOpen);
   const onOptionClicked = (value: any) => () => {
@@ -15,37 +14,18 @@ const HourDropDown = () => {
     setIsOpen(false);
   };
   console.log(selectedHour);
-  const options = [
-    "00",
-    "01",
-    "02",
-    "03",
-    "04",
-    "05",
-    "06",
-    "07",
-    "08",
-    "09",
-    "10",
-    "11",
-  ];
+  const options = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11'];
 
   return (
     <UlWrapper>
       <DropDownContainer>
-        <DropDownHeader onClick={toggling}>
-          {selectedHour || "00"}
-        </DropDownHeader>
+        <DropDownHeader onClick={toggling}>{selectedHour || '00'}</DropDownHeader>
         {isOpen &&
           options.map((option, index) => {
-            if (selectedHour === "00" && option === "00") return null;
+            if (selectedHour === '00' && option === '00') return null;
             else
               return (
-                <ListItem
-                  onClick={onOptionClicked(option)}
-                  key={`${index}`}
-                  selected={option === selectedHour}
-                >
+                <ListItem onClick={onOptionClicked(option)} key={`${index}`} selected={option === selectedHour}>
                   {option}
                 </ListItem>
               );
@@ -103,8 +83,7 @@ const ListItem = styled.li<{ selected: boolean }>`
   font-size: 20px;
   list-style: none;
 
-  background-color: ${(props) =>
-    props.selected ? "rgba(180, 180, 180, 0.3)" : "white"};
+  background-color: ${(props) => (props.selected ? 'rgba(180, 180, 180, 0.3)' : 'white')};
 
   padding: 0;
   margin: 0;
