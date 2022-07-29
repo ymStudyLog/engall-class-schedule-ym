@@ -9,11 +9,13 @@ type Props = {
 
 const HourDropDown = (props: Props) => {
   const { changeHour, hour } = props;
-
+  
+  const [selectedHour, setSelectedHour] = React.useState<number>(-1);
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
   const toggling = () => setIsOpen(!isOpen);
-  const onOptionClicked = (value: any) => () => {
+  const onOptionClicked = (value: any, index:number) => () => {
+    setSelectedHour(index);
     changeHour(value);
     setIsOpen(false);
   };
@@ -36,7 +38,7 @@ const HourDropDown = (props: Props) => {
     <UlWrapper>
       <DropDownContainer>
         <DropDownHeader isOpen={isOpen} onClick={toggling}>
-          {hour || "00"}
+          {options[selectedHour] || "00"}
           {isOpen ? <AiFillCaretDown /> : ""}
         </DropDownHeader>
         {isOpen &&
@@ -44,7 +46,7 @@ const HourDropDown = (props: Props) => {
             if (hour ===`00` && option === "00") return null;
             else
               return (
-                <ListItem onClick={onOptionClicked(option)} key={`${index}`}>
+                <ListItem onClick={onOptionClicked(option,index)} key={index}>
                   {option}
                 </ListItem>
               );

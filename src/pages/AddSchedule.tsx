@@ -22,7 +22,6 @@ import { ScheduleType } from "../types/ScheduleType";
 type Props = {};
 
 const AddSchedule = (props: Props) => {
-  const [amPm, setAmPm] = React.useState("");
   const [isAmClicked, setIsAmClicked] = React.useState(false);
   const [isPmClicked, setIsPmClicked] = React.useState(false);
 
@@ -49,10 +48,6 @@ const AddSchedule = (props: Props) => {
     parseInt(min)
   );
   const endTime = addMinutes(startTime, 40);
-  // console.log("스타트", startTime);
-
-  const endTimeAMorPM = getHours(endTime) >= 12 ? "PM" : "AM"; //이 값도 POST할때 같이 넣기
-  // console.log(endTimeAMorPM);
 
   const trueOrFalse = areIntervalsOverlapping(
     { start: startTime, end: endTime },
@@ -60,27 +55,21 @@ const AddSchedule = (props: Props) => {
   );
 
   const handleAmClick = () => {
-    setAmPm("AM");
     setIsAmClicked(!isAmClicked);
     setIsPmClicked(false);
-    console.log("am", amPm);
   };
   const handlePmClick = () => {
-    setAmPm("PM");
     setIsPmClicked(!isPmClicked);
     setIsAmClicked(false);
-    console.log("pm", amPm);
   };
+
   const newStartTime = startTime.toString();
   const newEndTime = endTime.toString();
   const testPost2 = () => {
-    console.log("testpost2 starttime", startTime);
     postSchedule({
-      id: 123, //수정예정
+      id: parseInt(new Date().toUTCString()),
       startTime: newStartTime,
       endTime: newEndTime,
-      startTimeAMorPM: `${amPm}`,
-      endTimeAMorPM: endTimeAMorPM,
       date: new Date().toLocaleDateString(),
     }).then(() => console.log("post 성공"));
   };

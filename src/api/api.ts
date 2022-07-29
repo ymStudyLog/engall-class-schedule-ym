@@ -6,7 +6,8 @@ const DEFAULT_URL = "http://localhost:8000/classes";
 export const scheduleService : AxiosInstance = axios.create({baseURL: `${DEFAULT_URL}`});
 
 export const deleteSchedule = async (id:number) => {
-    await scheduleService.delete(`/${id}`);
+    const response = await scheduleService.delete(`/${id}`);
+    return response.status; //200이어야 정상적으로 삭제됨
 }
 
 export const postSchedule = async <T>(schedule : ScheduleType) : Promise<T> => {
