@@ -3,5 +3,6 @@ export type ScheduleType = {
   startTime: string;
   endTime: string;
   startTimeAMorPM : string;
+  endTimeAMorPM: string,
   date: string;
 };
