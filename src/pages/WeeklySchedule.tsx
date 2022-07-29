@@ -8,7 +8,11 @@ import { DayTitle } from "../layout/DayTitle";
 import DailySchedule from "../components/DailySchedule";
 import { postSchedule } from "../api/api";
 import { deleteSchedule } from "../api/api";
-import { PageContainer, PageTitle, ElementContainer } from "../styles/page.style";
+import {
+  PageContainer,
+  PageTitle,
+  ElementContainer,
+} from "../styles/page.style";
 
 type Props = {};
 
@@ -25,16 +29,16 @@ const fullWeek = [
 const WeeklySchedule = (props: Props) => {
   const week = useRecoilValue<Date[]>(weekState);
 
-  //testPost, testDelete는 삭제 예정 
+  //testPost, testDelete는 삭제 예정
   const testPost = () => {
     postSchedule({
-      id:100,
-      startTime:"10:00",
-      endTime:"10:40",
-      AMorPM : "AM",
-      date:"2022. 7. 26."
-    }).then(()=>console.log("post 성공"));
-  }
+      id: 100,
+      startTime: "10:00",
+      endTime: "10:40",
+      startTimeAMorPM: "AM",
+      date: "2022. 7. 26.",
+    }).then(() => console.log("post 성공"));
+  };
 
   const testDelete = () => {
     deleteSchedule(100).then(() => console.log("delete 성공"));
@@ -71,4 +75,4 @@ const TitleAndButtonContainer = styled(ElementContainer)`
 
 const MainContainer = styled.div`
   display: flex;
-`; 
+`;
