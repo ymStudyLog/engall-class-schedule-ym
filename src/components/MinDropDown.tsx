@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { AiFillCaretDown } from "react-icons/ai";
-
+import * as DropDownStyled from "../styles/DropDown.styled";
+import { DropDownHeaderType } from "../types/DropDownHeaderType";
 type Props = {
   changeMin: (value: string) => void;
   min: string;
@@ -33,8 +34,8 @@ const MinDropDown = (props: Props) => {
   ];
 
   return (
-    <UlWrapper>
-      <DropDownContainer>
+    <DropDownStyled.UlWrapper>
+      <DropDownStyled.DropDownContainer>
         <DropDownHeader isOpen={isOpen} onClick={toggling}>
           {min || "00"}
           {isOpen ? <AiFillCaretDown /> : ""}
@@ -44,76 +45,22 @@ const MinDropDown = (props: Props) => {
             if (min === "00" && option === "00") return null;
             else
               return (
-                <ListItem onClick={onOptionClicked(option)} key={`${index}`}>
+                <DropDownStyled.ListItem
+                  onClick={onOptionClicked(option)}
+                  key={`${index}`}
+                >
                   {option}
-                </ListItem>
+                </DropDownStyled.ListItem>
               );
           })}
-      </DropDownContainer>
-    </UlWrapper>
+      </DropDownStyled.DropDownContainer>
+    </DropDownStyled.UlWrapper>
   );
 };
 
 export default MinDropDown;
 
-const UlWrapper = styled.div`
-  height: 152px;
-
-  display: inline-block;
-
-  overflow: scroll;
-`;
-
-const DropDownContainer = styled.ul`
-  display: inline-flex;
-  flex-direction: column;
-
-  list-style: none;
-  overflow-y: scroll;
-
-  margin: 0 auto;
-`;
-const StyledLi = styled.li<{ isOpen: boolean }>`
-  /* box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15); */
-  width: 75px;
-  height: 50px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background-color: ${(props) =>
-    props.isOpen ? "rgba(180, 180, 180, 0.3)" : "#fff"};
-
-  font-size: 20px;
-  color: #000;
-
-  margin: 0 auto;
-  border: 1px solid #b4b4b4;
-`;
-
-type DropDownHeaderType = {
-  isOpen: boolean;
-  children: React.ReactNode;
-  onClick: () => void;
-};
 
 const DropDownHeader = (props: DropDownHeaderType) => (
-  <StyledLi {...props}>{props.children}</StyledLi>
+  <DropDownStyled.StyledLi {...props}>{props.children}</DropDownStyled.StyledLi>
 );
-
-const ListItem = styled.li`
-  width: 75px;
-  height: 50px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  font-size: 20px;
-  list-style: none;
-
-  padding: 0;
-  margin: 0;
-  border: 1px solid #b4b4b4;
-`;

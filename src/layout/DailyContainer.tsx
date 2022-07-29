@@ -9,7 +9,7 @@ export const DailyContainerDiv = styled.div`
   width: 185.3px;
   min-height: 340px;
   padding-top: 20px;
-  background: #ffffff;
+  background: var(--color-white);
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -20,7 +20,7 @@ const HorizontalLine = styled.div`
   position: absolute;
   width: inherit;
   text-align: center;
-  border-bottom: 1px solid #b4b4b4;
+  border-bottom: 1px solid var(--color-border);
   top: 40px;
 `;
 
