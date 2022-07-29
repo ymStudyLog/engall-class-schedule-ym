@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { AiFillCaretDown } from "react-icons/ai";
 import * as DropDownStyled from "../styles/DropDown.styled";
+import { DropDownHeaderType } from "../types/DropDownHeaderType";
 type Props = {
   changeMin: (value: string) => void;
   min: string;
@@ -59,11 +60,6 @@ const MinDropDown = (props: Props) => {
 
 export default MinDropDown;
 
-type DropDownHeaderType = {
-  isOpen: boolean;
-  children: React.ReactNode;
-  onClick: () => void;
-};
 
 const DropDownHeader = (props: DropDownHeaderType) => (
   <DropDownStyled.StyledLi {...props}>{props.children}</DropDownStyled.StyledLi>

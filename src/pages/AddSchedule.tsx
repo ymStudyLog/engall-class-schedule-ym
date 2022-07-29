@@ -1,12 +1,7 @@
 import React from "react";
-import styled from "styled-components";
 import Button from "../components/Button";
 import { WhiteContainer } from "../layout/WhiteContainer";
-import {
-  PageContainer,
-  PageTitle,
-  ElementContainer,
-} from "../styles/page.style";
+import { PageContainer, PageTitle } from "../styles/page.style";
 import { areIntervalsOverlapping, addMinutes, getHours } from "date-fns";
 import WEEK_ARRAY from "../utils/weekArray";
 import { useRecoilValue } from "recoil";
