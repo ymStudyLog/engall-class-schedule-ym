@@ -25,22 +25,20 @@ const AddSchedule = (props: Props) => {
   const [amPm, setAmPm] = React.useState("");
   const [isAmClicked, setIsAmClicked] = React.useState(false);
   const [isPmClicked, setIsPmClicked] = React.useState(false);
-
   const [hour, setHour] = React.useState("00");
   const [min, setMin] = React.useState("00");
+
   const changeHour = (value: string) => {
     setHour(value);
   };
   const changeMin = (value: string) => {
     setMin(value);
   };
+
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  console.log("year month day", year, month, day);
-  console.log("hour", hour);
-  console.log("min", min);
   const startTime = new Date(
     year,
     month - 1,
@@ -49,11 +47,7 @@ const AddSchedule = (props: Props) => {
     parseInt(min)
   );
   const endTime = addMinutes(startTime, 40);
-  // console.log("스타트", startTime);
-
   const endTimeAMorPM = getHours(endTime) >= 12 ? "PM" : "AM"; //이 값도 POST할때 같이 넣기
-  // console.log(endTimeAMorPM);
-
   const trueOrFalse = areIntervalsOverlapping(
     { start: startTime, end: endTime },
     { start: startTime, end: endTime }
@@ -63,19 +57,16 @@ const AddSchedule = (props: Props) => {
     setAmPm("AM");
     setIsAmClicked(!isAmClicked);
     setIsPmClicked(false);
-    console.log("am", amPm);
   };
   const handlePmClick = () => {
     setAmPm("PM");
     setIsPmClicked(!isPmClicked);
     setIsAmClicked(false);
-    console.log("pm", amPm);
   };
   const newStartTime = startTime.toString();
   const newEndTime = endTime.toString();
-  console.log(parseInt(new Date().toUTCString() + 1));
-  const testPost2 = () => {
-    console.log("testpost2 starttime", startTime);
+  
+  const CreateSchedule = () => {
     postSchedule({
       id: parseInt(new Date().toUTCString()),
       startTime: newStartTime,
@@ -121,7 +112,6 @@ const AddSchedule = (props: Props) => {
                 date={day.toLocaleDateString()}
                 onClick={() => {
                   console.log(day.toLocaleDateString());
-                  // onClick시 버튼안에 있는 date를 post 할 데이터에 추가하는 로직 여기에
                 }}
               >
                 {WEEK_ARRAY[day.getDay()]}
@@ -132,7 +122,7 @@ const AddSchedule = (props: Props) => {
       </WhiteContainer>
       <ButtonContainer>
         <Link to="/">
-          <Button onClick={testPost2}>Save</Button>
+          <Button onClick={CreateSchedule}>Save</Button>
         </Link>
       </ButtonContainer>
     </PageContainer>
@@ -203,7 +193,6 @@ const RepeatOnText = styled.div`
 
 const HourMinContainer = styled.div`
   display: flex;
-  /* height: 50px; */
   justify-content: space-between;
   width: 160px;
   position: relative;
