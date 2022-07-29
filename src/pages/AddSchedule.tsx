@@ -1,16 +1,22 @@
+import React from "react";
 import styled from "styled-components";
 import Button from "../components/Button";
 import { WhiteContainer } from "../layout/WhiteContainer";
 
-import { PageContainer, PageTitle, ElementContainer } from "../styles/page.style";
+import {
+  PageContainer,
+  PageTitle,
+  ElementContainer,
+} from "../styles/page.style";
 import { areIntervalsOverlapping, addMinutes } from "date-fns";
 import WEEK_ARRAY from "../utils/weekArray";
 import { useRecoilValue } from "recoil";
 import { weekState } from "../store/weekAtom";
 import { DayButton } from "../layout/DayButton";
-import HourDropDown from "../components/HourDropDown";
 import MinDropDown from "../components/MinDropDown";
-import AmPmButton from "../components/AmPmButton";
+import { AmPmButton } from "../components/AmPmButton";
+import { Link } from "react-router-dom";
+import HourDropDown from "../components/HourDropDown";
 
 type Props = {};
 
@@ -23,13 +29,33 @@ const AddSchedule = (props: Props) => {
     { start: startTime, end: endTime },
     { start: startTime, end: endTime }
   );
+
+  const [amPm, setAmPm] = React.useState("");
+  const [isAmClicked, setIsAmClicked] = React.useState(false);
+  const [isPmClicked, setIsPmClicked] = React.useState(false);
+
+  const [hour, setHour] = React.useState("");
+  const [min, setMin] = React.useState("");
+  const changeHour = (value: string) => {
+    setHour(value);
+  };
+  const changeMin = (value: string) => {
+    setMin(value);
+  };
+  console.log("hour", hour);
+  console.log("min", min);
   const handleAmClick = () => {
-    console.log("AM");
+    setAmPm("AM");
+    setIsAmClicked(!isAmClicked);
+    setIsPmClicked(false);
+    console.log("am", amPm);
   };
   const handlePmClick = () => {
-    console.log("PM");
+    setAmPm("PM");
+    setIsPmClicked(!isPmClicked);
+    setIsAmClicked(false);
+    console.log("pm", amPm);
   };
-  // console.log(trueOrFalse);
 
   const week = useRecoilValue<Date[]>(weekState);
 
@@ -44,16 +70,16 @@ const AddSchedule = (props: Props) => {
             <p>Start time</p>
           </StartTimeText>
           <DropDownContainer>
-            <HourDropDown />
-            {/* <ColoneText>:</ColoneText> */}
-            <MinDropDown />
-
-            <AmPmButton handleClick={handleAmClick}>AM</AmPmButton>
-            <AmPmButton handleClick={handlePmClick}>PM</AmPmButton>
+            <HourDropDown changeHour={changeHour} hour={hour} />
+            <MinDropDown changeMin={changeMin} min={min} />
+            <AmPmButton onClick={handleAmClick} isClicked={isAmClicked}>
+              AM
+            </AmPmButton>
+            <AmPmButton onClick={handlePmClick} isClicked={isPmClicked}>
+              PM
+            </AmPmButton>
           </DropDownContainer>
         </StartTimeContainer>
-    
-        
 
         <div style={{ display: "flex" }}>
           <RepeatOnText>Repeat on</RepeatOnText>
@@ -74,7 +100,9 @@ const AddSchedule = (props: Props) => {
         </div>
       </WhiteContainer>
       <ButtonContainer>
-        <Button>Save</Button>
+        <Link to="/">
+          <Button>Save</Button>
+        </Link>
       </ButtonContainer>
     </PageContainer>
   );
@@ -92,7 +120,7 @@ const ButtonContainer = styled(ElementContainer)`
 
 const StartTimeContainer = styled.div`
   width: 100%;
-  height: 200px;
+  height: 100px;
   margin-left: 36px;
   display: flex;
   flex-direction: row;
@@ -120,8 +148,7 @@ const ColoneText = styled.div`
   position: absolute;
   /* top: 205px;
   left: 250px; */
-`
-
+`;
 
 const RepeatOnText = styled.div`
   display: flex;
