@@ -7,6 +7,7 @@ type Props = {
 export const DailyContainerDiv = styled.div`
   width: 185.3px; //원래 = 195px 
   min-height: 340px;
+  padding-top: 20px;
   background: #ffffff;
   display: flex;
   justify-content: flex-start;

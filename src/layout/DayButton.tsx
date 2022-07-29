@@ -3,13 +3,16 @@ import { DayTitle } from "./DayTitle";
 
 type Props = {
   children: React.ReactNode;
+  date: string;
+  onClick: ()=>void;
 };
 
 const DayButtonDiv = styled.div`
-  width: 160px;
-  height: 50px;
+  width: 150px;
+  height: 45px;
   background: #ffffff;
   border: 1px solid #b4b4b4;
+  margin: 0 4px;
   display: flex;
   justify-content: center;
   align-items: center;

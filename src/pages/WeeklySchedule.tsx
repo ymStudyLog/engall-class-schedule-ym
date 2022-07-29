@@ -6,23 +6,11 @@ import { useRecoilValue } from "recoil";
 import { weekState } from "../store/weekAtom";
 import { DayTitle } from "../layout/DayTitle";
 import DailySchedule from "../components/DailySchedule";
-import { postSchedule } from "../api/api";
-import { deleteSchedule } from "../api/api";
+import { postSchedule,deleteSchedule } from "../api/api";
 import { PageContainer, PageTitle, ElementContainer } from "../styles/page.style";
+import WEEK_ARRAY from "../utils/weekArray";
 
-type Props = {};
-
-const fullWeek = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
-
-const WeeklySchedule = (props: Props) => {
+const WeeklySchedule = () => {
   const week = useRecoilValue<Date[]>(weekState);
 
   //testPost, testDelete는 삭제 예정 
@@ -31,7 +19,7 @@ const WeeklySchedule = (props: Props) => {
       id:100,
       startTime:"10:00",
       endTime:"10:40",
-      AMorPM : "AM",
+      startTimeAMorPM : "AM",
       date:"2022. 7. 26."
     }).then(()=>console.log("post 성공"));
   }
@@ -47,11 +35,11 @@ const WeeklySchedule = (props: Props) => {
         <Button>Add Class Schedule</Button>
       </TitleAndButtonContainer>
       <MainContainer>
+        <HorizontalLine />
         {week.map((day: Date, index: number) => {
-          // console.log(index, fullWeek[day.getDay()], day);
           return (
             <DailyContainer key={index}>
-              <DayTitle>{fullWeek[day.getDay()]}</DayTitle>
+              <DayTitle>{WEEK_ARRAY[day.getDay()]}</DayTitle>
               <DailySchedule date={day.toLocaleDateString()} />
             </DailyContainer>
           );
@@ -72,3 +60,12 @@ const TitleAndButtonContainer = styled(ElementContainer)`
 const MainContainer = styled.div`
   display: flex;
 `; 
+
+const HorizontalLine = styled.div`
+  position: absolute;
+  width: 90%;
+  text-align: center;
+  border-bottom: 1px solid #b4b4b4;
+  top: calc(50% - 105px);
+  left: 70px;
+`;
