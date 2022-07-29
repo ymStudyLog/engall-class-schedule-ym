@@ -95,12 +95,13 @@ const AddSchedule = (props: Props) => {
       </TitleContainer>
       <WhiteContainer>
         <StartTimeContainer>
-          <StartTimeText>
-            <p>Start time</p>
-          </StartTimeText>
+          <StartTimeText>Start time</StartTimeText>
           <DropDownContainer>
-            <HourDropDown changeHour={changeHour} hour={hour} />
-            <MinDropDown changeMin={changeMin} min={min} />
+            <HourMinContainer>
+              <HourDropDown changeHour={changeHour} hour={hour} />
+              <ColoneText>:</ColoneText>
+              <MinDropDown changeMin={changeMin} min={min} />
+            </HourMinContainer>
             <AmPmButton onClick={handleAmClick} isClicked={isAmClicked}>
               AM
             </AmPmButton>
@@ -148,7 +149,14 @@ const ButtonContainer = styled(ElementContainer)`
 `;
 
 const Positioner = styled.div`
+  width: 100%;
+  height: 100px;
+  margin-left: 36px;
   display: flex;
+  flex-direction: row;
+  position: absolute;
+  bottom: 50px;
+  align-items: center;
 `;
 
 const StartTimeContainer = styled.div`
@@ -157,6 +165,8 @@ const StartTimeContainer = styled.div`
   margin-left: 36px;
   display: flex;
   flex-direction: row;
+  position: absolute;
+  top: 10px;
 `;
 const RepeatContainer = styled.div`
   width: 100%;
@@ -174,13 +184,18 @@ const DropDownContainer = styled.div`
 `;
 
 const StartTimeText = styled.div`
-  margin-top: 54px;
+  display: flex;
+  align-items: center;
+  margin-right: 25px;
+  margin-top: 30px;
+  padding-left: 5px;
+  box-sizing: border-box;
 `;
 
 const ColoneText = styled.div`
   position: absolute;
-  /* top: 205px;
-  left: 250px; */
+  bottom: 17px;
+  left: 77px;
 `;
 
 const RepeatOnText = styled.div`
@@ -188,4 +203,12 @@ const RepeatOnText = styled.div`
   align-items: center;
   margin-right: 25px;
   padding-left: 5px;
+`;
+
+const HourMinContainer = styled.div`
+  display: flex;
+  /* height: 50px; */
+  justify-content: space-between;
+  width: 160px;
+  position: relative;
 `;
