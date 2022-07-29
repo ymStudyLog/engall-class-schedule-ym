@@ -4,6 +4,10 @@ import reset from 'styled-reset';
 const GlobalStyle = createGlobalStyle`
 ${reset}
 
+* {
+ box-sizing: border-box;
+}
+
 html {
   font-family: var(--fontFamily);
   font-size: var(--fontSize-root--normal);
@@ -20,7 +24,6 @@ html {
 }
 
 body, html, #root {
-  box-sizing: border-box;
   width: 100%;
   height: 100%;
 }

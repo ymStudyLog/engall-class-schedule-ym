@@ -4,64 +4,57 @@
       "id": 1,
       "startTime": "10:00",
       "endTime": "10:40",
-      "startTimeAMorPM" : "AM",
+      "startTimeAMorPM": "AM",
       "date": "2022. 7. 25."
     },
     {
       "id": 2,
       "startTime": "12:20",
       "endTime": "1:00",
-      "startTimeAMorPM" : "PM",
+      "startTimeAMorPM": "PM",
       "date": "2022. 7. 27."
     },
     {
       "id": 3,
       "startTime": "10:00",
       "endTime": "10:40",
-      "startTimeAMorPM" : "AM",
+      "startTimeAMorPM": "AM",
       "date": "2022. 7. 28."
     },
     {
       "id": 4,
       "startTime": "11:00",
       "endTime": "11:40",
-      "startTimeAMorPM" : "AM",
+      "startTimeAMorPM": "AM",
       "date": "2022. 7. 28."
     },
     {
       "id": 5,
       "startTime": "10:00",
       "endTime": "10:40",
-      "startTimeAMorPM" : "AM",
+      "startTimeAMorPM": "AM",
       "date": "2022. 7. 29."
     },
     {
       "id": 6,
       "startTime": "12:20",
       "endTime": "1:00",
-      "startTimeAMorPM" : "PM",
+      "startTimeAMorPM": "PM",
       "date": "2022. 7. 29."
     },
     {
       "id": 7,
       "startTime": "10:00",
       "endTime": "10:40",
-      "startTimeAMorPM" : "AM",
+      "startTimeAMorPM": "AM",
       "date": "2022. 7. 30."
     },
     {
       "id": 8,
       "startTime": "10:40",
       "endTime": "11:20",
-      "startTimeAMorPM" : "AM",
+      "startTimeAMorPM": "AM",
       "date": "2022. 7. 30."
-    },
-    {
-      "id": 100,
-      "startTime": "10:00",
-      "endTime": "10:40",
-      "startTimeAMorPM" : "AM",
-      "date": "2022. 7. 26."
     }
   ]
 }
