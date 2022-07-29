@@ -1,6 +1,6 @@
 export type ScheduleType = {
   id: number;
-  startTime: Date | number | string;
-  endTime: Date | number | string;
+  startTime: string;
+  endTime: string;
   date: string;
 };

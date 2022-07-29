@@ -4,13 +4,13 @@ import styled from "styled-components";
 import { format } from "date-fns";
 
 type Props = {
-  dailyData: ScheduleType[];
+  dailySchedultData: ScheduleType[];
 };
 
 const DailySchedule = (props: Props) => {
-  const { dailyData } = props;
+  const { dailySchedultData } = props;
 
-  const sortedDailyData = dailyData.sort(function(a,b) {
+  const sortedDailySchedule = dailySchedultData.sort(function(a,b) {
     if(new Date(a.startTime) > new Date(b.startTime)){
       return 1;
     }
@@ -22,7 +22,7 @@ const DailySchedule = (props: Props) => {
 
   return (
     <ScheduleContainer>
-      {sortedDailyData?.map((data: ScheduleType, index: number) => {
+      {sortedDailySchedule?.map((data: ScheduleType, index: number) => {
         const start = format(new Date(data.startTime), "K:mm a");
         const end = format(new Date(data.endTime), "K:mm a");
         const time = `${start}-${end}`;

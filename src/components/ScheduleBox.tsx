@@ -29,15 +29,15 @@ export default ScheduleBox;
 const ScheduleBoxContainer = styled.div`
   display: flex;
   padding: 4px;
-  width: 130px;
-  height: 60px;
+  width: 140px;
+  height: 65px;
   background-color: #efefef;
   border-radius: 8px;
   position: relative;
 `;
 
 const ScheduleText = styled.div`
-  width: 120px;
+  width: 130px;
   height: 50px;
   padding: 2px;
   display: flex;

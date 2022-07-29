@@ -1,55 +1,43 @@
 import React from "react";
-import styled from "styled-components";
 import { AiFillCaretDown } from "react-icons/ai";
-import * as DropDownStyled from "../styles/DropDown.styled";
 import { DropDownHeaderType } from "../types/DropDownHeaderType";
+import { minuteOptions } from "../utils/dropdownOptions";
+import * as DropDownStyled from "../styles/DropDown.styled";
+
 type Props = {
-  changeMin: (value: string) => void;
-  min: string;
+  setMinute: React.Dispatch<React.SetStateAction<string>>;
+  minute: string;
 };
 
 const MinDropDown = (props: Props) => {
-  const { changeMin, min } = props;
-
+  const { setMinute, minute } = props;
+  const [selectedMinute, setSelectedMinute] = React.useState<number>(-1);
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
-  const toggling = () => setIsOpen(!isOpen);
-  const onOptionClicked = (value: any) => () => {
-    changeMin(value);
+  const onToggle = () => setIsOpen(!isOpen);
+  const onOptionClicked = (value: any, index: number) => () => {
+    setSelectedMinute(index);
+    setMinute(value);
     setIsOpen(false);
   };
-  const options = [
-    "00",
-    "05",
-    "10",
-    "15",
-    "20",
-    "25",
-    "30",
-    "35",
-    "40",
-    "45",
-    "50",
-    "55",
-  ];
 
   return (
     <DropDownStyled.UlWrapper>
       <DropDownStyled.DropDownContainer>
-        <DropDownHeader isOpen={isOpen} onClick={toggling}>
-          {min || "00"}
+        <DropDownHeader isOpen={isOpen} onClick={onToggle}>
+          {minuteOptions[selectedMinute] || "00"}
           {isOpen ? <AiFillCaretDown /> : ""}
         </DropDownHeader>
         {isOpen &&
-          options.map((option, index) => {
-            if (min === "00" && option === "00") return null;
+          minuteOptions.map((minuteOption, index) => {
+            if (minute === "00" && minuteOption === "00") return null;
             else
               return (
                 <DropDownStyled.ListItem
-                  onClick={onOptionClicked(option)}
+                  onClick={onOptionClicked(minuteOption,index)}
                   key={index}
                 >
-                  {option}
+                  {minuteOption}
                 </DropDownStyled.ListItem>
               );
           })}

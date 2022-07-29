@@ -1,8 +1,7 @@
 import React from "react";
-import styled from "styled-components";
 import { deleteSchedule } from "../api/api";
-import * as Confirm from "../styles/Confirm.styled"
-import { useRecoilState, useRecoilValue } from "recoil";
+import * as Confirm from "../styles/Confirm.styled";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 import { weekState, scheduleState } from "../store/weekAtom";
 import { scheduleService } from "../api/api";
 import { ScheduleType } from "../types/ScheduleType";
@@ -15,7 +14,7 @@ type Props = {
 const ConfirmDeleteModal = (props: Props) => {
   const { id, setIsModalOpen } = props;
   const week = useRecoilValue<Date[]>(weekState);
-  const [schedule, setSchedule] = useRecoilState<ScheduleType[]>(scheduleState);
+  const setSchedule = useSetRecoilState<ScheduleType[]>(scheduleState);
 
   const requestUrlString = `?date_gte=${week[0].toLocaleDateString()}&date_lte=${week[
     week.length - 1
@@ -24,7 +23,7 @@ const ConfirmDeleteModal = (props: Props) => {
   const handleDeleteClick = () => {
     deleteSchedule(id).then(() => {
       scheduleService.get(requestUrlString).then((response) => {
-        setSchedule(response.data);
+        setSchedule(response.data); //TODO hooks
       });
     });
     setIsModalOpen(false);
@@ -37,12 +36,15 @@ const ConfirmDeleteModal = (props: Props) => {
     <Confirm.ModalContainer>
       <Confirm.ConfirmDeleteText>Sure to delete?</Confirm.ConfirmDeleteText>
       <Confirm.ButtonContainer>
-        <Confirm.ModalButton onClick={handleDeleteClick}>Delete</Confirm.ModalButton>
-        <Confirm.ModalButton onClick={handleCancelClick}>Cancel</Confirm.ModalButton>
+        <Confirm.ModalButton onClick={handleDeleteClick}>
+          Delete
+        </Confirm.ModalButton>
+        <Confirm.ModalButton onClick={handleCancelClick}>
+          Cancel
+        </Confirm.ModalButton>
       </Confirm.ButtonContainer>
     </Confirm.ModalContainer>
   );
 };
 
 export default ConfirmDeleteModal;
-
