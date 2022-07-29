@@ -1,15 +1,23 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 type Props = {};
 
 const ConfirmDeleteModal = (props: Props) => {
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
+  const handleDeleteClick = () => {
+    console.log("delete click");
+  };
+  const handleCancelClick = () => {
+    console.log("setClose 연결");
+  };
+
   return (
     <ModalContainer>
       <ConfirmDeleteText>Sure to delete?</ConfirmDeleteText>
       <ButtonContainer>
-        <DeleteButton>Delete</DeleteButton>
-        <CancelButton>Cancel</CancelButton>
+        <DeleteButton onClick={handleDeleteClick}>Delete</DeleteButton>
+        <CancelButton onClick={handleCancelClick}>Cancel</CancelButton>
       </ButtonContainer>
     </ModalContainer>
   );
