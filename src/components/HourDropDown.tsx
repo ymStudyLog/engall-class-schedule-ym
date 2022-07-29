@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { AiFillCaretDown } from "react-icons/ai";
+import React from 'react';
+import styled from 'styled-components';
+import { AiFillCaretDown } from 'react-icons/ai';
 
 type Props = {
   changeHour: (value: string) => void;
@@ -9,7 +9,6 @@ type Props = {
 
 const HourDropDown = (props: Props) => {
   const { changeHour, hour } = props;
-  
   const [selectedHour, setSelectedHour] = React.useState<number>(-1);
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
@@ -19,31 +18,18 @@ const HourDropDown = (props: Props) => {
     changeHour(value);
     setIsOpen(false);
   };
-  const options = [
-    "00",
-    "01",
-    "02",
-    "03",
-    "04",
-    "05",
-    "06",
-    "07",
-    "08",
-    "09",
-    "10",
-    "11",
-  ];
+  const options = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11'];
 
   return (
     <UlWrapper>
       <DropDownContainer>
         <DropDownHeader isOpen={isOpen} onClick={toggling}>
-          {options[selectedHour] || "00"}
-          {isOpen ? <AiFillCaretDown /> : ""}
+          {options[selectedHour] || '00'}
+          {isOpen ? <AiFillCaretDown /> : ''}
         </DropDownHeader>
         {isOpen &&
           options.map((option, index) => {
-            if (hour ===`00` && option === "00") return null;
+            if (hour === `00` && option === '00') return null;
             else
               return (
                 <ListItem onClick={onOptionClicked(option,index)} key={index}>
@@ -84,8 +70,7 @@ const StyledLi = styled.li<{ isOpen: boolean }>`
   justify-content: center;
   align-items: center;
 
-  background-color: ${(props) =>
-    props.isOpen ? "rgba(180, 180, 180, 0.3)" : "#fff"};
+  background-color: ${(props) => (props.isOpen ? 'rgba(180, 180, 180, 0.3)' : '#fff')};
 
   font-size: 20px;
   color: #000;
@@ -100,9 +85,7 @@ type DropDownHeaderType = {
   onClick: () => void;
 };
 
-const DropDownHeader = (props: DropDownHeaderType) => (
-  <StyledLi {...props}>{props.children}</StyledLi>
-);
+const DropDownHeader = (props: DropDownHeaderType) => <StyledLi {...props}>{props.children}</StyledLi>;
 
 const ListItem = styled.li`
   width: 75px;

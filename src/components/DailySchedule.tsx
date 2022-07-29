@@ -39,5 +39,5 @@ const ScheduleContainer = styled.div`
   padding: 10px;
   display: flex;
   flex-direction: column;
-  gap:20px;
+  gap: 20px;
 `;
