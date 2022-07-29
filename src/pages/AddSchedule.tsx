@@ -38,22 +38,27 @@ const AddSchedule = (props: Props) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  console.log("year month day", year, month, day)
-
-  const startTime = new Date(year, month-1, day, parseInt(hour), parseInt(min));
+  console.log("year month day", year, month, day);
+  console.log("hour", hour);
+  console.log("min", min);
+  const startTime = new Date(
+    year,
+    month - 1,
+    day,
+    parseInt(hour),
+    parseInt(min)
+  );
   const endTime = addMinutes(startTime, 40);
+  // console.log("스타트", startTime);
 
-  console.log("스타트", startTime);
-  
-  const endTimeAMorPM = getHours(endTime) >= 12 ? "PM" : "AM"; //이 값도 POST할때 같이 넣기 
-  console.log(endTimeAMorPM);
+  const endTimeAMorPM = getHours(endTime) >= 12 ? "PM" : "AM"; //이 값도 POST할때 같이 넣기
+  // console.log(endTimeAMorPM);
 
   const trueOrFalse = areIntervalsOverlapping(
     { start: startTime, end: endTime },
     { start: startTime, end: endTime }
   );
-  console.log("hour", hour);
-  console.log("min", min);
+
   const handleAmClick = () => {
     setAmPm("AM");
     setIsAmClicked(!isAmClicked);
@@ -66,20 +71,23 @@ const AddSchedule = (props: Props) => {
     setIsAmClicked(false);
     console.log("pm", amPm);
   };
-
+  const newStartTime = startTime.toString();
+  const newEndTime = endTime.toString();
   const testPost2 = () => {
+    console.log("testpost2 starttime", startTime);
     postSchedule({
-      id: parseInt(new Date().toUTCString() + 1), //수정예정
-      startTime: startTime,
-      endTime: endTime,
+      id: 123, //수정예정
+      startTime: newStartTime,
+      endTime: newEndTime,
       startTimeAMorPM: `${amPm}`,
+      endTimeAMorPM: endTimeAMorPM,
       date: new Date().toLocaleDateString(),
     }).then(() => console.log("post 성공"));
   };
 
   const week = useRecoilValue<Date[]>(weekState);
   const schedules = useRecoilValue<ScheduleType[]>(scheduleState);
-  
+
   return (
     <PageContainer>
       <TitleContainer>
@@ -141,7 +149,7 @@ const ButtonContainer = styled(ElementContainer)`
 
 const Positioner = styled.div`
   display: flex;
-`
+`;
 
 const StartTimeContainer = styled.div`
   width: 100%;
