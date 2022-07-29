@@ -1,14 +1,27 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
+import { deleteSchedule } from "../api/api";
 
-type Props = {};
+type Props = {
+  time: string;
+  key: number;
+  id: number;
+};
 
 const ScheduleBox = (props: Props) => {
+  const testDelete = () => {
+    deleteSchedule(100).then(() => console.log("delete 성공"));
+  };
+
+  const { time, id } = props;
+  console.log(time, id);
   return (
     <ScheduleBoxContainer>
-      {/* 하드코딩 된 시간 자리는 부모 컴포넌트로부터 전달 받은 {props} 자리 */}
-      <ScheduleText>10:00 AM - 10:40 AM</ScheduleText>
-      <CancelButton src='./images/cancel.png' />
+      <ScheduleText>{time}</ScheduleText>
+      <CancelButton
+        src="./images/cancel.png"
+        // onClick={testDelete()}
+      />
     </ScheduleBoxContainer>
   );
 };
@@ -32,10 +45,6 @@ const ScheduleBoxContainer = styled.div`
 const ScheduleText = styled.div`
   width: 100px;
   height: 44.62px;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 23px;
   display: flex;
   align-items: center;
   color: #747474;

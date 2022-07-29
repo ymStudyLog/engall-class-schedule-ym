@@ -1,43 +1,67 @@
 import React from "react";
 import Button from "../components/Button";
-import { WeekdayContainer } from "../components/youmee/WeekdayContainer";
-import { WhiteContainer } from "../components/youmee/WhiteContainer";
+import { DailyContainer } from "../layout/DailyContainer";
 import styled from "styled-components";
+import { useRecoilValue } from "recoil";
+import { weekState } from "../store/weekAtom";
+import { DayTitle } from "../layout/DayTitle";
+import DailySchedule from "../components/DailySchedule";
+import { postSchedule } from "../api/api";
+import { PageContainer, PageTitle, ElementContainer } from "../styles/page.style";
 
 type Props = {};
 
+const fullWeek = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
 const WeeklySchedule = (props: Props) => {
+  const week = useRecoilValue<Date[]>(weekState);
+
+  //testPost, testDelete는 삭제 예정 
+  const testPost = () => {
+    postSchedule({
+      id:100,
+      startTime:"10:00",
+      endTime:"10:40",
+      date:"2022. 7. 26."
+    }).then(()=>console.log("post 성공"));
+  }
+
   return (
-    <WeeklyContainer>
-      <TitleAndButton>
-        <Title>Class schedule</Title>
+    <PageContainer>
+      <TitleAndButtonContainer>
+        <PageTitle>Class schedule</PageTitle>
         <Button>Add Class Schedule</Button>
-      </TitleAndButton>
-      <WhiteContainer>
-        <WeekdayContainer>월</WeekdayContainer>
-      </WhiteContainer>
-    </WeeklyContainer>
+      </TitleAndButtonContainer>
+      <MainContainer>
+        {week.map((day: Date, index: number) => {
+          // console.log(index, fullWeek[day.getDay()], day);
+          return (
+            <DailyContainer key={index}>
+              <DayTitle>{fullWeek[day.getDay()]}</DayTitle>
+              <DailySchedule date={day.toLocaleDateString()} />
+            </DailyContainer>
+          );
+        })}
+      </MainContainer>
+      <button onClick={testPost}>수업추가</button>
+    </PageContainer>
   );
 };
 
 export default WeeklySchedule;
 
-const WeeklyContainer = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-`;
-
-const TitleAndButton = styled.div`
-  width: 95%;
-  padding: 30px 0;
-  display: flex;
+const TitleAndButtonContainer = styled(ElementContainer)`
   justify-content: space-between;
 `;
 
-const Title = styled.h1`
-  font-family: var(--fontFamily--bold);
-  font-size: var(--fontSize-root--large);
+const MainContainer = styled.div`
   display: flex;
-  align-items: center;
-`;
+`; 
