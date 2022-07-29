@@ -5,7 +5,7 @@ const DEFAULT_URL = "http://localhost:8000/classes";
 
 export const scheduleService : AxiosInstance = axios.create({baseURL: `${DEFAULT_URL}`});
 
-export const deleteSchedule= async (id:number) => {
+export const deleteSchedule = async (id:number) => {
     await scheduleService.delete(`/${id}`);
 }
 

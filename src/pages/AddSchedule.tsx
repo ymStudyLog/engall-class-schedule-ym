@@ -7,7 +7,7 @@ import {
   PageTitle,
   ElementContainer,
 } from "../styles/page.style";
-import { areIntervalsOverlapping, addMinutes } from "date-fns";
+import { areIntervalsOverlapping, addMinutes, getHours } from "date-fns";
 import WEEK_ARRAY from "../utils/weekArray";
 import { useRecoilValue } from "recoil";
 import { weekState, scheduleState } from "../store/weekAtom";
@@ -20,25 +20,18 @@ import { ScheduleType } from "../types/ScheduleType";
 type Props = {};
 
 const AddSchedule = (props: Props) => {
-  const startTime = new Date(2014, 1, 10, 1, 0);
-  const endTime = addMinutes(startTime, 40);
-  // console.log(endTime);
+  const startTime = new Date(2014, 1, 10, 13, 0);
+  const endTime = addMinutes(startTime, 40); 
+  const endTimeAMorPM = getHours(endTime) >= 12 ? "PM" : "AM"; //이 값도 POST할때 같이 넣기 
+  console.log(endTimeAMorPM);
+
   const trueOrFalse = areIntervalsOverlapping(
     { start: startTime, end: endTime },
     { start: startTime, end: endTime }
   );
-  const handleAmClick = () => {
-    console.log("AM");
-  };
-  const handlePmClick = () => {
-    console.log("PM");
-  };
-  // console.log(trueOrFalse);
 
   const week = useRecoilValue<Date[]>(weekState);
   const schedules = useRecoilValue<ScheduleType[]>(scheduleState);
-
-  console.log(schedules); //각 날짜에 있는 모든 스케줄 불러옴 [{id, startTime, endTime, date}, ... ]
   
   return (
     <PageContainer>
@@ -55,8 +48,6 @@ const AddSchedule = (props: Props) => {
             {/* <ColoneText>:</ColoneText> */}
             <MinDropDown />
 
-            <AmPmButton handleClick={handleAmClick}>AM</AmPmButton>
-            <AmPmButton handleClick={handlePmClick}>PM</AmPmButton>
           </DropDownContainer>
         </StartTimeContainer>
 

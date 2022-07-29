@@ -1,4 +1,6 @@
+import React from "react";
 import styled from "styled-components";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
 
 type Props = {
   time: string;
@@ -6,15 +8,21 @@ type Props = {
   id: number;
 };
 
-//time은 startTime과 endTime, am,pm 들을 단순히 이은 string
 const ScheduleBox = (props: Props) => {
   const { time, id } = props;
-  //id는 delete할때 필요
-  
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const handleDelete = () => {
+    setIsModalOpen(true);
+  };
+
   return (
     <ScheduleBoxContainer>
       <ScheduleText>{time}</ScheduleText>
-      <CancelButton src="./images/cancel.png" />
+      {isModalOpen ? (
+        <ConfirmDeleteModal id={id} setIsModalOpen={setIsModalOpen} />
+      ) : (
+        <DeleteButton src="./images/cancel.png" onClick={handleDelete} />
+      )}
     </ScheduleBoxContainer>
   );
 };
@@ -46,7 +54,7 @@ const ScheduleText = styled.div`
   flex-grow: 0;
 `;
 
-const CancelButton = styled.img`
+const DeleteButton = styled.img`
   width: 24px;
   height: 24px;
   flex: none;

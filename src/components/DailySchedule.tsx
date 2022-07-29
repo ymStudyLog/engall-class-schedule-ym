@@ -12,7 +12,7 @@ const DailySchedule = (props: Props) => {
   return (
     <ScheduleContainer>
       {dailyData?.map((data: ScheduleType, index: number) => {
-        const time = `${data.startTime} ${data.startTimeAMorPM}-${data.endTime}`;
+        const time = `${data.startTime} ${data.startTimeAMorPM}-${data.endTime} ${data.endTimeAMorPM}`;
         return <ScheduleBox key={index} time={time} id={data.id}/>;
       })}
     </ScheduleContainer>

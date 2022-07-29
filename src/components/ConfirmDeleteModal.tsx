@@ -1,23 +1,28 @@
 import React from "react";
 import styled from "styled-components";
+import { deleteSchedule } from "../api/api";
 
-type Props = {};
+type Props = {
+  id: number;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 const ConfirmDeleteModal = (props: Props) => {
-  const [deleteOpen, setDeleteOpen] = React.useState(false);
+  const { id, setIsModalOpen } = props;
   const handleDeleteClick = () => {
-    console.log("delete click");
+    deleteSchedule(id);
+    setIsModalOpen(false);
   };
   const handleCancelClick = () => {
-    console.log("setClose 연결");
+    setIsModalOpen(false);
   };
 
   return (
     <ModalContainer>
       <ConfirmDeleteText>Sure to delete?</ConfirmDeleteText>
       <ButtonContainer>
-        <DeleteButton onClick={handleDeleteClick}>Delete</DeleteButton>
-        <CancelButton onClick={handleCancelClick}>Cancel</CancelButton>
+        <ModalButton onClick={handleDeleteClick}>Delete</ModalButton>
+        <ModalButton onClick={handleCancelClick}>Cancel</ModalButton>
       </ButtonContainer>
     </ModalContainer>
   );
@@ -26,50 +31,39 @@ const ConfirmDeleteModal = (props: Props) => {
 export default ConfirmDeleteModal;
 
 const ModalContainer = styled.div`
+  width: 160px;
+  height: 75px;
+  padding: 4px;
   display: flex;
   flex-direction: column;
-  align-items: space-around;
-  padding: 4px;
+  justify-content: center;
   gap: 7px;
-  width: 133px;
-  height: 53px;
-  left: 20px;
-  top: 18px;
   background-color: #efefef;
   border-radius: 8px;
+  z-index: 100;
 `;
 
 const ConfirmDeleteText = styled.div`
   width: 100%;
-  height: 20px;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 23px;
+  height: 40px;
   display: flex;
   align-items: center;
+  justify-content: center;
   color: #747474;
-  flex: none;
-  order: 0;
-  flex-grow: 0;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
-  flex-direction: row;
   width: 100%;
   justify-content: space-around;
 `;
 
 // 반복되는 버튼 컴포넌트 추후에 수정 예정
-const DeleteButton = styled.button`
+const ModalButton = styled.button`
   width: 50%;
-  height: 10%;
   color: #747474;
-`;
 
-const CancelButton = styled.button`
-  width: 50%;
-  height: 10%;
-  color: #747474;
+  &:hover {
+    background-color: #3175d8;
+  }
 `;
