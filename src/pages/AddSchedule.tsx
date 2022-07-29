@@ -42,8 +42,8 @@ const AddSchedule = (props: Props) => {
   console.log("hour", hour);
   console.log("min", min);
 
-  //const userStartTime = new Date(year, month - 1, day, parseInt(hour), parseInt(min));
-  const userStartTime = new Date(2022, 7, 30, 2, 0);
+  const userStartTime = new Date(year, month - 1, day, parseInt(hour), parseInt(min));
+  // const userStartTime = new Date(2022, 7, 30, 2, 0);
 
   const classDuration = 40;
 

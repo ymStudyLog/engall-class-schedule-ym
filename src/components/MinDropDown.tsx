@@ -47,7 +47,7 @@ const MinDropDown = (props: Props) => {
               return (
                 <DropDownStyled.ListItem
                   onClick={onOptionClicked(option)}
-                  key={`${index}`}
+                  key={index}
                 >
                   {option}
                 </DropDownStyled.ListItem>

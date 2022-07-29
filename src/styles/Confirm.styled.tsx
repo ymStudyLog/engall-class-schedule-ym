@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from "styled-components";
 
 export const ModalContainer = styled.div`
   width: 160px;
@@ -11,26 +11,31 @@ export const ModalContainer = styled.div`
   background-color: #efefef;
   border-radius: 8px;
   z-index: 100;
+  position: absolute;
+  top: -65px;
+  left: 120px;
+  border: 1px solid #d4d4d4;
 `;
 
 export const ConfirmDeleteText = styled.div`
-  width: 100%;
+  width: 150px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-middle-gray);
+  color: #747474;
 `;
 
 export const ButtonContainer = styled.div`
   display: flex;
-  width: 100%;
+  width: 150px;
   justify-content: space-around;
 `;
 
 export const ModalButton = styled.button`
-  width: 50%;
-  color: var(--color-middle-gray);
+  width: 75px;
+  color: #747474;
+  border: 1px solid #d4d4d4;
 
   &:hover {
     background-color: var(--color-blue);

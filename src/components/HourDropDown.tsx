@@ -34,7 +34,7 @@ const HourDropDown = (props: Props) => {
             if (hour === `00` && option === "00") return null;
             else
               return (
-                <DropDownStyled.ListItem onClick={onOptionClicked(option)} key={`${index}`}>
+                <DropDownStyled.ListItem onClick={onOptionClicked(option,index)} key={index}>
 
                   {option}
                 </DropDownStyled.ListItem>
@@ -47,4 +47,7 @@ const HourDropDown = (props: Props) => {
 
 export default HourDropDown;
 
+const DropDownHeader = (props: DropDownHeaderType) => (
+  <DropDownStyled.StyledLi {...props}>{props.children}</DropDownStyled.StyledLi>
+);
 
