@@ -1,26 +1,19 @@
-import React from "react";
-import { getScheduleByDate } from "../api/api";
 import ScheduleBox from "./ScheduleBox";
 import { ScheduleType } from "../types/ScheduleType";
 import styled from "styled-components";
 
 type Props = {
-  date: string;
+  dailyData: ScheduleType[];
 };
 
 const DailySchedule = (props: Props) => {
-  const { date } = props;
-  const [schedules, setSchedules] = React.useState<ScheduleType[]>([]);
-
-  React.useEffect(() => {
-    getScheduleByDate<ScheduleType[]>(date).then((data) => setSchedules(data));
-  }, [date]);
+  const { dailyData } = props;
 
   return (
     <ScheduleContainer>
-      {schedules.map((classTime: ScheduleType, index: number) => {
-        const time = `${classTime.startTime} ${classTime.startTimeAMorPM}-${classTime.endTime}`;
-        return <ScheduleBox key={index} time={time} id={classTime.id}/>;
+      {dailyData?.map((data: ScheduleType, index: number) => {
+        const time = `${data.startTime} ${data.startTimeAMorPM}-${data.endTime}`;
+        return <ScheduleBox key={index} time={time} id={data.id}/>;
       })}
     </ScheduleContainer>
   );

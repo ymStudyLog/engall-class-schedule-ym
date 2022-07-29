@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 type Props = {
@@ -7,9 +6,10 @@ type Props = {
   id: number;
 };
 
+//time은 startTime과 endTime, am,pm 들을 단순히 이은 string
 const ScheduleBox = (props: Props) => {
   const { time, id } = props;
-  // console.log(time, id); id는 delete할때 필요
+  //id는 delete할때 필요
   
   return (
     <ScheduleBoxContainer>

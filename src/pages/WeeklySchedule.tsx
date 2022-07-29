@@ -1,17 +1,18 @@
-import React from "react";
 import Button from "../components/Button";
 import { DailyContainer } from "../layout/DailyContainer";
 import styled from "styled-components";
 import { useRecoilValue } from "recoil";
-import { weekState } from "../store/weekAtom";
+import { weekState, scheduleState } from "../store/weekAtom";
 import { DayTitle } from "../layout/DayTitle";
 import DailySchedule from "../components/DailySchedule";
 import { postSchedule,deleteSchedule } from "../api/api";
 import { PageContainer, PageTitle, ElementContainer } from "../styles/page.style";
+import { ScheduleType } from "../types/ScheduleType";
 import WEEK_ARRAY from "../utils/weekArray";
 
 const WeeklySchedule = () => {
   const week = useRecoilValue<Date[]>(weekState);
+  const schedule = useRecoilValue<ScheduleType[]>(scheduleState);
 
   //testPost, testDelete는 삭제 예정
   const testPost = () => {
@@ -39,7 +40,7 @@ const WeeklySchedule = () => {
           return (
             <DailyContainer key={index}>
               <DayTitle>{WEEK_ARRAY[day.getDay()]}</DayTitle>
-              <DailySchedule date={day.toLocaleDateString()} />
+              <DailySchedule dailyData={schedule.filter((each)=>(each.date === day.toLocaleDateString()))} />
             </DailyContainer>
           );
         })}

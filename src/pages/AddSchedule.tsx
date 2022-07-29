@@ -10,12 +10,11 @@ import {
 import { areIntervalsOverlapping, addMinutes } from "date-fns";
 import WEEK_ARRAY from "../utils/weekArray";
 import { useRecoilValue } from "recoil";
-import { weekState } from "../store/weekAtom";
+import { weekState, scheduleState } from "../store/weekAtom";
 import { DayButton } from "../layout/DayButton";
 import HourDropDown from "../components/HourDropDown";
 import MinDropDown from "../components/MinDropDown";
 import AmPmButton from "../components/AmPmButton";
-import { getScheduleByDate } from "../api/api";
 import { ScheduleType } from "../types/ScheduleType";
 
 type Props = {};
@@ -37,15 +36,10 @@ const AddSchedule = (props: Props) => {
   // console.log(trueOrFalse);
 
   const week = useRecoilValue<Date[]>(weekState);
-  const [scheduleTables, setSchedulesTables] = React.useState<ScheduleType[]>([]);
+  const schedules = useRecoilValue<ScheduleType[]>(scheduleState);
 
-  const onClickGetSchedule = (date:string) => {
-    getScheduleByDate<ScheduleType[]>(date).then((data) => setSchedulesTables(data));
-  };
-
-  console.log(scheduleTables); //각 날짜에 있는 모든 스케줄 불러옴 [{id, startTime, endTime, date}, ... ]
-  /* 사용할 때 scheduleTables map 돌려서 각각의 startTime, endTime 갖고 overlap 함수에 넣었다가 결과 모으면 될듯 */
-
+  console.log(schedules); //각 날짜에 있는 모든 스케줄 불러옴 [{id, startTime, endTime, date}, ... ]
+  
   return (
     <PageContainer>
       <TitleContainer>
@@ -75,7 +69,6 @@ const AddSchedule = (props: Props) => {
                 date={day.toLocaleDateString()}
                 onClick={() => {
                   console.log(day.toLocaleDateString());
-                  onClickGetSchedule(day.toLocaleDateString());
                   // onClick시 버튼안에 있는 date를 post 할 데이터에 추가하는 로직 여기에
                 }}
               >
