@@ -19,7 +19,7 @@ const DailySchedule = (props: Props) => {
   return (
     <ScheduleContainer>
       {classes.map((classTime: ClassType, index: number) => {
-        const time = `${classTime.startTime} - ${classTime.endTime}`;
+        const time = `${classTime.startTime}${classTime.startTimeAMorPM} - ${classTime.endTime}`;
         return <ScheduleBox key={index} time={time} id={classTime.id}/>;
       })}
     </ScheduleContainer>

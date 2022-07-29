@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { deleteSchedule } from "../api/api";
 
 type Props = {
   time: string;
@@ -9,19 +8,14 @@ type Props = {
 };
 
 const ScheduleBox = (props: Props) => {
-  const testDelete = () => {
-    deleteSchedule(100).then(() => console.log("delete 성공"));
-  };
+
 
   const { time, id } = props;
   console.log(time, id);
   return (
     <ScheduleBoxContainer>
       <ScheduleText>{time}</ScheduleText>
-      <CancelButton
-        src="./images/cancel.png"
-        // onClick={testDelete()}
-      />
+      <CancelButton src="./images/cancel.png" />
     </ScheduleBoxContainer>
   );
 };
