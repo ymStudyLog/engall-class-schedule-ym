@@ -52,9 +52,7 @@ const AddSchedule = (props: Props) => {
             <AmPmButton handleClick={handlePmClick}>PM</AmPmButton>
           </DropDownContainer>
         </StartTimeContainer>
-        <RepeatContainer>
-          <p>Repeat on</p>
-        </RepeatContainer>
+    
         
 
         <div style={{ display: "flex" }}>
@@ -122,7 +120,9 @@ const ColoneText = styled.div`
   position: absolute;
   /* top: 205px;
   left: 250px; */
-  
+`
+
+
 const RepeatOnText = styled.div`
   display: flex;
   align-items: center;
