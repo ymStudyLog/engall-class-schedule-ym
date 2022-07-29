@@ -7,6 +7,7 @@ import { weekState } from "../store/weekAtom";
 import { DayTitle } from "../layout/DayTitle";
 import DailySchedule from "../components/DailySchedule";
 import { postSchedule } from "../api/api";
+import { deleteSchedule } from "../api/api";
 import { PageContainer, PageTitle, ElementContainer } from "../styles/page.style";
 
 type Props = {};
@@ -30,9 +31,14 @@ const WeeklySchedule = (props: Props) => {
       id:100,
       startTime:"10:00",
       endTime:"10:40",
+      AMorPM : "AM",
       date:"2022. 7. 26."
     }).then(()=>console.log("post 성공"));
   }
+
+  const testDelete = () => {
+    deleteSchedule(100).then(() => console.log("delete 성공"));
+  };
 
   return (
     <PageContainer>
@@ -52,6 +58,7 @@ const WeeklySchedule = (props: Props) => {
         })}
       </MainContainer>
       <button onClick={testPost}>수업추가</button>
+      <button onClick={testDelete}>수업삭제</button>
     </PageContainer>
   );
 };
