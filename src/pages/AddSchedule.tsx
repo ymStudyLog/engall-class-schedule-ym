@@ -73,10 +73,11 @@ const AddSchedule = (props: Props) => {
   };
   const newStartTime = startTime.toString();
   const newEndTime = endTime.toString();
+  console.log(parseInt(new Date().toUTCString() + 1));
   const testPost2 = () => {
     console.log("testpost2 starttime", startTime);
     postSchedule({
-      id: 123, //수정예정
+      id: parseInt(new Date().toUTCString()),
       startTime: newStartTime,
       endTime: newEndTime,
       startTimeAMorPM: `${amPm}`,
@@ -167,11 +168,6 @@ const StartTimeContainer = styled.div`
   flex-direction: row;
   position: absolute;
   top: 10px;
-`;
-const RepeatContainer = styled.div`
-  width: 100%;
-  height: 100px;
-  margin-left: 36px;
 `;
 
 const DropDownContainer = styled.div`
