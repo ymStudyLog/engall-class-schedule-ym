@@ -12,16 +12,39 @@ import WEEK_ARRAY from "../utils/weekArray";
 import { useRecoilValue } from "recoil";
 import { weekState, scheduleState } from "../store/weekAtom";
 import { DayButton } from "../layout/DayButton";
-import HourDropDown from "../components/HourDropDown";
 import MinDropDown from "../components/MinDropDown";
-import AmPmButton from "../components/AmPmButton";
+import { AmPmButton } from "../components/AmPmButton";
+import { Link } from "react-router-dom";
+import HourDropDown from "../components/HourDropDown";
+import { postSchedule } from "../api/api";
 import { ScheduleType } from "../types/ScheduleType";
 
 type Props = {};
 
 const AddSchedule = (props: Props) => {
-  const startTime = new Date(2014, 1, 10, 13, 0);
-  const endTime = addMinutes(startTime, 40); 
+  const [amPm, setAmPm] = React.useState("");
+  const [isAmClicked, setIsAmClicked] = React.useState(false);
+  const [isPmClicked, setIsPmClicked] = React.useState(false);
+
+  const [hour, setHour] = React.useState("00");
+  const [min, setMin] = React.useState("00");
+  const changeHour = (value: string) => {
+    setHour(value);
+  };
+  const changeMin = (value: string) => {
+    setMin(value);
+  };
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  console.log("year month day", year, month, day)
+
+  const startTime = new Date(year, month-1, day, parseInt(hour), parseInt(min));
+  const endTime = addMinutes(startTime, 40);
+
+  console.log("스타트", startTime);
+  
   const endTimeAMorPM = getHours(endTime) >= 12 ? "PM" : "AM"; //이 값도 POST할때 같이 넣기 
   console.log(endTimeAMorPM);
 
@@ -29,6 +52,30 @@ const AddSchedule = (props: Props) => {
     { start: startTime, end: endTime },
     { start: startTime, end: endTime }
   );
+  console.log("hour", hour);
+  console.log("min", min);
+  const handleAmClick = () => {
+    setAmPm("AM");
+    setIsAmClicked(!isAmClicked);
+    setIsPmClicked(false);
+    console.log("am", amPm);
+  };
+  const handlePmClick = () => {
+    setAmPm("PM");
+    setIsPmClicked(!isPmClicked);
+    setIsAmClicked(false);
+    console.log("pm", amPm);
+  };
+
+  const testPost2 = () => {
+    postSchedule({
+      id: parseInt(new Date().toUTCString() + 1), //수정예정
+      startTime: startTime,
+      endTime: endTime,
+      startTimeAMorPM: `${amPm}`,
+      date: new Date().toLocaleDateString(),
+    }).then(() => console.log("post 성공"));
+  };
 
   const week = useRecoilValue<Date[]>(weekState);
   const schedules = useRecoilValue<ScheduleType[]>(scheduleState);
@@ -44,10 +91,14 @@ const AddSchedule = (props: Props) => {
             <p>Start time</p>
           </StartTimeText>
           <DropDownContainer>
-            <HourDropDown />
-            {/* <ColoneText>:</ColoneText> */}
-            <MinDropDown />
-
+            <HourDropDown changeHour={changeHour} hour={hour} />
+            <MinDropDown changeMin={changeMin} min={min} />
+            <AmPmButton onClick={handleAmClick} isClicked={isAmClicked}>
+              AM
+            </AmPmButton>
+            <AmPmButton onClick={handlePmClick} isClicked={isPmClicked}>
+              PM
+            </AmPmButton>
           </DropDownContainer>
         </StartTimeContainer>
 
@@ -70,7 +121,9 @@ const AddSchedule = (props: Props) => {
         </Positioner>
       </WhiteContainer>
       <ButtonContainer>
-        <Button>Save</Button>
+        <Link to="/">
+          <Button onClick={testPost2}>Save</Button>
+        </Link>
       </ButtonContainer>
     </PageContainer>
   );
@@ -92,7 +145,7 @@ const Positioner = styled.div`
 
 const StartTimeContainer = styled.div`
   width: 100%;
-  height: 200px;
+  height: 100px;
   margin-left: 36px;
   display: flex;
   flex-direction: row;

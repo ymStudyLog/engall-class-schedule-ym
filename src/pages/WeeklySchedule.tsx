@@ -8,6 +8,7 @@ import DailySchedule from "../components/DailySchedule";
 import { PageContainer, PageTitle, ElementContainer } from "../styles/page.style";
 import { ScheduleType } from "../types/ScheduleType";
 import WEEK_ARRAY from "../utils/weekArray";
+import { Link } from "react-router-dom";
 
 const WeeklySchedule = () => {
   const week = useRecoilValue<Date[]>(weekState);
@@ -17,7 +18,9 @@ const WeeklySchedule = () => {
     <PageContainer>
       <TitleAndButtonContainer>
         <PageTitle>Class schedule</PageTitle>
-        <Button>Add Class Schedule</Button>
+        <Link to="/addschedule">
+          <Button>Add Class Schedule</Button>
+        </Link>
       </TitleAndButtonContainer>
       <MainContainer>
         {week.map((day: Date, index: number) => {

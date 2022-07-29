@@ -1,8 +1,8 @@
 export type ScheduleType = {
   id: number;
-  startTime: string;
-  endTime: string;
-  startTimeAMorPM : string;
-  endTimeAMorPM: string,
+  startTime: Date | number | string;
+  endTime: Date | number | string;
+  startTimeAMorPM: string;
+  endTimeAMorPM: string;
   date: string;
 };

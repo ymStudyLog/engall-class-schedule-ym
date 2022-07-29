@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 type Props = {
   children: React.ReactNode;
+  onClick?: () => void;
 };
 
 const Button = (props: Props) => <BlueBtn {...props}>{props.children}</BlueBtn>;

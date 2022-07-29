@@ -1,31 +1,50 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
+import { AiFillCaretDown } from "react-icons/ai";
 
-type Props = {};
+type Props = {
+  changeMin: (value: string) => void;
+  min: string;
+};
 
-const MinDropDown = () => {
+const MinDropDown = (props: Props) => {
+  const { changeMin, min } = props;
+
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  //리코일 변경 예정
-  const [selectedMinute, setMinute] = React.useState<string>('00');
 
   const toggling = () => setIsOpen(!isOpen);
   const onOptionClicked = (value: any) => () => {
-    setMinute(value);
+    changeMin(value);
     setIsOpen(false);
   };
-  // console.log(selectedMinute);
-  const options = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'];
+  const options = [
+    "00",
+    "05",
+    "10",
+    "15",
+    "20",
+    "25",
+    "30",
+    "35",
+    "40",
+    "45",
+    "50",
+    "55",
+  ];
 
   return (
     <UlWrapper>
       <DropDownContainer>
-        <DropDownHeader onClick={toggling}>{selectedMinute || '00'}</DropDownHeader>
+        <DropDownHeader isOpen={isOpen} onClick={toggling}>
+          {min || "00"}
+          {isOpen ? <AiFillCaretDown /> : ""}
+        </DropDownHeader>
         {isOpen &&
           options.map((option, index) => {
-            if (selectedMinute === '00' && option === '00') return null;
+            if (min === "00" && option === "00") return null;
             else
               return (
-                <ListItem onClick={onOptionClicked(option)} key={`${index}`} selected={option === selectedMinute}>
+                <ListItem onClick={onOptionClicked(option)} key={`${index}`}>
                   {option}
                 </ListItem>
               );
@@ -54,8 +73,7 @@ const DropDownContainer = styled.ul`
 
   margin: 0 auto;
 `;
-
-const DropDownHeader = styled.li`
+const StyledLi = styled.li<{ isOpen: boolean }>`
   /* box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15); */
   width: 75px;
   height: 50px;
@@ -64,7 +82,9 @@ const DropDownHeader = styled.li`
   justify-content: center;
   align-items: center;
 
-  background: #ffffff;
+  background-color: ${(props) =>
+    props.isOpen ? "rgba(180, 180, 180, 0.3)" : "#fff"};
+
   font-size: 20px;
   color: #000;
 
@@ -72,7 +92,17 @@ const DropDownHeader = styled.li`
   border: 1px solid #b4b4b4;
 `;
 
-const ListItem = styled.li<{ selected: boolean }>`
+type DropDownHeaderType = {
+  isOpen: boolean;
+  children: React.ReactNode;
+  onClick: () => void;
+};
+
+const DropDownHeader = (props: DropDownHeaderType) => (
+  <StyledLi {...props}>{props.children}</StyledLi>
+);
+
+const ListItem = styled.li`
   width: 75px;
   height: 50px;
 
@@ -82,8 +112,6 @@ const ListItem = styled.li<{ selected: boolean }>`
 
   font-size: 20px;
   list-style: none;
-
-  background-color: ${(props) => (props.selected ? 'rgba(180, 180, 180, 0.3)' : 'white')};
 
   padding: 0;
   margin: 0;
