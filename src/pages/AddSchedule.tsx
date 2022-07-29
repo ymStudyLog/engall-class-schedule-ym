@@ -1,20 +1,23 @@
 import * as AddPage from "../styles/AddPage.styled";
-import React from 'react';
-import Button from '../components/Button';
-import { WhiteContainer } from '../layout/WhiteContainer';
-import { PageContainer, PageTitle, ElementContainer } from '../styles/page.style';
-import { areIntervalsOverlapping, addMinutes, getHours } from 'date-fns';
-import WEEK_ARRAY from '../utils/weekArray';
-import { useRecoilValue } from 'recoil';
-import { weekState, scheduleState } from '../store/weekAtom';
-import { DayButton } from '../layout/DayButton';
-import MinDropDown from '../components/MinDropDown';
-import { AmPmButton } from '../components/AmPmButton';
-import { Link } from 'react-router-dom';
-import HourDropDown from '../components/HourDropDown';
-import { postSchedule } from '../api/api';
-import { ScheduleType } from '../types/ScheduleType';
-
+import React from "react";
+import Button from "../components/Button";
+import { WhiteContainer } from "../layout/WhiteContainer";
+import {
+  PageContainer,
+  PageTitle,
+  ElementContainer,
+} from "../styles/page.style";
+import { areIntervalsOverlapping, addMinutes, getHours } from "date-fns";
+import WEEK_ARRAY from "../utils/weekArray";
+import { useRecoilValue } from "recoil";
+import { weekState, scheduleState } from "../store/weekAtom";
+import { DayButton } from "../layout/DayButton";
+import MinDropDown from "../components/MinDropDown";
+import { AmPmButton } from "../components/AmPmButton";
+import { Link } from "react-router-dom";
+import HourDropDown from "../components/HourDropDown";
+import { postSchedule } from "../api/api";
+import { ScheduleType } from "../types/ScheduleType";
 
 type Props = {};
 
@@ -22,8 +25,8 @@ const AddSchedule = (props: Props) => {
   const [isAmClicked, setIsAmClicked] = React.useState(false);
   const [isPmClicked, setIsPmClicked] = React.useState(false);
 
-  const [hour, setHour] = React.useState('00');
-  const [min, setMin] = React.useState('00');
+  const [hour, setHour] = React.useState("00");
+  const [min, setMin] = React.useState("00");
 
   const changeHour = (value: string) => {
     setHour(value);
@@ -33,16 +36,21 @@ const AddSchedule = (props: Props) => {
     setMin(value);
   };
 
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-
-  console.log("year month day", year, month, day);
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+  const date = today.getDate();
+  console.log("year month day", year, month);
   console.log("hour", hour);
   console.log("min", min);
 
-  const userStartTime = new Date(year, month - 1, day, parseInt(hour), parseInt(min));
+  const userStartTime = new Date(
+    year,
+    month - 1,
+    date,
+    parseInt(hour),
+    parseInt(min)
+  );
   // const userStartTime = new Date(2022, 7, 30, 2, 0);
 
   const classDuration = 40;
@@ -56,16 +64,17 @@ const AddSchedule = (props: Props) => {
 
   const isOverlapping: boolean[] = schedules.map((schedule) => {
     const bookedStartTime = new Date(schedule.startTime);
-    console.log(bookedStartTime);
 
     const bookedEndTime = addMinutes(bookedStartTime, classDuration);
-    console.log(bookedEndTime);
 
-    const trueOrFalse = areIntervalsOverlapping({ start: userStartTime, end: userEndTime }, { start: bookedStartTime, end: bookedEndTime });
+    const trueOrFalse = areIntervalsOverlapping(
+      { start: userStartTime, end: userEndTime },
+      { start: bookedStartTime, end: bookedEndTime }
+    );
     return trueOrFalse;
   });
 
-  console.log(isOverlapping);
+  console.log(isOverlapping.length);
 
   const handleAmClick = () => {
     setIsAmClicked(!isAmClicked);
@@ -87,9 +96,28 @@ const AddSchedule = (props: Props) => {
       startTime: userStartTimeToString,
       endTime: userEndTimeToString,
       date: new Date().toLocaleDateString(),
-    }).then(() => console.log('post 성공'));
+    }).then(() => console.log("post 성공"));
   };
 
+  // const handleClickRepeat = ()=>{
+
+  // }
+  //1. true 값이 나온 해당 인덱스를 뽑아서
+  //2. 해당 index 값의 요일을 뽑고
+  //3. 해당하는 요일의 버튼을 딜리트해준다
+
+  let newArr: number[] = [];
+  for (let i = 0; i < isOverlapping.length; i++) {
+    if (isOverlapping[i] === true) {
+      newArr.push(i);
+    }
+  }
+
+  // const testing: string[] = newArr.map((item) => {
+  //   return schedules[item].day;
+  // });
+
+  // console.log("testing", testing);
   return (
     <PageContainer>
       <AddPage.TitleContainer>
@@ -120,8 +148,7 @@ const AddSchedule = (props: Props) => {
               <DayButton
                 key={index}
                 date={day.toLocaleDateString()}
-                onClick={() => {
-                }}
+                onClick={() => {}}
               >
                 {WEEK_ARRAY[day.getDay()]}
               </DayButton>
@@ -132,7 +159,6 @@ const AddSchedule = (props: Props) => {
       <AddPage.ButtonContainer>
         <Link to="/">
           <Button onClick={CreateSchedule}>Save</Button>
-
         </Link>
       </AddPage.ButtonContainer>
     </PageContainer>
