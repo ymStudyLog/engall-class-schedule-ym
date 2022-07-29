@@ -8,18 +8,19 @@ type Props = {
   date: string;
 };
 
+//TODO : 스케줄박스 사이사이 띄우기
 const DailySchedule = (props: Props) => {
   const { date } = props;
-  const [classes, setClasses] = React.useState<ClassType[]>([]);
+  const [schedules, setSchedules] = React.useState<ClassType[]>([]);
 
   React.useEffect(() => {
-    getScheduleByDate<ClassType[]>(date).then((data) => setClasses(data));
+    getScheduleByDate<ClassType[]>(date).then((data) => setSchedules(data));
   }, [date]);
 
   return (
     <ScheduleContainer>
-      {classes.map((classTime: ClassType, index: number) => {
-        const time = `${classTime.startTime}${classTime.startTimeAMorPM} - ${classTime.endTime}`;
+      {schedules.map((classTime: ClassType, index: number) => {
+        const time = `${classTime.startTime} ${classTime.startTimeAMorPM}-${classTime.endTime}`;
         return <ScheduleBox key={index} time={time} id={classTime.id}/>;
       })}
     </ScheduleContainer>
