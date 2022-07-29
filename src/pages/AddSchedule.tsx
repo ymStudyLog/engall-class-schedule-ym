@@ -1,71 +1,62 @@
+import React from "react";
+import Button from "../layout/Button";
+import { Link } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { addMinutes } from "date-fns";
+import { postSchedule } from "../api/api";
+import { WhiteContainer } from "../layout/WhiteContainer";
+import { PageContainer, PageTitle } from "../styles/page.style";
+import { weekState } from "../store/weekAtom";
+import { DayButton } from "../layout/DayButton";
+import MinDropDown from "../components/MinDropDown";
+import { AmPmButton } from "../layout/AmPmButton";
+import HourDropDown from "../components/HourDropDown";
+import { ScheduleType } from "../types/ScheduleType";
+import WEEK_ARRAY from "../utils/weekArray";
 import * as AddPage from "../styles/AddPage.styled";
-import React from 'react';
-import Button from '../components/Button';
-import { WhiteContainer } from '../layout/WhiteContainer';
-import { PageContainer, PageTitle, ElementContainer } from '../styles/page.style';
-import { areIntervalsOverlapping, addMinutes, getHours } from 'date-fns';
-import WEEK_ARRAY from '../utils/weekArray';
-import { useRecoilValue } from 'recoil';
-import { weekState, scheduleState } from '../store/weekAtom';
-import { DayButton } from '../layout/DayButton';
-import MinDropDown from '../components/MinDropDown';
-import { AmPmButton } from '../components/AmPmButton';
-import { Link } from 'react-router-dom';
-import HourDropDown from '../components/HourDropDown';
-import { postSchedule } from '../api/api';
-import { ScheduleType } from '../types/ScheduleType';
 
-
-type Props = {};
-
-const AddSchedule = (props: Props) => {
-  const [isAmClicked, setIsAmClicked] = React.useState(false);
-  const [isPmClicked, setIsPmClicked] = React.useState(false);
-
-  const [hour, setHour] = React.useState('00');
-  const [min, setMin] = React.useState('00');
-
-  const changeHour = (value: string) => {
-    setHour(value);
+const _id = parseInt(new Date().toUTCString());
+const CLASS_DURATION = 40;
+const DATA_TEMPLATE = (
+  id: number,
+  startTime: string,
+  endTime: string,
+  date: string
+): ScheduleType => {
+  return {
+    id: id,
+    startTime: startTime,
+    endTime: endTime,
+    date: date,
   };
+};
 
-  const changeMin = (value: string) => {
-    setMin(value);
-  };
-
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-
-  console.log("year month day", year, month, day);
-  console.log("hour", hour);
-  console.log("min", min);
-
-  const userStartTime = new Date(year, month - 1, day, parseInt(hour), parseInt(min));
-  // const userStartTime = new Date(2022, 7, 30, 2, 0);
-
-  const classDuration = 40;
-
-  const userEndTime = addMinutes(userStartTime, classDuration);
+const AddSchedule = () => {
+  const [isAmClicked, setIsAmClicked] = React.useState<boolean>(false);
+  const [isPmClicked, setIsPmClicked] = React.useState<boolean>(false);
+  const [hour, setHour] = React.useState<string>("00");
+  const [minute, setMinute] = React.useState<string>("00");
+  const [newSchedule, setNewSchedule] = React.useState<ScheduleType[]>([]);
+  const [onButtonClicked, setOnButtonClicked] = React.useState<boolean[]>(
+    new Array(7).fill(false)
+  );
 
   const week = useRecoilValue<Date[]>(weekState);
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth() + 1;
+  const currentDate = now.getDate();
 
-  const schedules = useRecoilValue<ScheduleType[]>(scheduleState);
-  //console.log(schedules);
-
-  const isOverlapping: boolean[] = schedules.map((schedule) => {
-    const bookedStartTime = new Date(schedule.startTime);
-    console.log(bookedStartTime);
-
-    const bookedEndTime = addMinutes(bookedStartTime, classDuration);
-    console.log(bookedEndTime);
-
-    const trueOrFalse = areIntervalsOverlapping({ start: userStartTime, end: userEndTime }, { start: bookedStartTime, end: bookedEndTime });
-    return trueOrFalse;
-  });
-
-  console.log(isOverlapping);
+  const userStartTime = new Date(
+    currentYear,
+    currentMonth - 1,
+    currentDate,
+    parseInt(hour),
+    parseInt(minute)
+  );
+  const userEndTime = addMinutes(userStartTime, CLASS_DURATION);
+  const userStartTimeToString = userStartTime.toString();
+  const userEndTimeToString = userEndTime.toString();
 
   const handleAmClick = () => {
     setIsAmClicked(!isAmClicked);
@@ -78,16 +69,9 @@ const AddSchedule = (props: Props) => {
     setIsAmClicked(false);
   };
 
-  const userStartTimeToString = userStartTime.toString();
-  const userEndTimeToString = userEndTime.toString();
-
-  const CreateSchedule = () => {
-    postSchedule({
-      id: parseInt(new Date().toUTCString()),
-      startTime: userStartTimeToString,
-      endTime: userEndTimeToString,
-      date: new Date().toLocaleDateString(),
-    }).then(() => console.log('post 성공'));
+  const changeColor = (index: number) => {
+    onButtonClicked.splice(index, 1, !onButtonClicked[index]);
+    setOnButtonClicked(onButtonClicked.splice(0, 8).concat(onButtonClicked));
   };
 
   return (
@@ -100,9 +84,9 @@ const AddSchedule = (props: Props) => {
           <AddPage.StartTimeText>Start time</AddPage.StartTimeText>
           <AddPage.DropDownContainer>
             <AddPage.HourMinContainer>
-              <HourDropDown changeHour={changeHour} hour={hour} />
+              <HourDropDown setHour={setHour} hour={hour} />
               <AddPage.ColoneText>:</AddPage.ColoneText>
-              <MinDropDown changeMin={changeMin} min={min} />
+              <MinDropDown setMinute={setMinute} minute={minute} />
             </AddPage.HourMinContainer>
             <AmPmButton onClick={handleAmClick} isClicked={isAmClicked}>
               AM
@@ -120,7 +104,18 @@ const AddSchedule = (props: Props) => {
               <DayButton
                 key={index}
                 date={day.toLocaleDateString()}
+                isClicked={onButtonClicked[index]}
                 onClick={() => {
+                  setNewSchedule([
+                    ...newSchedule,
+                    DATA_TEMPLATE(
+                      _id,
+                      userStartTimeToString,
+                      userEndTimeToString,
+                      day.toLocaleDateString()
+                    ),
+                  ]);
+                  changeColor(index);
                 }}
               >
                 {WEEK_ARRAY[day.getDay()]}
@@ -131,8 +126,15 @@ const AddSchedule = (props: Props) => {
       </WhiteContainer>
       <AddPage.ButtonContainer>
         <Link to="/">
-          <Button onClick={CreateSchedule}>Save</Button>
-
+          <Button
+            onClick={() => {
+              newSchedule.forEach((schedule) => {
+                postSchedule(schedule);
+              });
+            }}
+          >
+            Save
+          </Button>
         </Link>
       </AddPage.ButtonContainer>
     </PageContainer>

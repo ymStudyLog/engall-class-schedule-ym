@@ -8,3 +8,19 @@ import { areIntervalsOverlapping } from 'date-fns';
 const trueOrFalse = areIntervalsOverlapping({ start: new Date(2014, 1, 10, 1, 0), end: new Date(2014, 1, 10, 1, 40) }, { start: new Date(2014, 1, 10, 1, 5), end: new Date(2014, 1, 10, 1, 45) });
 
 console.log(trueOrFalse);
+
+/* AddSchedule.tsx에서 안써서 옮겨둠 */
+  // const isOverlapping: boolean[] = schedules.map((schedule) => {
+  //   const bookedStartTime = new Date(schedule.startTime);
+  //   console.log(bookedStartTime);
+
+  //   const bookedEndTime = addMinutes(bookedStartTime, CLASS_DURATION);
+  //   console.log(bookedEndTime);
+
+  //   const trueOrFalse = areIntervalsOverlapping(
+  //     { start: userStartTime, end: userEndTime },
+  //     { start: bookedStartTime, end: bookedEndTime }
+  //   );
+  //   return trueOrFalse;
+  // });
+  // console.log(isOverlapping);

@@ -7,7 +7,7 @@ export const scheduleService : AxiosInstance = axios.create({baseURL: `${DEFAULT
 
 export const deleteSchedule = async (id:number) => {
     const response = await scheduleService.delete(`/${id}`);
-    return response.status; //200이어야 정상적으로 삭제됨
+    return response.status;
 }
 
 export const postSchedule = async <T>(schedule : ScheduleType) : Promise<T> => {

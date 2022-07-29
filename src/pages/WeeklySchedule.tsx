@@ -1,8 +1,8 @@
 import React from  "react";
-import Button from "../components/Button";
+import Button from "../layout/Button";
 import { DailyContainer } from "../layout/DailyContainer";
 import styled from "styled-components";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { weekState, scheduleState } from "../store/weekAtom";
 import { DayTitle } from "../layout/DayTitle";
 import DailySchedule from "../components/DailySchedule";
@@ -14,16 +14,16 @@ import {
 import { ScheduleType } from "../types/ScheduleType";
 import WEEK_ARRAY from "../utils/weekArray";
 import { Link } from "react-router-dom";
-import useSchedule from "./useSchedule";
+import useSchedule from "../hooks/useSchedule";
 
 const WeeklySchedule = () => {
   const week = useRecoilValue<Date[]>(weekState);
-  const [schedule, setSchedule] = useRecoilState<ScheduleType[]>(scheduleState);
+  const schedule = useRecoilValue<ScheduleType[]>(scheduleState);
   const { getWeeklySchedule } = useSchedule();
 
   React.useEffect(()=>{
     getWeeklySchedule();
-  },[]);
+  },[]); //TODO depentency
 
   return (
     <PageContainer>
@@ -39,7 +39,7 @@ const WeeklySchedule = () => {
             <DailyContainer key={index}>
               <DayTitle>{WEEK_ARRAY[day.getDay()]}</DayTitle>
               <DailySchedule
-                dailyData={schedule.filter(
+                dailySchedultData={schedule.filter(
                   (each) => each.date === day.toLocaleDateString()
                 )}
               />

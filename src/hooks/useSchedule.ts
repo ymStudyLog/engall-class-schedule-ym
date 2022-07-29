@@ -6,6 +6,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 const useSchedule = () => {
   const week = useRecoilValue<Date[]>(weekState);
   const [schedule, setSchedule] = useRecoilState<ScheduleType[]>(scheduleState);
+
   const requestUrlString = `?date_gte=${week[0].toLocaleDateString()}&date_lte=${week[
     week.length - 1
   ].toLocaleDateString()}`;
@@ -17,7 +18,7 @@ const useSchedule = () => {
   };
 
   return{
-    schedule,
+    schedule,  //TODO hooks 처리 = 위클리 스케줄, 아톰, 컨펌딜리트 모달
     getWeeklySchedule
   }
 };

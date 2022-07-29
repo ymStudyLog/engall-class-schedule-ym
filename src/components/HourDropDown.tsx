@@ -1,41 +1,43 @@
 import React from "react";
-import styled from "styled-components";
 import { AiFillCaretDown } from "react-icons/ai";
-import * as DropDownStyled from "../styles/DropDown.styled"
 import { DropDownHeaderType } from "../types/DropDownHeaderType";
+import { hourOptions } from "../utils/dropdownOptions";
+import * as DropDownStyled from "../styles/DropDown.styled";
 
 type Props = {
-  changeHour: (value: string) => void;
+  setHour: React.Dispatch<React.SetStateAction<string>>;
   hour: string;
 };
 
 const HourDropDown = (props: Props) => {
-  const { changeHour, hour } = props;
+  const { setHour, hour } = props;
   const [selectedHour, setSelectedHour] = React.useState<number>(-1);
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
-  const toggling = () => setIsOpen(!isOpen);
-  const onOptionClicked = (value: any, index:number) => () => {
+  const onToggle = () => setIsOpen(!isOpen);
+  const onOptionClicked = (value: any, index: number) => () => {
     setSelectedHour(index);
-    changeHour(value);
+    setHour(value);
     setIsOpen(false);
   };
-  const options = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11'];
+ 
 
   return (
     <DropDownStyled.UlWrapper>
       <DropDownStyled.DropDownContainer>
-        <DropDownHeader isOpen={isOpen} onClick={toggling}>
-          {options[selectedHour] || '00'}
-          {isOpen ? <AiFillCaretDown /> : ''}
+        <DropDownHeader isOpen={isOpen} onClick={onToggle}>
+          {hourOptions[selectedHour] || "00"}
+          {isOpen ? <AiFillCaretDown /> : ""}
         </DropDownHeader>
         {isOpen &&
-          options.map((option, index) => {
+          hourOptions.map((option, index) => {
             if (hour === `00` && option === "00") return null;
             else
               return (
-                <DropDownStyled.ListItem onClick={onOptionClicked(option,index)} key={index}>
-
+                <DropDownStyled.ListItem
+                  onClick={onOptionClicked(option, index)}
+                  key={index}
+                >
                   {option}
                 </DropDownStyled.ListItem>
               );
@@ -50,4 +52,3 @@ export default HourDropDown;
 const DropDownHeader = (props: DropDownHeaderType) => (
   <DropDownStyled.StyledLi {...props}>{props.children}</DropDownStyled.StyledLi>
 );
-
