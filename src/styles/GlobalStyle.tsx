@@ -40,7 +40,12 @@ button {
     --fontFamily--bold: Karla;
     --fontSize-root--large: 30px;
     --fontSize-root--normal: 20px;
-    --color-border: #d4d4d4;
+    --color-border: #b4b4b4;
+    --color-white: #fff;
+    --color-blue:#3175d8;
+    --color-black: #000
+    --color-dark-gray: #959595;
+    --color-middle-gray: #747474;
   }
 
   @font-face {

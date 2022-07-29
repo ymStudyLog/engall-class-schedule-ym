@@ -15,6 +15,6 @@ const BlueBtn = styled.button`
   height: 50px;
   font-size: var(--fontSize-root--normal);
   border-radius: 8px;
-  background-color: #3175d8;
-  color: #ffffff;
+  background-color: var(--color-blue);
+  color: var(--color-white);
 `;

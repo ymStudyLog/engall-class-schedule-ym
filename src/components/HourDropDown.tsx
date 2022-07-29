@@ -41,7 +41,7 @@ const HourDropDown = (props: Props) => {
         </DropDownHeader>
         {isOpen &&
           options.map((option, index) => {
-            if (hour ===`00` && option === "00") return null;
+            if (hour === `00` && option === "00") return null;
             else
               return (
                 <ListItem onClick={onOptionClicked(option)} key={`${index}`}>
@@ -74,7 +74,6 @@ const DropDownContainer = styled.ul`
   margin: 0 auto;
 `;
 const StyledLi = styled.li<{ isOpen: boolean }>`
-  /* box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15); */
   width: 75px;
   height: 50px;
 
@@ -86,10 +85,10 @@ const StyledLi = styled.li<{ isOpen: boolean }>`
     props.isOpen ? "rgba(180, 180, 180, 0.3)" : "#fff"};
 
   font-size: 20px;
-  color: #000;
+  color: var(--color-black);
 
   margin: 0 auto;
-  border: 1px solid #b4b4b4;
+  border: 1px solid var(--color-border);
 `;
 
 type DropDownHeaderType = {
@@ -115,5 +114,5 @@ const ListItem = styled.li`
 
   padding: 0;
   margin: 0;
-  border: 1px solid #b4b4b4;
+  border: 1px solid var(--color-border);
 `;

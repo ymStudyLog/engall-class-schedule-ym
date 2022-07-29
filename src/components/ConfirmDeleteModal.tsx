@@ -49,7 +49,7 @@ const ConfirmDeleteText = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #747474;
+  color: var(--color-middle-gray);
 `;
 
 const ButtonContainer = styled.div`
@@ -61,9 +61,10 @@ const ButtonContainer = styled.div`
 // 반복되는 버튼 컴포넌트 추후에 수정 예정
 const ModalButton = styled.button`
   width: 50%;
-  color: #747474;
+  color: var(--color-middle-gray);
 
   &:hover {
-    background-color: #3175d8;
+    background-color: var(--color-blue);
+    color: var(--color-white);
   }
 `;

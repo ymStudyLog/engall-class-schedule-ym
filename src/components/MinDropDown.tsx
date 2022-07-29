@@ -78,9 +78,9 @@ const StyledLi = styled.li<{ isOpen: boolean }>`
   background-color: ${(props) =>
     props.isOpen ? "rgba(180, 180, 180, 0.3)" : "#fff"};
   font-size: 20px;
-  color: #000;
+  color: var(--color-black);
   margin: 0 auto;
-  border: 1px solid #b4b4b4;
+  border: 1px solid var(--color-border);
 `;
 
 type DropDownHeaderType = {
@@ -103,5 +103,5 @@ const ListItem = styled.li`
   list-style: none;
   padding: 0;
   margin: 0;
-  border: 1px solid #b4b4b4;
+  border: 1px solid var(--color-border);
 `;
