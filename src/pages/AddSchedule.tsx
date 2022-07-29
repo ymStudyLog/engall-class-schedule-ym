@@ -17,13 +17,14 @@ import MinDropDown from "../components/MinDropDown";
 import { AmPmButton } from "../components/AmPmButton";
 import { Link } from "react-router-dom";
 import HourDropDown from "../components/HourDropDown";
+import { postSchedule } from "../api/api";
 
 type Props = {};
 
 const AddSchedule = (props: Props) => {
   const startTime = new Date(2014, 1, 10, 1, 0);
   const endTime = addMinutes(startTime, 40);
-
+  console.log(startTime);
   // console.log(endTime);
   const trueOrFalse = areIntervalsOverlapping(
     { start: startTime, end: endTime },
@@ -57,6 +58,20 @@ const AddSchedule = (props: Props) => {
     console.log("pm", amPm);
   };
 
+  const testPost2 = () => {
+    postSchedule({
+      id: parseInt(new Date().toUTCString() + 1),
+      startTime: `${hour}:${min}`,
+      endTime: "10:40",
+      startTimeAMorPM: `${amPm}`,
+      date: new Date().toLocaleDateString(),
+    }).then(() => console.log("post 성공"));
+  };
+
+  // id 값 변경
+  // starttime 넣기 endTime 넣기
+  // 퍼블리싱
+  
   const week = useRecoilValue<Date[]>(weekState);
 
   return (
@@ -101,7 +116,7 @@ const AddSchedule = (props: Props) => {
       </WhiteContainer>
       <ButtonContainer>
         <Link to="/">
-          <Button>Save</Button>
+          <Button onClick={testPost2}>Save</Button>
         </Link>
       </ButtonContainer>
     </PageContainer>
