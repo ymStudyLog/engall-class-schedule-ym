@@ -13,7 +13,7 @@ const MinDropDown = () => {
     setMinute(value);
     setIsOpen(false);
   };
-  console.log(selectedMinute);
+  // console.log(selectedMinute);
   const options = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'];
 
   return (

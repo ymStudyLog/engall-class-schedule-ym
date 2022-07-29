@@ -24,18 +24,3 @@ export const weekState = atom({
   key: "weekState",
   default: getWeekStateSelector,
 });
-
-const getScheduleSelector = selector({
-  key: "getScheduleSelector",
-  get:({get})=>{
-    const weekData = get(weekState); //[Date객체월, Date객체화, ...]
-    const data = [];
-  
-  }
-})
-
-export const scheduleState = atom({
-  key: "scheduleState",
-  default: getScheduleSelector
-});
-

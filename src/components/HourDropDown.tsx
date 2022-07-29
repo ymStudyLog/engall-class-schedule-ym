@@ -13,7 +13,7 @@ const HourDropDown = () => {
     setHour(value);
     setIsOpen(false);
   };
-  console.log(selectedHour);
+  // console.log(selectedHour);
   const options = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11'];
 
   return (

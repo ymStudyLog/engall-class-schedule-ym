@@ -1,11 +1,12 @@
 import styled from "styled-components";
 
 type Props = {
-    children: React.ReactNode;
-}
+  children: React.ReactNode;
+};
 
 export const DailyContainerDiv = styled.div`
-  width: 185.3px; //원래 = 195px 
+  position: relative;
+  width: 185.3px;
   min-height: 340px;
   padding-top: 20px;
   background: #ffffff;
@@ -15,4 +16,17 @@ export const DailyContainerDiv = styled.div`
   flex-direction: column;
 `;
 
-export const DailyContainer = (props: Props) => <DailyContainerDiv>{props.children}</DailyContainerDiv>
+const HorizontalLine = styled.div`
+  position: absolute;
+  width: inherit;
+  text-align: center;
+  border-bottom: 1px solid #b4b4b4;
+  top: 40px;
+`;
+
+export const DailyContainer = (props: Props) => (
+  <DailyContainerDiv>
+    <HorizontalLine />
+    {props.children}
+  </DailyContainerDiv>
+);

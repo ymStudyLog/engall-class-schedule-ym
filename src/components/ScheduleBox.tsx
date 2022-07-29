@@ -8,10 +8,9 @@ type Props = {
 };
 
 const ScheduleBox = (props: Props) => {
-
-
   const { time, id } = props;
-  console.log(time, id);
+  // console.log(time, id); id는 delete할때 필요
+  
   return (
     <ScheduleBoxContainer>
       <ScheduleText>{time}</ScheduleText>

@@ -16,7 +16,6 @@ const WeeklySchedule = () => {
   //testPost, testDelete는 삭제 예정
   const testPost = () => {
     postSchedule({
-
       id:100,
       startTime:"10:00",
       endTime:"10:40",
@@ -36,7 +35,6 @@ const WeeklySchedule = () => {
         <Button>Add Class Schedule</Button>
       </TitleAndButtonContainer>
       <MainContainer>
-        <HorizontalLine />
         {week.map((day: Date, index: number) => {
           return (
             <DailyContainer key={index}>
@@ -60,14 +58,4 @@ const TitleAndButtonContainer = styled(ElementContainer)`
 
 const MainContainer = styled.div`
   display: flex;
-
-`; 
-
-const HorizontalLine = styled.div`
-  position: absolute;
-  width: 90%;
-  text-align: center;
-  border-bottom: 1px solid #b4b4b4;
-  top: calc(50% - 105px);
-  left: 70px;
 `;
