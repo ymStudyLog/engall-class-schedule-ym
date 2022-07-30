@@ -24,3 +24,23 @@ console.log(trueOrFalse);
   //   return trueOrFalse;
   // });
   // console.log(isOverlapping);
+
+  // const handleClickRepeat = ()=>{
+
+  /* for 문 돌려서 인덱스까지 뽑은 로직 부분 */
+  //1. true 값이 나온 해당 인덱스를 뽑아서
+  //2. 해당 index 값의 요일을 뽑고
+  //3. 해당하는 요일의 버튼을 딜리트해준다
+
+  // let newArr: number[] = [];
+  // for (let i = 0; i < isOverlapping.length; i++) {
+  //   if (isOverlapping[i] === true) {
+  //     newArr.push(i);
+  //   }
+  // }
+
+  // const testing: string[] = newArr.map((item) => {
+  //   return schedules[item].day;
+  // });
+
+  // console.log("testing", testing);

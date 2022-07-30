@@ -56,6 +56,7 @@ const AddSchedule = () => {
     setIsAmClicked(false);
   };
 
+  //TODO : 저장을 누르지 않거나 현재 페이지를 벗어나면 onButtonClicked 를 비워야함!!
   const changeColor = (index: number) => {
     onButtonClicked.splice(index, 1, !onButtonClicked[index]);
     setOnButtonClicked(onButtonClicked.splice(0, 8).concat(onButtonClicked));

@@ -1,46 +1,105 @@
-# Getting Started with Create React App
+# 1. 프로젝트 설치 및 실행
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+```
+git clone https://github.com/Wanted-Pre-Onboarding-FE-Team5/engall-class-schedule
 
-## Available Scripts
+npm i
 
-In the project directory, you can run:
+npm start
 
-### `npm start`
+//windows 운영체제에서 npm start 명령어로 json-server 실행이 안될 경우 추가로 아래 명령어 사용
+npm run server
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# 2. 기술 스택
 
-### `npm test`
+typescript
+json-server
+recoil
+styled-components
+date-fns
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# 3. 프로젝트 제작 과정
 
-### `npm run build`
+1. 구현된 기능과 구현되지 않은 기능
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### view class schedule
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<구현된 기능>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- add class schedule 버튼 클릭시 add class schedule 페이지로 이동
 
-### `npm run eject`
+- 자동으로 현재 날짜를 Date 객체로 가져와서 현재 날짜가 포함된 월요일~일요일까지의 날짜 데이터를 계산함
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- 상단에서 계산된 날짜는 전역 state로 존재하여 양 페이지에서 활용 가능
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- 각 수업 스케줄 삭제(x) 버튼 클릭시 삭제 컨펌 팝업 모달이 열림
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- 삭제 컨펌 팝업에서는 delete 클릭시 delete request 요청, cancel 클릭시 팝업이 닫힘
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- delete 클릭 이벤트 핸들러에 수동으로 get request를 달아 삭제한 내용이 실시간으로 변경됨
 
-## Learn More
+<구현되지 않은 기능>
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- 삭제 컨펌 모달 오픈시 모달이외의 다른 곳 클릭시에도 모달이 닫히게 하는 기능은 구현하지 못함
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- 모바일 디바이스를 고려한 반응형 스타일링은 구현하지 못함
+
+### add class schedule
+
+<구현된 기능>
+
+- 수업 시간 드롭다운 구현, 0-11 사이에서 선택 가능 
+
+- 우측 PM 버튼 클릭시 앞서 선택한 시간에 +12 가 됨, AM 버튼은 추가 시간적 작업 없음
+
+- 분 드롭다운은 0-55분 사이에 5분 간격으로 선택 가능 
+
+- 시간, 분, AM, PM element들은 각각 클릭시 사용자가 직관적으로 알아챌 수 있는 스타일적 변화가 생김
+
+- 수업시간이 고정되어 있어서 끝나는 시간은 자동으로 계산됨
+
+- 하단에 원하는 요일들을 클릭하면 앞서 선택한 시간에 각각의 요일 버튼이 가진 날짜 정보를 정해 database에 넣을 data를  객체 형태로 만들어 useState를 사용해 배열에 저장함.
+
+- 하단에 요일을 클릭하면 클릭된 요일은 사용자가 직관적으로 알아챌 수 있는 스타일적 변화가 생김
+
+- save 버튼을 누르면 앞서 useState를 통해 저장된 배열 안 data를 map 반복하며 순서대로 post request를 보냄. 또한 동시에 view class schedule 페이지로 이동
+
+<구현되지 않은 기능>
+
+- 시간을 선택하면 하단에 요일들에서 겹치는 수업 시간이 없는지 확인하는 로직을 거친후 겹치면 비활성화(흐려짐)
+
+2. 코드 작성시 참고한 상황 가정
+
+- 사용자는 프로그램 사용시 날짜를 직접 선택할 필요가 없으며, 프로그램이 자동으로 접속한 날을 포함한 월요일부터 일요일을 계산해서 그에 맞는 스케줄을 알아서 그려준다
+
+- 한주의 시작은 월요일이다
+
+- 수업시간은 항상 40분이며 따라서 사용자는 시작 시간만 선택하면 자동으로 프로그램이 종료시간을 정해준다
+
+- 확장성을 고려하여 레이아웃을 구성하는 컴포넌트, hooks, 상수는 재사용 가능하게 처리하고, 현재 날짜는 전역 state로 관리한다.
+
+- 프로그램은 텍스트를 통해 사용자에게 직접 질문하기 보다는 눈에 띄는 스타일 변화를 주어 사용자가 직관적으로 이해할 수 있게 한다
+
+3. 코드만들 때 어떤 엣지 케이스를 고려 했고 처리하지 못한 엣지 케이스는 무엇인가?
+
+<처리한 엣지 케이스>
+
+- 오전에서 시작해서 오후에 끝나게 될 경우를 고려함 : 맨 처음 database를 설계했을 때에는 AM과 PM을 문자열 형태로 받아 저장했기 때문에 이럴 경우 끝나는 시간의 AM | PM 여부를 따로 정해야 해서 엣지 케이스라고 생각했다. => date-fns에 format 사용시 날짜 정보만 있으면 AM과 PM을 return 해주어 간단하게 해결됨
+
+<처리하지 못한 엣지 케이스>
+
+- 수업시간을 이미 존재하는 수업과 겹치게 선택했을 경우 해당 요일의 버튼을 비활성화하는 작업을 진행하려고 함 => date-fns의 areIntervalsOverlapping 메서드를 사용하여 필요한 중간 데이터를 얻었으나, 그 데이터를 갖고 요일 박스를 비활성화시키기 위해 요일들과 연결하는 로직을 제시간 안에 짜지 못해서 처리하지 못함
+
+4. 시간이 더 있다면 하고싶은 것과 그에 대한 아이디어
+
+- 처리하지 못한 엣지 케이스 해결 => 중간 데이터를 억지로 연결하려고 하지 말고 다른 방법으로 요일과 연결할 수 있는지 찾아보기
+
+- view week schedule 페이지에서 수업시간 데이터 렌더링이 많이 느려 성능 개선을 하고 싶다 
+=> 1) onload 이벤트가 적용 가능한지 확인해본다
+   2) 실패하면 로딩 상태를 만들어서 달아본다
+   3) 코드 설계를 잘못되어서 구조적으로 느려진건지 알아본다
+   4) 전부 다 아니면 다른 이유가 있는지 찾아본다 
+   
+- 반복문(map, for)과 useState사용을 줄이는 방향으로 코드 리팩토링
