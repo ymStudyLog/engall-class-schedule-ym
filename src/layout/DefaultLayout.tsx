@@ -17,7 +17,7 @@ export default DefaultLayout;
 const Background = styled.div`
   width: 100vw;
   height: 100vh;
-  background: #f4f4f4;
+  background: var(--color-background);
 `;
 
 const Header = styled.div`
@@ -26,7 +26,7 @@ const Header = styled.div`
   position: sticky;
   top: 0px;
   left: 0px;
-  background: #44a7c8;
+  background: var(--color-header);
 `;
 
 const Logo = styled.img`

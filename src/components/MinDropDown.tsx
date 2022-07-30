@@ -2,7 +2,7 @@ import React from "react";
 import { AiFillCaretDown } from "react-icons/ai";
 import { DropDownHeaderType } from "../types/DropDownHeaderType";
 import { minuteOptions } from "../utils/dropdownOptions";
-import * as DropDownStyled from "../styles/DropDown.styled";
+import * as DropDown from "../styles/DropDown.styled";
 
 type Props = {
   setMinute: React.Dispatch<React.SetStateAction<string>>;
@@ -22,8 +22,8 @@ const MinDropDown = (props: Props) => {
   };
 
   return (
-    <DropDownStyled.UlWrapper>
-      <DropDownStyled.DropDownContainer>
+    <DropDown.UlWrapper>
+      <DropDown.DropDownContainer>
         <DropDownHeader isOpen={isOpen} onClick={onToggle}>
           {minuteOptions[selectedMinute] || "00"}
           {isOpen ? <AiFillCaretDown /> : ""}
@@ -33,16 +33,16 @@ const MinDropDown = (props: Props) => {
             if (minute === "00" && minuteOption === "00") return null;
             else
               return (
-                <DropDownStyled.ListItem
+                <DropDown.ListItem
                   onClick={onOptionClicked(minuteOption,index)}
                   key={index}
                 >
                   {minuteOption}
-                </DropDownStyled.ListItem>
+                </DropDown.ListItem>
               );
           })}
-      </DropDownStyled.DropDownContainer>
-    </DropDownStyled.UlWrapper>
+      </DropDown.DropDownContainer>
+    </DropDown.UlWrapper>
   );
 };
 
@@ -50,5 +50,5 @@ export default MinDropDown;
 
 
 const DropDownHeader = (props: DropDownHeaderType) => (
-  <DropDownStyled.StyledLi {...props}>{props.children}</DropDownStyled.StyledLi>
+  <DropDown.StyledLi {...props}>{props.children}</DropDown.StyledLi>
 );

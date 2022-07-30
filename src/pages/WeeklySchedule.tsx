@@ -1,19 +1,19 @@
 import React from  "react";
-import Button from "../layout/Button";
-import { DailyContainer } from "../layout/DailyContainer";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useRecoilValue } from "recoil";
-import { weekState, scheduleState } from "../store/weekAtom";
+import { weekState, scheduleState } from "../store/atom";
+import Button from "../layout/Button";
+import { DailyContainer } from "../layout/DailyContainer";
 import { DayTitle } from "../layout/DayTitle";
 import DailySchedule from "../components/DailySchedule";
 import {
   PageContainer,
   PageTitle,
   ElementContainer,
-} from "../styles/page.style";
+} from "../styles/Page.style";
 import { ScheduleType } from "../types/ScheduleType";
 import WEEK_ARRAY from "../utils/weekArray";
-import { Link } from "react-router-dom";
 import useSchedule from "../hooks/useSchedule";
 
 const WeeklySchedule = () => {
@@ -23,8 +23,9 @@ const WeeklySchedule = () => {
 
   React.useEffect(()=>{
     getWeeklySchedule();
-  },[]); //TODO depentency
-
+  },[]); //TODO : dependency -> hooks 처리 되면 삭제 예정
+  
+  console.log(schedule);
   return (
     <PageContainer>
       <TitleAndButtonContainer>
