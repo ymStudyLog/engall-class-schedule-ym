@@ -2,7 +2,7 @@ import React from "react";
 import { AiFillCaretDown } from "react-icons/ai";
 import { DropDownHeaderType } from "../types/DropDownHeaderType";
 import { hourOptions } from "../utils/dropdownOptions";
-import * as DropDownStyled from "../styles/DropDown.styled";
+import * as DropDown from "../styles/DropDown.styled";
 
 type Props = {
   setHour: React.Dispatch<React.SetStateAction<string>>;
@@ -23,8 +23,8 @@ const HourDropDown = (props: Props) => {
  
 
   return (
-    <DropDownStyled.UlWrapper>
-      <DropDownStyled.DropDownContainer>
+    <DropDown.UlWrapper>
+      <DropDown.DropDownContainer>
         <DropDownHeader isOpen={isOpen} onClick={onToggle}>
           {hourOptions[selectedHour] || "00"}
           {isOpen ? <AiFillCaretDown /> : ""}
@@ -34,21 +34,21 @@ const HourDropDown = (props: Props) => {
             if (hour === `00` && option === "00") return null;
             else
               return (
-                <DropDownStyled.ListItem
+                <DropDown.ListItem
                   onClick={onOptionClicked(option, index)}
                   key={index}
                 >
                   {option}
-                </DropDownStyled.ListItem>
+                </DropDown.ListItem>
               );
           })}
-      </DropDownStyled.DropDownContainer>
-    </DropDownStyled.UlWrapper>
+      </DropDown.DropDownContainer>
+    </DropDown.UlWrapper>
   );
 };
 
 export default HourDropDown;
 
 const DropDownHeader = (props: DropDownHeaderType) => (
-  <DropDownStyled.StyledLi {...props}>{props.children}</DropDownStyled.StyledLi>
+  <DropDown.StyledLi {...props}>{props.children}</DropDown.StyledLi>
 );

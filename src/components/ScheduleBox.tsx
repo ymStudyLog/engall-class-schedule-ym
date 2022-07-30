@@ -31,7 +31,7 @@ const ScheduleBoxContainer = styled.div`
   padding: 4px;
   width: 140px;
   height: 65px;
-  background-color: #efefef;
+  background-color: var(--color-light-gray);
   border-radius: 8px;
   position: relative;
 `;
@@ -42,7 +42,7 @@ const ScheduleText = styled.div`
   padding: 2px;
   display: flex;
   align-items: center;
-  color: #747474;
+  color: var(--color-dark-gray);
 `;
 
 const DeleteButton = styled.img`

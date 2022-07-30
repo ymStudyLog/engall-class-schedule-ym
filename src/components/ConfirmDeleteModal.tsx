@@ -1,10 +1,9 @@
 import React from "react";
-import { deleteSchedule } from "../api/api";
-import * as Confirm from "../styles/Confirm.styled";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-import { weekState, scheduleState } from "../store/weekAtom";
-import { scheduleService } from "../api/api";
+import { deleteSchedule, scheduleService } from "../api/api";
+import { getUrlString, scheduleState } from "../store/atom";
 import { ScheduleType } from "../types/ScheduleType";
+import * as ConfirmModal from "../styles/ConfirmModal.styled";
 
 type Props = {
   id: number;
@@ -13,37 +12,36 @@ type Props = {
 
 const ConfirmDeleteModal = (props: Props) => {
   const { id, setIsModalOpen } = props;
-  const week = useRecoilValue<Date[]>(weekState);
+  const url = useRecoilValue<string>(getUrlString);
   const setSchedule = useSetRecoilState<ScheduleType[]>(scheduleState);
-
-  const requestUrlString = `?date_gte=${week[0].toLocaleDateString()}&date_lte=${week[
-    week.length - 1
-  ].toLocaleDateString()}`;
 
   const handleDeleteClick = () => {
     deleteSchedule(id).then(() => {
-      scheduleService.get(requestUrlString).then((response) => {
-        setSchedule(response.data); //TODO hooks
+      scheduleService.get(url).then((response) => {
+        setSchedule(response.data);
       });
     });
     setIsModalOpen(false);
   };
+  
   const handleCancelClick = () => {
     setIsModalOpen(false);
   };
 
   return (
-    <Confirm.ModalContainer>
-      <Confirm.ConfirmDeleteText>Sure to delete?</Confirm.ConfirmDeleteText>
-      <Confirm.ButtonContainer>
-        <Confirm.ModalButton onClick={handleDeleteClick}>
+    <ConfirmModal.ModalContainer>
+      <ConfirmModal.ConfirmDeleteText>
+        Sure to delete?
+      </ConfirmModal.ConfirmDeleteText>
+      <ConfirmModal.ButtonContainer>
+        <ConfirmModal.ModalButton onClick={handleDeleteClick}>
           Delete
-        </Confirm.ModalButton>
-        <Confirm.ModalButton onClick={handleCancelClick}>
+        </ConfirmModal.ModalButton>
+        <ConfirmModal.ModalButton onClick={handleCancelClick}>
           Cancel
-        </Confirm.ModalButton>
-      </Confirm.ButtonContainer>
-    </Confirm.ModalContainer>
+        </ConfirmModal.ModalButton>
+      </ConfirmModal.ButtonContainer>
+    </ConfirmModal.ModalContainer>
   );
 };
 

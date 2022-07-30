@@ -5,8 +5,8 @@ import { useRecoilValue } from "recoil";
 import { addMinutes } from "date-fns";
 import { postSchedule } from "../api/api";
 import { WhiteContainer } from "../layout/WhiteContainer";
-import { PageContainer, PageTitle } from "../styles/page.style";
-import { weekState } from "../store/weekAtom";
+import { PageContainer, PageTitle } from "../styles/Page.style";
+import { weekState } from "../store/atom";
 import { DayButton } from "../layout/DayButton";
 import MinDropDown from "../components/MinDropDown";
 import { AmPmButton } from "../layout/AmPmButton";
@@ -73,6 +73,10 @@ const AddSchedule = () => {
     onButtonClicked.splice(index, 1, !onButtonClicked[index]);
     setOnButtonClicked(onButtonClicked.splice(0, 8).concat(onButtonClicked));
   };
+
+  const handleSave = () =>{
+    
+  }
 
   return (
     <PageContainer>

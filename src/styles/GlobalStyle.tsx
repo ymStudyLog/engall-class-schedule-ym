@@ -28,7 +28,6 @@ body, html, #root {
   height: 100%;
 }
 
-
 button {
   cursor: pointer;
   border: none;
@@ -40,12 +39,16 @@ button {
     --fontFamily--bold: Karla;
     --fontSize-root--large: 30px;
     --fontSize-root--normal: 20px;
-    --color-border: #b4b4b4;
-    --color-white: #fff;
+    --color-white: #ffffff;
+    --color-black: #000000;
     --color-blue:#3175d8;
-    --color-black: #000
-    --color-dark-gray: #959595;
-    --color-middle-gray: #747474;
+    --color-background: #f4f4f4;
+    --color-header: #44a7c8;
+    --color-light-border: #d4d4d4;
+    --color-border: #b4b4b4;
+    --color-light-gray: #efefef;
+    --color-gray: #959595;
+    --color-dark-gray: #747474;
   }
 
   @font-face {
