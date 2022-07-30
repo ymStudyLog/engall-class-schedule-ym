@@ -7,7 +7,7 @@ const getWeekRangeState = selector({
   get: () => {
     const now: Date = new Date();
     const day: number = getDay(now);
-    const mondayMilliseconds: number = now.setDate(now.getDate() - (day - 1));
+    const mondayMilliseconds: number = now.setDate(day === 0 ? now.getDate()-6 : now.getDate()-(day - 1));
     const monday: Date = toDate(mondayMilliseconds);
     return [monday, addDays(monday, 1), addDays(monday, 2), addDays(monday, 3), addDays(monday, 4), addDays(monday, 5), addDays(monday, 6)];
   },

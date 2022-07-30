@@ -1,23 +1,27 @@
-import React from 'react';
-import Button from '../layout/Button';
-import { Link } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { addMinutes } from 'date-fns';
-import { postSchedule } from '../api/api';
-import { WhiteContainer } from '../layout/WhiteContainer';
-import { PageContainer, PageTitle } from '../styles/Page.style';
-import { weekState } from '../store/atom';
-import { DayButton } from '../layout/DayButton';
-import MinDropDown from '../components/MinDropDown';
-import { AmPmButton } from '../layout/AmPmButton';
-import HourDropDown from '../components/HourDropDown';
-import { ScheduleType } from '../types/ScheduleType';
-import WEEK_ARRAY from '../utils/weekArray';
-import * as AddPage from '../styles/AddPage.styled';
+import React from "react";
+import Button from "../layout/Button";
+import { Link } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { addMinutes } from "date-fns";
+import { postSchedule } from "../api/api";
+import { WhiteContainer } from "../layout/WhiteContainer";
+import { PageContainer, PageTitle } from "../styles/Page.style";
+import { weekState } from "../store/atom";
+import { DayButton } from "../layout/DayButton";
+import MinDropDown from "../components/MinDropDown";
+import { AmPmButton } from "../layout/AmPmButton";
+import HourDropDown from "../components/HourDropDown";
+import { ScheduleType } from "../types/ScheduleType";
+import WEEK_ARRAY from "../utils/weekArray";
+import * as AddPage from "../styles/AddPage.styled";
 
-const _id = parseInt(new Date().toUTCString());
 const CLASS_DURATION = 40;
-const DATA_TEMPLATE = (id: number, startTime: string, endTime: string, date: string): ScheduleType => {
+const DATA_TEMPLATE = (
+  id: number,
+  startTime: string,
+  endTime: string,
+  date: string
+): ScheduleType => {
   return {
     id: id,
     startTime: startTime,
@@ -29,22 +33,34 @@ const DATA_TEMPLATE = (id: number, startTime: string, endTime: string, date: str
 const AddSchedule = () => {
   const [isAmClicked, setIsAmClicked] = React.useState<boolean>(false);
   const [isPmClicked, setIsPmClicked] = React.useState<boolean>(false);
-  const [hour, setHour] = React.useState<string>('00');
-  const [minute, setMinute] = React.useState<string>('00');
-  const [newSchedule, setNewSchedule] = React.useState<ScheduleType[]>([]);
-  const [onButtonClicked, setOnButtonClicked] = React.useState<boolean[]>(new Array(7).fill(false));
+  const [hour, setHour] = React.useState<string>("00");
+  const [minute, setMinute] = React.useState<string>("00");
+  const [newSchedule, setNewSchedule] = React.useState<string[]>([]);
+  console.log(newSchedule); //중복 체크 성공
+  const [onButtonClicked, setOnButtonClicked] = React.useState<boolean[]>(
+    new Array(7).fill(false)
+  );
 
+  const _id = React.useRef(6);
   const week = useRecoilValue<Date[]>(weekState);
+
+  //TODO 현재 날짜 구하는 로직 함수로 빼기
   const now = new Date();
   const currentYear = now.getFullYear();
   const currentMonth = now.getMonth() + 1;
   const currentDate = now.getDate();
 
-  const userStartTime = new Date(currentYear, currentMonth - 1, currentDate, parseInt(hour), parseInt(minute));
+  const userStartTime = new Date(
+    currentYear,
+    currentMonth - 1,
+    currentDate,
+    parseInt(hour),
+    parseInt(minute)
+  );
   const userEndTime = addMinutes(userStartTime, CLASS_DURATION);
   const userStartTimeToString = userStartTime.toString();
   const userEndTimeToString = userEndTime.toString();
-
+  //여기까지
   const handleAmClick = () => {
     setIsAmClicked(!isAmClicked);
     setIsPmClicked(false);
@@ -56,12 +72,12 @@ const AddSchedule = () => {
     setIsAmClicked(false);
   };
 
-  //TODO : 저장을 누르지 않거나 현재 페이지를 벗어나면 onButtonClicked 를 비워야함!!
   const changeColor = (index: number) => {
     onButtonClicked.splice(index, 1, !onButtonClicked[index]);
     setOnButtonClicked(onButtonClicked.splice(0, 8).concat(onButtonClicked));
   };
 
+  //TODO : 저장을 누르지 않거나 현재 페이지를 벗어나면 onButtonClicked 를 비워야함!!
   const handleSave = () => {};
 
   return (
@@ -96,7 +112,14 @@ const AddSchedule = () => {
                 date={day.toLocaleDateString()}
                 isClicked={onButtonClicked[index]}
                 onClick={() => {
-                  setNewSchedule([...newSchedule, DATA_TEMPLATE(_id, userStartTimeToString, userEndTimeToString, day.toLocaleDateString())]);
+                  if (newSchedule.includes(day.toLocaleDateString())) {
+                    newSchedule.splice(
+                      newSchedule.indexOf(day.toLocaleDateString(), 1)
+                    );
+                    setNewSchedule(newSchedule);
+                  } else {
+                    setNewSchedule([...newSchedule, day.toLocaleDateString()])
+                  }
                   changeColor(index);
                 }}
               >
@@ -107,11 +130,19 @@ const AddSchedule = () => {
         </AddPage.Positioner>
       </WhiteContainer>
       <AddPage.ButtonContainer>
-        <Link to='/'>
+        <Link to="/">
           <Button
             onClick={() => {
               newSchedule.forEach((schedule) => {
-                postSchedule(schedule);
+                postSchedule(
+                  DATA_TEMPLATE(
+                    _id.current,
+                    userStartTimeToString,
+                    userEndTimeToString,
+                    schedule
+                  )
+                );
+                _id.current += 1;
               });
             }}
           >
