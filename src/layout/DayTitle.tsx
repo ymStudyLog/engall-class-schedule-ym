@@ -7,5 +7,4 @@ export const DayTitle = styled.h1`
   font-size: 20px;
   line-height: 23px;
   text-align: center;
-  color: var(--color-black);
 `;

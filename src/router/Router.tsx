@@ -3,9 +3,7 @@ import WeeklySchedule from '../pages/WeeklySchedule';
 import AddSchedule from '../pages/AddSchedule';
 import DefaultLayout from '../layout/DefaultLayout';
 
-type Props = {};
-
-const Router = (props: Props) => {
+const Router = () => {
   return (
     <BrowserRouter>
       <Routes>

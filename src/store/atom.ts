@@ -1,10 +1,8 @@
 import { atom, selector } from "recoil";
 import { getDay, toDate, addDays } from "date-fns";
-import { scheduleService } from "../api/api";
-import { ScheduleType } from "../types/ScheduleType";
 
-const getWeekStateSelector = selector({
-  key: "getWeekStateSelector",
+const getWeekRangeState = selector({
+  key: "getWeekRangeState",
   get: () => {
     const now: Date = new Date();
     const day: number = getDay(now);
@@ -24,17 +22,25 @@ const getWeekStateSelector = selector({
 
 export const weekState = atom({
   key: "weekState",
-  default: getWeekStateSelector,
+  default: getWeekRangeState,
 });
 
-const getScheduleSelector = selector({
-  key: "getScheduleSelector",
-  get: async ({ get }) => {
+export const getUrlString = selector({
+  key: "getUrlString",
+  get: ({ get }) => {
     const weekData = get(weekState);
     const requestUrlString = `?date_gte=${weekData[0].toLocaleDateString()}&date_lte=${weekData[
       weekData.length - 1
     ].toLocaleDateString()}`;
-    const schedule = scheduleService.get(requestUrlString).then((response) => {
+    return requestUrlString;
+  },
+});
+
+const getScheduleState = selector({
+  key: "getScheduleState",
+  get: async ({ get }) => {
+    const url = get(getUrlString);
+    const schedule = scheduleService.get(url).then((response) => {
       return response.data;
     });
     return schedule;
@@ -43,5 +49,5 @@ const getScheduleSelector = selector({
 
 export const scheduleState = atom({
   key: "scheduleState",
-  default: getScheduleSelector,
+  default: getScheduleState,
 });

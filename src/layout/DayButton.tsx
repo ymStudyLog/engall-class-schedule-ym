@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { DayTitle } from "./DayTitle";
 
 type Props = {
@@ -11,16 +11,24 @@ type Props = {
 const DayButtonDiv = styled.div<{ isClicked: boolean }>`
   width: 150px;
   height: 45px;
-  border: 1px solid var(--color-border);
+  border: 1px solid;
   margin: 0 4px;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  background-color: ${(props) =>
-    props.isClicked ? `var(--color-border)` : `var(--color-white)`};
-  color: ${(props) =>
-    props.isClicked ? `var(--color-white)` : `var(--color-black)`};
+  ${(props) =>
+    props.isClicked
+      ? css`
+          background-color: var(--color-light-gray);
+          color: var(--color-gray);
+          border-color: var(--color-border);
+        `
+      : css`
+          background-color: var(--color-white);
+          color: var(--color-black);
+          border-color: var(--color-dark-gray);
+        `};
 `;
 
 export const DayButton = (props: Props) => (

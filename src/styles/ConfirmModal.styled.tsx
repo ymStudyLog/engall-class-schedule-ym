@@ -8,13 +8,13 @@ export const ModalContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 7px;
-  background-color: #efefef;
+  background-color: var(--color-light-gray);
   border-radius: 8px;
   z-index: 100;
   position: absolute;
   top: -65px;
   left: 120px;
-  border: 1px solid #d4d4d4;
+  border: 1px solid var(--color-light-border);
 `;
 
 export const ConfirmDeleteText = styled.div`
@@ -23,7 +23,7 @@ export const ConfirmDeleteText = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #747474;
+  color: var(--color-dark-gray);
 `;
 
 export const ButtonContainer = styled.div`
@@ -34,8 +34,8 @@ export const ButtonContainer = styled.div`
 
 export const ModalButton = styled.button`
   width: 75px;
-  color: #747474;
-  border: 1px solid #d4d4d4;
+  color: var(--color-dark-gray);
+  border: 1px solid var(--color-light-border);
 
   &:hover {
     background-color: var(--color-blue);
