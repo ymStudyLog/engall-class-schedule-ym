@@ -1,8 +1,8 @@
 import React from  "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useRecoilValue } from "recoil";
-import { weekState, scheduleState } from "../store/atom";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { weekState, getUrlString, scheduleState } from "../store/atom";
 import Button from "../layout/Button";
 import { DailyContainer } from "../layout/DailyContainer";
 import { DayTitle } from "../layout/DayTitle";
@@ -14,18 +14,19 @@ import {
 } from "../styles/Page.style";
 import { ScheduleType } from "../types/ScheduleType";
 import WEEK_ARRAY from "../utils/weekArray";
-import useSchedule from "../hooks/useSchedule";
+import { scheduleService } from "../api/api";
 
 const WeeklySchedule = () => {
   const week = useRecoilValue<Date[]>(weekState);
-  const schedule = useRecoilValue<ScheduleType[]>(scheduleState);
-  const { getWeeklySchedule } = useSchedule();
+  const url = useRecoilValue<string>(getUrlString);
+  const [schedule, setSchedule] = useRecoilState<ScheduleType[]>(scheduleState);
 
   React.useEffect(()=>{
-    getWeeklySchedule();
-  },[]); //TODO : dependency -> hooks 처리 되면 삭제 예정
+    scheduleService.get(url).then((response) => {
+      setSchedule(response.data);
+    });
+  },[url,setSchedule]);
   
-  console.log(schedule);
   return (
     <PageContainer>
       <TitleAndButtonContainer>
