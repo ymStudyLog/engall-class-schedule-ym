@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { ElementContainer } from './Page.style';
+import styled from 'styled-components';
+import { ElementContainer } from './Page.styled';
 
 export const TitleContainer = styled(ElementContainer)`
   justify-content: flex-start;
