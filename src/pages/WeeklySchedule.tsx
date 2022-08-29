@@ -1,20 +1,22 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { mondayToSunday } from "../store/atom";
-import Button from "../layout/Button";
-import ContainerWithLine from "../components/weeklySchedule/ContainerWithLine"
-import { DayTitle } from "../layout/DayTitle";
-import DailySchedule from "../components/weeklySchedule/DailySchedule";
 import { PageTitle, FlexContainer } from "../styles/Page.styled";
 import { ScheduleType } from "../types/ScheduleType";
-import CALENDER_WEEK from "../utils/calenderWeek";
 import useWeekSchedule from "../hooks/useWeekSchedule";
+import Button from "../layout/Button";
+import ScheduleByDay from "../components/weeklySchedule/ScheduleByDay";
+import CALENDER_WEEK from "../utils/calenderWeek";
 
 const WeeklySchedule = () => {
   const week = useRecoilValue<Date[]>(mondayToSunday);
-  const { weekSchedule } = useWeekSchedule({ week });
+  const { weekSchedule, getWeeklySchedule } = useWeekSchedule({ week });
+
+  React.useEffect(()=>{
+    getWeeklySchedule();
+  },[getWeeklySchedule]); //무한 getWeeklySchedule 중
 
   return (
     <>
@@ -24,21 +26,22 @@ const WeeklySchedule = () => {
           <Button>Add Class Schedule</Button>
         </Link>
       </TitleAndButtonContainer>
-      <ScheduleContainer>
+      <DailyScheduleContainer>
         {week.map((dayOfWeek: Date, index: number) => {
           return (
-            <ContainerWithLine key={index}>
+            <DailySchedule key={index}>
+              <HorizontalLine />
               <DayTitle>{CALENDER_WEEK[dayOfWeek.getDay()]}</DayTitle>
-              <DailySchedule
+              <ScheduleByDay
                 dailySchedultData={weekSchedule.filter(
                   (eachSchedule: ScheduleType) =>
                     eachSchedule.date === dayOfWeek.toLocaleDateString()
                 )}
               />
-            </ContainerWithLine>
+            </DailySchedule>
           );
         })}
-      </ScheduleContainer>
+      </DailyScheduleContainer>
     </>
   );
 };
@@ -49,6 +52,35 @@ const TitleAndButtonContainer = styled(FlexContainer)`
   justify-content: space-between;
 `;
 
-const ScheduleContainer = styled.div`
+const DailyScheduleContainer = styled.div`
   display: flex;
+`;
+
+const DailySchedule = styled.div`
+  position: relative;
+  width: 185.3px;
+  min-height: 340px;
+  padding-top: 20px;
+  background: var(--color-white);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const HorizontalLine = styled.div`
+  position: absolute;
+  width: inherit;
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+  top: 40px;
+`;
+
+const DayTitle = styled.h1`
+  font-family: "Karla", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 23px;
+  text-align: center;
 `;
