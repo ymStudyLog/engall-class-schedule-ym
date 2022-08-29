@@ -16,28 +16,3 @@ export const mondayToSunday = atom({
   key: 'mondayToSunday',
   default: getMondayToSunday,
 });
-
-// export const getQueryString = selector({ //이거는 그냥 커스텀 훅으로 전환하기
-//   key: 'getQueryString',
-//   get: ({ get }) => {
-//     const weekData = get(mondayToSunday);
-//     const query = `?date_gte=${weekData[0].toLocaleDateString()}&date_lte=${weekData[weekData.length - 1].toLocaleDateString()}`;
-//     return query;
-//   },
-// });
-
-// const getScheduleState = selector({
-//   key: 'getScheduleState',
-//   get: async ({ get }) => {
-//     const url = get(getQueryString);
-//     const schedule = scheduleService.get(url).then((response) => {
-//       return response.data;
-//     });
-//     return schedule;
-//   },
-// });
-
-// export const scheduleState = atom({
-//   key: 'scheduleState',
-//   default: getScheduleState,
-// });

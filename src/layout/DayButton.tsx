@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { DayTitle } from "./DayTitle";
 
 type Props = {
   children: React.ReactNode;
@@ -28,11 +27,21 @@ const DayButtonDiv = styled.div<{ isClicked: boolean }>`
           background-color: var(--color-white);
           color: var(--color-black);
           border-color: var(--color-dark-gray);
+          cursor: pointer;
         `};
+`;
+
+const Day = styled.h1`
+  font-family: "Karla", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 23px;
+  text-align: center;
 `;
 
 export const DayButton = (props: Props) => (
   <DayButtonDiv {...props}>
-    <DayTitle>{props.children}</DayTitle>
+    <Day>{props.children}</Day>
   </DayButtonDiv>
 );
