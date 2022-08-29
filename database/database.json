@@ -2,45 +2,21 @@
   "classes": [
     {
       "id": 1,
-      "startTime": "Sat Jul 30 2022 02:00:00 GMT+0900 (한국 표준시)",
-      "endTime": "Sat Jul 30 2022 02:40:00 GMT+0900 (한국 표준시)",
-      "date": "2022. 7. 25."
+      "startTime": "Mon Aug 29 2022 08:10:00 GMT+0900 (한국 표준시)",
+      "endTime": "Mon Aug 29 2022 08:50:00 GMT+0900 (한국 표준시)",
+      "date": "2022. 8. 29."
     },
     {
       "id": 2,
-      "startTime": "Sat Jul 30 2022 02:00:00 GMT+0900 (한국 표준시)",
-      "endTime": "Sat Jul 30 2022 02:40:00 GMT+0900 (한국 표준시)",
-      "date": "2022. 7. 27."
+      "startTime": "Wed Aug 31 2022 08:10:00 GMT+0900 (한국 표준시)",
+      "endTime": "Wed Aug 31 2022 08:50:00 GMT+0900 (한국 표준시)",
+      "date": "2022. 8. 31."
     },
     {
       "id": 3,
-      "startTime": "Sat Jul 30 2022 08:10:00 GMT+0900 (한국 표준시)",
-      "endTime": "Sat Jul 30 2022 08:50:00 GMT+0900 (한국 표준시)",
-      "date": "2022. 7. 29."
-    },
-    {
-      "id": 4,
-      "startTime": "Sat Jul 30 2022 00:10:00 GMT+0900 (한국 표준시)",
-      "endTime": "Sat Jul 30 2022 00:50:00 GMT+0900 (한국 표준시)",
-      "date": "2022. 7. 30."
-    },
-    {
-      "id": 5,
-      "startTime": "Sat Jul 30 2022 13:10:00 GMT+0900 (한국 표준시)",
-      "endTime": "Sat Jul 30 2022 13:50:00 GMT+0900 (한국 표준시)",
-      "date": "2022. 7. 30."
-    },
-    {
-      "id": 6,
-      "startTime": "Sun Jul 31 2022 07:00:00 GMT+0900 (한국 표준시)",
-      "endTime": "Sun Jul 31 2022 07:40:00 GMT+0900 (한국 표준시)",
-      "date": "2022. 7. 26."
-    },
-    {
-      "id": 7,
-      "startTime": "Sun Jul 31 2022 07:00:00 GMT+0900 (한국 표준시)",
-      "endTime": "Sun Jul 31 2022 07:40:00 GMT+0900 (한국 표준시)",
-      "date": "2022. 7. 27."
+      "startTime": "Fri Sep 2 2022 08:10:00 GMT+0900 (한국 표준시)",
+      "endTime": "Fri Sep 2 2022 08:50:00 GMT+0900 (한국 표준시)",
+      "date": "2022. 9. 2."
     }
   ]
 }

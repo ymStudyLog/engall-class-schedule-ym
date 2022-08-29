@@ -13,7 +13,7 @@ export const minuteOptions = [
   "55",
 ];
 
-export  const hourOptions = [
+export const hourOptions = [
   "00",
   "01",
   "02",

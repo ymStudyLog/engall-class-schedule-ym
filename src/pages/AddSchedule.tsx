@@ -4,16 +4,15 @@ import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { addMinutes } from 'date-fns';
 import { postSchedule } from '../api/api';
-import { WhiteContainer } from '../layout/WhiteContainer';
-import { PageContainer, PageTitle } from '../styles/Page.styled';
-import { weekState } from '../store/atom';
+import { PageTitle } from '../styles/Page.styled';
+import { mondayToSunday } from '../store/atom';
 import { DayButton } from '../layout/DayButton';
 import MinDropDown from '../components/MinDropDown';
-import { AmPmButton } from '../layout/AmPmButton';
 import HourDropDown from '../components/HourDropDown';
 import { ScheduleType } from '../types/ScheduleType';
-import WEEK_ARRAY from '../utils/weekArray';
-import * as AddPage from '../styles/AddPage.styled';
+import CALENDER_WEEK from '../utils/calenderWeek';
+import styled from "styled-components";
+import { FlexContainer } from '../styles/Page.styled';
 
 const CLASS_DURATION = 40;
 const DATA_TEMPLATE = (id: number, startTime: string, endTime: string, date: string): ScheduleType => {
@@ -35,9 +34,8 @@ const AddSchedule = () => {
   const [onButtonClicked, setOnButtonClicked] = React.useState<boolean[]>(new Array(7).fill(false));
 
   const _id = React.useRef(6);
-  const week = useRecoilValue<Date[]>(weekState);
+  const week = useRecoilValue<Date[]>(mondayToSunday);
 
-  //TODO 현재 날짜 구하는 로직 함수로 빼기
   const now = new Date();
   const currentYear = now.getFullYear();
   const currentMonth = now.getMonth() + 1;
@@ -47,7 +45,7 @@ const AddSchedule = () => {
   const userEndTime = addMinutes(userStartTime, CLASS_DURATION);
   const userStartTimeToString = userStartTime.toString();
   const userEndTimeToString = userEndTime.toString();
-  //여기까지
+
   const handleAmClick = () => {
     setIsAmClicked(!isAmClicked);
     setIsPmClicked(false);
@@ -68,30 +66,33 @@ const AddSchedule = () => {
   const handleSave = () => {};
 
   return (
-    <PageContainer>
-      <AddPage.TitleContainer>
+    <>
+      <TitleContainer>
         <PageTitle>Add class schedule</PageTitle>
-      </AddPage.TitleContainer>
+      </TitleContainer>
       <WhiteContainer>
-        <AddPage.StartTimeContainer>
-          <AddPage.StartTimeText>Start time</AddPage.StartTimeText>
-          <AddPage.DropDownContainer>
-            <AddPage.HourMinContainer>
+        <Positioner>
+          <SectionTitle>Start time</SectionTitle>
+          
+          <DropDownContainer>
+            <HourMinContainer>
               <HourDropDown setHour={setHour} hour={hour} />
-              <AddPage.ColoneText>:</AddPage.ColoneText>
+              <ColoneText>:</ColoneText>
               <MinDropDown setMinute={setMinute} minute={minute} />
-            </AddPage.HourMinContainer>
+            </HourMinContainer>
+            
             <AmPmButton onClick={handleAmClick} isClicked={isAmClicked}>
               AM
             </AmPmButton>
             <AmPmButton onClick={handlePmClick} isClicked={isPmClicked}>
               PM
             </AmPmButton>
-          </AddPage.DropDownContainer>
-        </AddPage.StartTimeContainer>
+          
+          </DropDownContainer>
 
-        <AddPage.Positioner>
-          <AddPage.RepeatOnText>Repeat on</AddPage.RepeatOnText>
+        </Positioner>
+        <Positioner>
+          <SectionTitle>Repeat on</SectionTitle>
           {week.map((day: Date, index: number) => {
             return (
               <DayButton
@@ -108,13 +109,13 @@ const AddSchedule = () => {
                   changeColor(index);
                 }}
               >
-                {WEEK_ARRAY[day.getDay()]}
+                {CALENDER_WEEK[day.getDay()]}
               </DayButton>
             );
           })}
-        </AddPage.Positioner>
+        </Positioner>
       </WhiteContainer>
-      <AddPage.ButtonContainer>
+      <ButtonContainer>
         <Link to='/'>
           <Button
             onClick={() => {
@@ -127,9 +128,76 @@ const AddSchedule = () => {
             Save
           </Button>
         </Link>
-      </AddPage.ButtonContainer>
-    </PageContainer>
+      </ButtonContainer>
+    </>
   );
 };
 
 export default AddSchedule;
+
+const WhiteContainer = styled.div`
+  width: 95%;
+  height: 340px;
+  background: var(--color-white);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+  position: relative;
+`;
+
+const TitleContainer = styled(FlexContainer)`
+  justify-content: flex-start;
+`;
+
+const ButtonContainer = styled(FlexContainer)`
+  justify-content: flex-end;
+`;
+
+const Positioner = styled.div`
+  width: 95%;
+  height: 150px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const SectionTitle = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 25px;
+  padding-left: 5px;
+`;
+//
+const DropDownContainer = styled.div`
+  width: 350px;
+  display: flex;
+  justify-content: space-around;
+`;
+
+const ColoneText = styled.div`
+  position: absolute;
+  bottom: 17px;
+  left: 77px;
+`;
+
+const HourMinContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 160px;
+  position: relative;
+`;
+
+const AmPmButton = styled.button<{ isClicked: boolean }>`
+  width: 75px;
+  height: 50px;
+  font-size: 20px;
+  background-color: ${(props) =>
+    props.isClicked ? `var(--color-gray)` : "var(--color-white)"};
+  color: ${(props) =>
+    props.isClicked ? "var(--color-white)" : `var(--color-gray)`};
+  border: 1px solid var(--color-border);
+`;

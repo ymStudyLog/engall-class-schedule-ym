@@ -4,7 +4,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export const DailyContainerDiv = styled.div`
+const StyledDiv = styled.div`
   position: relative;
   width: 185.3px;
   min-height: 340px;
@@ -24,9 +24,11 @@ const HorizontalLine = styled.div`
   top: 40px;
 `;
 
-export const DailyContainer = (props: Props) => (
-  <DailyContainerDiv>
+const ContainerWithLine = (props: Props) => (
+  <StyledDiv>
     <HorizontalLine />
     {props.children}
-  </DailyContainerDiv>
+  </StyledDiv>
 );
+
+export default ContainerWithLine;

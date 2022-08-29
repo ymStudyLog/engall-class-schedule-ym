@@ -1,4 +1,4 @@
-const WEEK_ARRAY = [
+const CALENDER_WEEK = [
   "Sunday",
   "Monday",
   "Tuesday",
@@ -8,4 +8,4 @@ const WEEK_ARRAY = [
   "Saturday",
 ];
 
-export default WEEK_ARRAY;
+export default CALENDER_WEEK;
