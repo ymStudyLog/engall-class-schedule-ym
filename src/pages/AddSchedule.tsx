@@ -3,17 +3,16 @@ import styled from "styled-components";
 import Button from "../layout/Button";
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { addMinutes } from "date-fns";
+import { addMinutes, format } from "date-fns";
 import { postSchedule } from "../api/api";
 import { mondayToSunday } from "../store/atom";
 import { DayButton } from "../layout/DayButton";
 import StartTime from "../components/addSchedule/StartTime";
-import CALENDER_WEEK from "../lib/calenderWeek";
 import { ScheduleType } from "../types/scheduleType";
 import { TimeType } from "../types/timeType";
 import * as PageStyle from "../styles/pageStyle";
+import useOverlap from "../hooks/useOverlap";
 
-const CLASS_DURATION = 40;
 const SCHEDULE_TEMPLATE = (
   id: number,
   startTime: string,
@@ -29,30 +28,13 @@ const SCHEDULE_TEMPLATE = (
 };
 
 const AddSchedule = () => {
+  const _id = React.useRef(6);
+  const week = useRecoilValue<Date[]>(mondayToSunday);
   const [time, setTime] = React.useState<TimeType<string>>({
     hour: "00",
     minute: "00",
   });
-
-  //overlapping 함수를 위한 년월일 -> useWeekSchedule로 가능하지 않을까?
-  const now: Date = new Date();
-  const currentYear: number = now.getFullYear();
-  const currentMonth: number = now.getMonth() + 1;
-  const currentDate: number = now.getDate();
-
-  const userStartTime = new Date(
-    currentYear,
-    currentMonth - 1,
-    currentDate,
-    parseInt(time.hour),
-    parseInt(time.minute)
-  );
-  const userEndTime = addMinutes(userStartTime, CLASS_DURATION);
-  const userStartTimeToString = userStartTime.toString();
-  const userEndTimeToString = userEndTime.toString();
-
-  const _id = React.useRef(4);
-  const week = useRecoilValue<Date[]>(mondayToSunday);
+  const { fakeSchedule } = useOverlap({time});
 
   //여기서부터
   const [newSchedule, setNewSchedule] = React.useState<string[]>([]);
@@ -77,26 +59,26 @@ const AddSchedule = () => {
         </Positioner>
         <Positioner>
           <SectionTitle>Repeat on</SectionTitle>
-          {week.map((day: Date, index: number) => {
+          {week.map((dayOfWeek: Date, index: number) => {
             return (
               <DayButton
                 key={index}
-                date={day.toLocaleDateString()}
+                date={dayOfWeek.toLocaleDateString()}
                 isClicked={isDayClicked[index]}
                 onClick={() => {
                   //handleButtonClick
-                  if (newSchedule.includes(day.toLocaleDateString())) {
+                  if (newSchedule.includes(dayOfWeek.toLocaleDateString())) {
                     newSchedule.splice(
-                      newSchedule.indexOf(day.toLocaleDateString(), 1)
+                      newSchedule.indexOf(dayOfWeek.toLocaleDateString(), 1)
                     );
                     setNewSchedule(newSchedule);
                   } else {
-                    setNewSchedule([...newSchedule, day.toLocaleDateString()]);
+                    setNewSchedule([...newSchedule, dayOfWeek.toLocaleDateString()]);
                   }
                   changeColor(index);
                 }}
               >
-                {CALENDER_WEEK[day.getDay()]}
+                {format(dayOfWeek, "EEEE")}
               </DayButton>
             );
           })}
@@ -112,8 +94,8 @@ const AddSchedule = () => {
                 postSchedule(
                   SCHEDULE_TEMPLATE(
                     _id.current,
-                    userStartTimeToString,
-                    userEndTimeToString,
+                    "Sun Sep 04 2022 18:40:00 GMT+0900 (한국 표준시)", //임시
+                    "Sun Sep 04 2022 19:20:00 GMT+0900 (한국 표준시)", //임시
                     schedule
                   )
                 );

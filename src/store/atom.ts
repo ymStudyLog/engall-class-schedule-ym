@@ -1,5 +1,6 @@
 import { atom, selector } from 'recoil';
 import { getDay, toDate, addDays } from 'date-fns';
+import { ScheduleType } from "../types/scheduleType";
 
 const getMondayToSunday = selector({
   key: 'getMondayToSunday',
@@ -16,3 +17,8 @@ export const mondayToSunday = atom({
   key: 'mondayToSunday',
   default: getMondayToSunday,
 });
+
+export const weeklySchedule = atom<ScheduleType[]>({
+  key: 'weeklySchedule',
+  default: [],
+})

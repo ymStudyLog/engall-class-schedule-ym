@@ -2,11 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
+import { format } from "date-fns";
 import { mondayToSunday } from "../store/atom";
 import Button from "../layout/Button";
 import ScheduleByDay from "../components/weeklySchedule/ScheduleByDay";
 import useWeekSchedule from "../hooks/useWeekSchedule";
-import CALENDER_WEEK from "../lib/calenderWeek";
 import { ScheduleType } from "../types/scheduleType";
 import * as PageStyle from "../styles/pageStyle";
 
@@ -31,7 +31,7 @@ const WeeklySchedule = () => {
           return (
             <DailySchedule key={index}>
               <HorizontalLine />
-              <DayTitle>{CALENDER_WEEK[dayOfWeek.getDay()]}</DayTitle>
+              <DayTitle>{format(dayOfWeek,"EEEE")}</DayTitle>
               <ScheduleByDay
                 dailySchedultData={weekSchedule.filter(
                   (eachSchedule: ScheduleType) =>

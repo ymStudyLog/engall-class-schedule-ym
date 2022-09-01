@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { AiFillCaretDown } from "react-icons/ai";
 import { DROPDOWN_OPTIONS } from "../../lib/dropdownOptions";
 import { TimeType } from "../../types/timeType";
+import useAmPm from "../../hooks/useAmPm";
 
 type Props = {
   setTime: React.Dispatch<React.SetStateAction<TimeType<string>>>;
@@ -15,22 +16,7 @@ const StartTime = (props: Props) => {
     hour: false,
     minute: false,
   });
-  const [isAmClicked, setIsAmClicked] = React.useState<boolean>(false);
-  const [isPmClicked, setIsPmClicked] = React.useState<boolean>(false);
-
-  const handleAmClick = () => {
-    setIsAmClicked(true);
-    setIsPmClicked(false);
-  };
-
-  const handlePmClick = () => {
-    // setTime({
-    //     ...time,
-    //     hour: (parseInt(time.hour) + 12).toString(),
-    //   }); //이전 상태 참조떄문에 중복 클릭됨(계속 +12) -> 12를 바로 더하면 안됨
-    setIsPmClicked(true);
-    setIsAmClicked(false);
-  };
+  const { isClicked, handleAmClick, handlePmClick, createTwoDigit } = useAmPm({setTime, time});
 
   return (
     <>
@@ -45,7 +31,7 @@ const StartTime = (props: Props) => {
               });
             }}
           >
-            {time.hour}
+            {parseInt(time.hour) >= 12 ? createTwoDigit(parseInt(time.hour) - 12) : time.hour}
             {isOpen.hour ? <AiFillCaretDown /> : ""}
           </DropDownListHeader>
           <DropDownListItemContainer>
@@ -104,11 +90,11 @@ const StartTime = (props: Props) => {
         </DropDownList>
       </MarginBox>
       <MarginBox>
-        <AmPmButton onClick={handleAmClick} isClicked={isAmClicked}>
+        <AmPmButton onClick={handleAmClick} isClicked={isClicked.am}>
           AM
         </AmPmButton>
         <MarginBox />
-        <AmPmButton onClick={handlePmClick} isClicked={isPmClicked}>
+        <AmPmButton onClick={handlePmClick} isClicked={isClicked.pm}>
           PM
         </AmPmButton>
       </MarginBox>
