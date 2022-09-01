@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { ScheduleType } from "../types/ScheduleType";
+import { ScheduleType } from "../types/scheduleType";
 
 const BASE_URL = "http://localhost:8000/classes";
 

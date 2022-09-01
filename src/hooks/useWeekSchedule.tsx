@@ -1,6 +1,6 @@
 import React from "react";
 import { getSchedule } from "../api/api";
-import { ScheduleType } from "../types/ScheduleType";
+import { ScheduleType } from "../types/scheduleType";
 
 type Props = {
   week: Date[];

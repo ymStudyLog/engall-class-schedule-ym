@@ -15,9 +15,9 @@ const DefaultLayout = () => {
           }}
         />
       </Header>
-      <PageContainer>
+      <Main>
         <Outlet />
-      </PageContainer>
+      </Main>
     </Background>
   );
 };
@@ -48,7 +48,7 @@ const Logo = styled.img`
   cursor: pointer;
 `;
 
-const PageContainer = styled.div`
+const Main = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
