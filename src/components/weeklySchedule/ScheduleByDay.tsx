@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { format } from "date-fns";
 import ScheduleBox from "./ScheduleBox";
-import { ScheduleType } from "../../types/ScheduleType";
+import { ScheduleType } from "../../types/scheduleType";
 
 type Props = {
   dailySchedultData: ScheduleType[];

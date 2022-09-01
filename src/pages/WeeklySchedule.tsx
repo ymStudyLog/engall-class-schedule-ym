@@ -3,12 +3,12 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { mondayToSunday } from "../store/atom";
-import { PageTitle, FlexContainer } from "../styles/Page.styled";
-import { ScheduleType } from "../types/ScheduleType";
-import useWeekSchedule from "../hooks/useWeekSchedule";
 import Button from "../layout/Button";
 import ScheduleByDay from "../components/weeklySchedule/ScheduleByDay";
-import CALENDER_WEEK from "../utils/calenderWeek";
+import useWeekSchedule from "../hooks/useWeekSchedule";
+import CALENDER_WEEK from "../lib/calenderWeek";
+import { ScheduleType } from "../types/scheduleType";
+import * as PageStyle from "../styles/pageStyle";
 
 const WeeklySchedule = () => {
   const week = useRecoilValue<Date[]>(mondayToSunday);
@@ -21,7 +21,7 @@ const WeeklySchedule = () => {
   return (
     <>
       <TitleAndButtonContainer>
-        <PageTitle>Class schedule</PageTitle>
+        <PageStyle.PageTitle>Class schedule</PageStyle.PageTitle>
         <Link to="/addschedule">
           <Button>Add Class Schedule</Button>
         </Link>
@@ -48,7 +48,7 @@ const WeeklySchedule = () => {
 
 export default WeeklySchedule;
 
-const TitleAndButtonContainer = styled(FlexContainer)`
+const TitleAndButtonContainer = styled(PageStyle.PageContainer)`
   justify-content: space-between;
 `;
 
