@@ -15,7 +15,7 @@ const WeeklyScheduleTable = () => {
   const { weeklySchedule, getWeeklySchedule } = useWeeklySchedule();
   React.useEffect(() => {
     getWeeklySchedule(week);
-    // },[getWeeklySchedule]); //무한 getWeeklySchedule 중
+    // },[getWeeklySchedule]); //TODO 무한 getWeeklySchedule 중
   }, []);
 
   return (
