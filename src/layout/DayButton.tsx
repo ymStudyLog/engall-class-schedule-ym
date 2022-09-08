@@ -2,7 +2,6 @@ import styled, { css } from "styled-components";
 
 type Props = {
   children: React.ReactNode;
-  date: string;
   isClicked: boolean;
   onClick: () => void;
 };

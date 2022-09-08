@@ -3,34 +3,20 @@ import styled from "styled-components";
 import { AiFillCaretDown } from "react-icons/ai";
 import { DROPDOWN_OPTIONS } from "../../lib/dropdownOptions";
 import { TimeType } from "../../types/timeType";
+import useAmPm from "../../hooks/useAmPm";
 
 type Props = {
-  setTime: React.Dispatch<React.SetStateAction<TimeType<string>>>;
-  time: TimeType<string>;
+  setSelectedTime: React.Dispatch<React.SetStateAction<TimeType<string>>>;
+  selectedTime: TimeType<string>;
 };
 
 const StartTime = (props: Props) => {
-  const { setTime, time } = props;
+  const { setSelectedTime, selectedTime } = props;
   const [isOpen, setIsOpen] = React.useState<TimeType<boolean>>({
     hour: false,
     minute: false,
   });
-  const [isAmClicked, setIsAmClicked] = React.useState<boolean>(false);
-  const [isPmClicked, setIsPmClicked] = React.useState<boolean>(false);
-
-  const handleAmClick = () => {
-    setIsAmClicked(true);
-    setIsPmClicked(false);
-  };
-
-  const handlePmClick = () => {
-    // setTime({
-    //     ...time,
-    //     hour: (parseInt(time.hour) + 12).toString(),
-    //   }); //이전 상태 참조떄문에 중복 클릭됨(계속 +12) -> 12를 바로 더하면 안됨
-    setIsPmClicked(true);
-    setIsAmClicked(false);
-  };
+  const { isClicked, handleAmClick, handlePmClick, createTwoDigit } = useAmPm({setSelectedTime});
 
   return (
     <>
@@ -45,7 +31,8 @@ const StartTime = (props: Props) => {
               });
             }}
           >
-            {time.hour}
+            {/* TODO 맨 처음 렌더링시 = selectedTime이 없으므로 "00"을 보여주게 로직 수정 */}
+            {parseInt(selectedTime.hour) >= 12 ? createTwoDigit(parseInt(selectedTime.hour) - 12) : selectedTime.hour}
             {isOpen.hour ? <AiFillCaretDown /> : ""}
           </DropDownListHeader>
           <DropDownListItemContainer>
@@ -54,7 +41,7 @@ const StartTime = (props: Props) => {
                 return (
                   <DropDownListItem
                     onClick={() => {
-                      setTime({ ...time, hour: optionItem });
+                      setSelectedTime({ ...selectedTime, hour: optionItem });
                       setIsOpen({
                         ...isOpen,
                         hour: !isOpen.hour,
@@ -79,7 +66,8 @@ const StartTime = (props: Props) => {
               });
             }}
           >
-            {time.minute}
+            {/* TODO 맨 처음 렌더링시 = selectedTime이 없으므로 "00"을 보여주게 로직 수정 */}
+            {selectedTime.minute}
             {isOpen.minute ? <AiFillCaretDown /> : ""}
           </DropDownListHeader>
           <DropDownListItemContainer>
@@ -88,7 +76,7 @@ const StartTime = (props: Props) => {
                 return (
                   <DropDownListItem
                     onClick={() => {
-                      setTime({ ...time, minute: optionItem });
+                      setSelectedTime({ ...selectedTime, minute: optionItem });
                       setIsOpen({
                         ...isOpen,
                         minute: !isOpen.minute,
@@ -104,11 +92,11 @@ const StartTime = (props: Props) => {
         </DropDownList>
       </MarginBox>
       <MarginBox>
-        <AmPmButton onClick={handleAmClick} isClicked={isAmClicked}>
+        <AmPmButton onClick={()=>handleAmClick(selectedTime)} isClicked={isClicked.am}>
           AM
         </AmPmButton>
         <MarginBox />
-        <AmPmButton onClick={handlePmClick} isClicked={isPmClicked}>
+        <AmPmButton onClick={()=>handlePmClick(selectedTime)} isClicked={isClicked.pm}>
           PM
         </AmPmButton>
       </MarginBox>

@@ -2,21 +2,21 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
+import { format } from "date-fns";
 import { mondayToSunday } from "../store/atom";
 import Button from "../layout/Button";
 import ScheduleByDay from "../components/weeklySchedule/ScheduleByDay";
-import useWeekSchedule from "../hooks/useWeekSchedule";
-import CALENDER_WEEK from "../lib/calenderWeek";
+import useWeeklySchedule from "../hooks/useWeeklySchedule";
 import { ScheduleType } from "../types/scheduleType";
 import * as PageStyle from "../styles/pageStyle";
 
-const WeeklySchedule = () => {
+const WeeklyScheduleTable = () => {
   const week = useRecoilValue<Date[]>(mondayToSunday);
-  const { weekSchedule, getWeeklySchedule } = useWeekSchedule({ week });
-
-  React.useEffect(()=>{
-    getWeeklySchedule();
-  },[getWeeklySchedule]); //무한 getWeeklySchedule 중
+  const { weeklySchedule, getWeeklySchedule } = useWeeklySchedule();
+  React.useEffect(() => {
+    getWeeklySchedule(week);
+    // },[getWeeklySchedule]); //무한 getWeeklySchedule 중
+  }, []);
 
   return (
     <>
@@ -31,11 +31,11 @@ const WeeklySchedule = () => {
           return (
             <DailySchedule key={index}>
               <HorizontalLine />
-              <DayTitle>{CALENDER_WEEK[dayOfWeek.getDay()]}</DayTitle>
+              <DayTitle>{format(dayOfWeek, "EEEE")}</DayTitle>
               <ScheduleByDay
-                dailySchedultData={weekSchedule.filter(
-                  (eachSchedule: ScheduleType) =>
-                    eachSchedule.date === dayOfWeek.toLocaleDateString()
+                dailyScheduleData={weeklySchedule.filter(
+                  (dailySchedule: ScheduleType) =>
+                    dailySchedule.date === dayOfWeek.toLocaleDateString()
                 )}
               />
             </DailySchedule>
@@ -46,7 +46,7 @@ const WeeklySchedule = () => {
   );
 };
 
-export default WeeklySchedule;
+export default WeeklyScheduleTable;
 
 const TitleAndButtonContainer = styled(PageStyle.PageContainer)`
   justify-content: space-between;

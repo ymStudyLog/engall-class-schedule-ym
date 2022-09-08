@@ -3,17 +3,16 @@ import styled from "styled-components";
 import Button from "../layout/Button";
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { addMinutes } from "date-fns";
+import { format } from "date-fns";
 import { postSchedule } from "../api/api";
 import { mondayToSunday } from "../store/atom";
 import { DayButton } from "../layout/DayButton";
 import StartTime from "../components/addSchedule/StartTime";
-import CALENDER_WEEK from "../lib/calenderWeek";
 import { ScheduleType } from "../types/scheduleType";
 import { TimeType } from "../types/timeType";
 import * as PageStyle from "../styles/pageStyle";
+import useOverlap from "../hooks/useOverlap";
 
-const CLASS_DURATION = 40;
 const SCHEDULE_TEMPLATE = (
   id: number,
   startTime: string,
@@ -28,34 +27,18 @@ const SCHEDULE_TEMPLATE = (
   };
 };
 
-const AddSchedule = () => {
-  const [time, setTime] = React.useState<TimeType<string>>({
+const AddScheduleTable = () => {
+  const _id = React.useRef(8);
+  const week = useRecoilValue<Date[]>(mondayToSunday);
+  const [selectedTime, setSelectedTime] = React.useState<TimeType<string>>({
     hour: "00",
     minute: "00",
-  });
+  }); //기본값을 빈문자열로 바꾸고 StartTime에서 로직 수정해서 처음 렌더링시에는 00보이게 하기
+  const { availableDay } = useOverlap({ selectedTime });
+  console.log("addScheduleTable 페이지 availableDay", availableDay); //fakeSchedule을 mapping해라!(return <DayButton> ...)
 
-  //overlapping 함수를 위한 년월일 -> useWeekSchedule로 가능하지 않을까?
-  const now: Date = new Date();
-  const currentYear: number = now.getFullYear();
-  const currentMonth: number = now.getMonth() + 1;
-  const currentDate: number = now.getDate();
-
-  const userStartTime = new Date(
-    currentYear,
-    currentMonth - 1,
-    currentDate,
-    parseInt(time.hour),
-    parseInt(time.minute)
-  );
-  const userEndTime = addMinutes(userStartTime, CLASS_DURATION);
-  const userStartTimeToString = userStartTime.toString();
-  const userEndTimeToString = userEndTime.toString();
-
-  const _id = React.useRef(4);
-  const week = useRecoilValue<Date[]>(mondayToSunday);
-
-  //여기서부터
   const [newSchedule, setNewSchedule] = React.useState<string[]>([]);
+  // console.log(newSchedule);
   const [isDayClicked, setIsDayClicked] = React.useState<boolean[]>(
     new Array(7).fill(false)
   );
@@ -63,7 +46,6 @@ const AddSchedule = () => {
     isDayClicked.splice(index, 1, !isDayClicked[index]);
     setIsDayClicked(isDayClicked.splice(0, 8).concat(isDayClicked));
   };
-  //여기까지 + TODO 표시해둔 부분 hooks로 묶어서 정리
 
   return (
     <>
@@ -72,31 +54,33 @@ const AddSchedule = () => {
       </TitleContainer>
       <WhiteContainer>
         <Positioner>
-          <SectionTitle>Start time</SectionTitle>
-          <StartTime setTime={setTime} time={time} />
+          <SectionTitle>Start selectedTime</SectionTitle>
+          <StartTime setSelectedTime={setSelectedTime} selectedTime={selectedTime} />
         </Positioner>
         <Positioner>
           <SectionTitle>Repeat on</SectionTitle>
-          {week.map((day: Date, index: number) => {
+          {week.map((dayOfWeek: Date, index: number) => {
             return (
               <DayButton
                 key={index}
-                date={day.toLocaleDateString()}
                 isClicked={isDayClicked[index]}
                 onClick={() => {
                   //handleButtonClick
-                  if (newSchedule.includes(day.toLocaleDateString())) {
+                  if (newSchedule.includes(dayOfWeek.toLocaleDateString())) {
                     newSchedule.splice(
-                      newSchedule.indexOf(day.toLocaleDateString(), 1)
+                      newSchedule.indexOf(dayOfWeek.toLocaleDateString(), 1)
                     );
                     setNewSchedule(newSchedule);
                   } else {
-                    setNewSchedule([...newSchedule, day.toLocaleDateString()]);
+                    setNewSchedule([
+                      ...newSchedule,
+                      dayOfWeek.toLocaleDateString(),
+                    ]);
                   }
                   changeColor(index);
                 }}
               >
-                {CALENDER_WEEK[day.getDay()]}
+                {format(dayOfWeek, "EEEE")}
               </DayButton>
             );
           })}
@@ -111,10 +95,10 @@ const AddSchedule = () => {
               newSchedule.forEach((schedule) => {
                 postSchedule(
                   SCHEDULE_TEMPLATE(
-                    _id.current,
-                    userStartTimeToString,
-                    userEndTimeToString,
-                    schedule
+                    _id.current, //id
+                    schedule, //startTime 
+                    schedule, //endTime 
+                    schedule //date
                   )
                 );
                 _id.current += 1;
@@ -129,7 +113,7 @@ const AddSchedule = () => {
   );
 };
 
-export default AddSchedule;
+export default AddScheduleTable;
 
 const WhiteContainer = styled.div`
   width: 95%;
