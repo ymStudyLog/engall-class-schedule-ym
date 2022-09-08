@@ -1,44 +1,26 @@
 import React from "react";
 import styled from "styled-components";
-import Button from "../layout/Button";
 import { Link } from "react-router-dom";
-import { useRecoilValue } from "recoil";
 import { format } from "date-fns";
+import Button from "../layout/Button";
 import { postSchedule } from "../api/api";
-import { mondayToSunday } from "../store/atom";
 import { DayButton } from "../layout/DayButton";
 import StartTime from "../components/addSchedule/StartTime";
 import { ScheduleType } from "../types/scheduleType";
 import { TimeType } from "../types/timeType";
-import * as PageStyle from "../styles/pageStyle";
 import useOverlap from "../hooks/useOverlap";
-
-const SCHEDULE_TEMPLATE = (
-  id: number,
-  startTime: string,
-  endTime: string,
-  date: string
-): ScheduleType => {
-  return {
-    id: id,
-    startTime: startTime,
-    endTime: endTime,
-    date: date,
-  };
-};
+import * as PageStyle from "../styles/pageStyle";
 
 const AddScheduleTable = () => {
-  const _id = React.useRef(8);
-  const week = useRecoilValue<Date[]>(mondayToSunday);
+  const [newSchedule, setNewSchedule] = React.useState<ScheduleType[]>([]);
   const [selectedTime, setSelectedTime] = React.useState<TimeType<string>>({
     hour: "00",
     minute: "00",
   }); //기본값을 빈문자열로 바꾸고 StartTime에서 로직 수정해서 처음 렌더링시에는 00보이게 하기
-  const { availableDay } = useOverlap({ selectedTime });
-  console.log("addScheduleTable 페이지 availableDay", availableDay); //fakeSchedule을 mapping해라!(return <DayButton> ...)
+  const { isOverlap, weeklyScheduleBySelectedTime } = useOverlap({
+    selectedTime,
+  });
 
-  const [newSchedule, setNewSchedule] = React.useState<string[]>([]);
-  // console.log(newSchedule);
   const [isDayClicked, setIsDayClicked] = React.useState<boolean[]>(
     new Array(7).fill(false)
   );
@@ -55,35 +37,45 @@ const AddScheduleTable = () => {
       <WhiteContainer>
         <Positioner>
           <SectionTitle>Start selectedTime</SectionTitle>
-          <StartTime setSelectedTime={setSelectedTime} selectedTime={selectedTime} />
+          <StartTime
+            setSelectedTime={setSelectedTime}
+            selectedTime={selectedTime}
+          />
         </Positioner>
         <Positioner>
           <SectionTitle>Repeat on</SectionTitle>
-          {week.map((dayOfWeek: Date, index: number) => {
-            return (
-              <DayButton
-                key={index}
-                isClicked={isDayClicked[index]}
-                onClick={() => {
-                  //handleButtonClick
-                  if (newSchedule.includes(dayOfWeek.toLocaleDateString())) {
-                    newSchedule.splice(
-                      newSchedule.indexOf(dayOfWeek.toLocaleDateString(), 1)
+          {weeklyScheduleBySelectedTime.map(
+            (dailySchedule: ScheduleType, index: number) => {
+              const dayOfWeek: Date = new Date(dailySchedule.startTime);
+              return (
+                <DayButton
+                  key={index}
+                  isClicked={isDayClicked[index]}
+                  disabled={isOverlap[index]}
+                  onClick={() => {
+                    const dateArray = newSchedule?.map(
+                      (schedule: ScheduleType) => {
+                        return schedule.date;
+                      }
                     );
-                    setNewSchedule(newSchedule);
-                  } else {
-                    setNewSchedule([
-                      ...newSchedule,
-                      dayOfWeek.toLocaleDateString(),
-                    ]);
-                  }
-                  changeColor(index);
-                }}
-              >
-                {format(dayOfWeek, "EEEE")}
-              </DayButton>
-            );
-          })}
+                    if (dateArray.includes(dayOfWeek.toLocaleDateString())) {
+                      const FilteredSchedule = newSchedule.filter(
+                        (schedule: ScheduleType) =>
+                          schedule.date !== dayOfWeek.toLocaleDateString()
+                      );
+                      setNewSchedule(FilteredSchedule);
+                    } else {
+                      setNewSchedule([...newSchedule].concat(dailySchedule));
+                    }
+                    changeColor(index);
+                  } //handleButtonClick
+                }
+                >
+                  {format(dayOfWeek, "EEEE")}
+                </DayButton>
+              );
+            }
+          )}
         </Positioner>
       </WhiteContainer>
 
@@ -91,17 +83,8 @@ const AddScheduleTable = () => {
         <Link to="/">
           <Button
             onClick={() => {
-              //handleSave
-              newSchedule.forEach((schedule) => {
-                postSchedule(
-                  SCHEDULE_TEMPLATE(
-                    _id.current, //id
-                    schedule, //startTime 
-                    schedule, //endTime 
-                    schedule //date
-                  )
-                );
-                _id.current += 1;
+              newSchedule.forEach((schedule: ScheduleType) => {
+                postSchedule(schedule); //handleSave
               });
             }}
           >

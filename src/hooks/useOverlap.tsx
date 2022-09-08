@@ -11,11 +11,11 @@ type Props = {
 const CLASS_DURATION: number = 40;
 
 const useOverlap = (props: Props) => {
-  const { selectedTime } = props; //user가 선택한 시간
-  const weeklyScheduleId = useRecoilValue<number[]>(idFromWeeklySchedule); //이번주 스케줄 id 모음
-  const week = useRecoilValue<Date[]>(mondayToSunday); //이번주 월~일
+  const { selectedTime } = props; 
+  const weeklyScheduleId = useRecoilValue<number[]>(idFromWeeklySchedule);
+  const week = useRecoilValue<Date[]>(mondayToSunday);
   const [weeklyScheduleBySelectedTime, setWeeklyScheduleBySelectedTime] =
-    React.useState<ScheduleType[]>([]); //selectedTime으로 만든 weeklySchedule
+    React.useState<ScheduleType[]>([]);
 
   const getIdByDate = (date: Date): number => {
     const id = parseInt(
@@ -38,7 +38,7 @@ const useOverlap = (props: Props) => {
         parseInt(selectedTime.hour),
         parseInt(selectedTime.minute)
       );
-      const end: Date = addMinutes(start, CLASS_DURATION);
+      const end: Date = addMinutes(start, CLASS_DURATION); //TODO 오후 12pm가 12로 저장되어야 되는데 00으로 저장되는 중 StartTime이랑 같이 수정하기
       const id: number = getIdByDate(start);
 
       return {
@@ -53,7 +53,7 @@ const useOverlap = (props: Props) => {
 
   //TODO 처음 렌더링시 필터 없게 수정하기!!! => selectedTime이 처음부터 넘어오기 때문에 아직 선택하지 않았음에도 값이 있음.
   const [overlapFilter, setOverlapFilter] = React.useState<number[][]>([]);
-  React.useEffect(()=>{
+  React.useEffect(() => {
     const $overlapFilter: number[][] = weeklyScheduleBySelectedTime.map(
       (tempSchedule: ScheduleType) => {
         const _35minutesBeforeStartTime: Date = sub(
@@ -72,35 +72,33 @@ const useOverlap = (props: Props) => {
       }
     );
     setOverlapFilter($overlapFilter);
-  },[weeklyScheduleBySelectedTime]);
+  }, [weeklyScheduleBySelectedTime]);
 
-  // const [isOverlap, setIsOverlap] = React.useState<boolean[]>(
-  //   new Array(7).fill(false)
-  // );
+  const [isOverlap, setIsOverlap] = React.useState<boolean[]>([]);
   const checkOverlap = (idArray: number[], filterArray: number[][]) => {
-    console.log("startTime으로 만든 filter",filterArray);
-    const temp: boolean[] = new Array(7).fill(false);
+    const isOverlap: boolean[] = new Array(7).fill(false);
     for (let i = 0; i < idArray.length; i++) {
       for (let j = 0; j < filterArray.length; j++) {
         if (
           idArray[i] >= filterArray[j][0] &&
           idArray[i] <= filterArray[j][1]
         ) {
-          temp[j] = true;
+          isOverlap[j] = true;
           continue;
         }
       }
     }
-    return temp;
+    return isOverlap;
   };
 
   React.useEffect(() => {
-    const isOverlap = checkOverlap(weeklyScheduleId, overlapFilter);
-    console.log("temp 밖에 나오면",isOverlap);
+    const result = checkOverlap(weeklyScheduleId, overlapFilter);
+    setIsOverlap(result);
   }, [weeklyScheduleId, overlapFilter]);
 
   return {
-    availableDay: [],
+    isOverlap,
+    weeklyScheduleBySelectedTime,
   };
 };
 

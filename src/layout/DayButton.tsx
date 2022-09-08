@@ -3,10 +3,11 @@ import styled, { css } from "styled-components";
 type Props = {
   children: React.ReactNode;
   isClicked: boolean;
+  disabled: boolean;
   onClick: () => void;
 };
 
-const DayButtonDiv = styled.div<{ isClicked: boolean }>`
+const StyledButton = styled.button<{ isClicked: boolean; disabled: boolean }>`
   width: 150px;
   height: 45px;
   border: 1px solid;
@@ -16,17 +17,23 @@ const DayButtonDiv = styled.div<{ isClicked: boolean }>`
   align-items: center;
 
   ${(props) =>
-    props.isClicked
+    props.disabled
       ? css`
           background-color: var(--color-light-gray);
           color: var(--color-gray);
+          border-color: var(--color-border);
+          cursor: default;
+        `
+      : props.isClicked
+      ? css`
+          background-color: var(--color-blue);
+          color: var(--color-white);
           border-color: var(--color-border);
         `
       : css`
           background-color: var(--color-white);
           color: var(--color-black);
           border-color: var(--color-dark-gray);
-          cursor: pointer;
         `};
 `;
 
@@ -40,7 +47,7 @@ const Day = styled.h1`
 `;
 
 export const DayButton = (props: Props) => (
-  <DayButtonDiv {...props}>
+  <StyledButton {...props}>
     <Day>{props.children}</Day>
-  </DayButtonDiv>
+  </StyledButton>
 );
