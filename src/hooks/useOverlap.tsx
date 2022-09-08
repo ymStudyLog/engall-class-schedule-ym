@@ -1,64 +1,106 @@
+import React from "react";
 import { useRecoilValue } from "recoil";
-import { areIntervalsOverlapping, addMinutes, getTime } from "date-fns";
-import { mondayToSunday, weeklySchedule } from "../store/atom";
+import { addMinutes, sub, format } from "date-fns";
+import { mondayToSunday, idFromWeeklySchedule } from "../store/atom";
 import { TimeType } from "../types/timeType";
 import { ScheduleType } from "../types/scheduleType";
 
 type Props = {
-  time: TimeType<string>;
+  selectedTime: TimeType<string>;
 };
-const CLASS_DURATION = 40;
+const CLASS_DURATION: number = 40;
 
 const useOverlap = (props: Props) => {
-  const { time } = props;
-  const week = useRecoilValue<Date[]>(mondayToSunday);
-  const realSchedule = useRecoilValue<ScheduleType[]>(weeklySchedule); //readOnly
-  const sorted = [...realSchedule].sort(function (a, b) {
-    return getTime(new Date(a.startTime)) - getTime(new Date(b.startTime));
-  });
-  console.log("sorted :", sorted);
-  const temp = week.map((i)=>{return i.toLocaleDateString();}).map((i)=>{
-     
-  })
-  console.log("sorted :", );
+  const { selectedTime } = props; //user가 선택한 시간
+  const weeklyScheduleId = useRecoilValue<number[]>(idFromWeeklySchedule); //이번주 스케줄 id 모음
+  const week = useRecoilValue<Date[]>(mondayToSunday); //이번주 월~일
+  const [weeklyScheduleBySelectedTime, setWeeklyScheduleBySelectedTime] =
+    React.useState<ScheduleType[]>([]); //selectedTime으로 만든 weeklySchedule
 
-  const fakeSchedule = week.map((dayOfWeek: Date) => {
-    const start = new Date(
-      dayOfWeek.getFullYear(),
-      dayOfWeek.getMonth(),
-      dayOfWeek.getDate(),
-      parseInt(time.hour),
-      parseInt(time.minute)
+  const getIdByDate = (date: Date): number => {
+    const id = parseInt(
+      date.getFullYear().toString() +
+        format(date, "MM").toString() +
+        format(date, "dd").toString() +
+        format(date, "kk").toString() +
+        format(date, "mm").toString() +
+        "00"
     );
-    const end = addMinutes(start, CLASS_DURATION);
+    return id;
+  };
 
-    return {
-      startTime: start.toString(),
-      endTime: end.toString(),
-      date: dayOfWeek.toLocaleDateString(),
-    };
-  });
-  // console.log("fake sorted : ", fakeSchedule);
+  React.useEffect(() => {
+    const scheduleArray = week.map((dayOfWeek: Date) => {
+      const start: Date = new Date(
+        dayOfWeek.getFullYear(),
+        dayOfWeek.getMonth(),
+        dayOfWeek.getDate(),
+        parseInt(selectedTime.hour),
+        parseInt(selectedTime.minute)
+      );
+      const end: Date = addMinutes(start, CLASS_DURATION);
+      const id: number = getIdByDate(start);
 
-  // const trueOrFalse = areIntervalsOverlapping(
-  //   { start: new Date(2014, 1, 10, 1, 0), end: new Date(2014, 1, 10, 1, 40) },
-  //   { start: new Date(2014, 1, 10, 1, 5), end: new Date(2014, 1, 10, 1, 45) }
+      return {
+        id: id,
+        startTime: start.toString(),
+        endTime: end.toString(),
+        date: start.toLocaleDateString(),
+      };
+    });
+    setWeeklyScheduleBySelectedTime(scheduleArray);
+  }, [week, selectedTime]);
+
+  //TODO 처음 렌더링시 필터 없게 수정하기!!! => selectedTime이 처음부터 넘어오기 때문에 아직 선택하지 않았음에도 값이 있음.
+  const [overlapFilter, setOverlapFilter] = React.useState<number[][]>([]);
+  React.useEffect(()=>{
+    const $overlapFilter: number[][] = weeklyScheduleBySelectedTime.map(
+      (tempSchedule: ScheduleType) => {
+        const _35minutesBeforeStartTime: Date = sub(
+          new Date(tempSchedule.startTime),
+          {
+            minutes: CLASS_DURATION - 5,
+          }
+        );
+        const idGreaterThan: number = getIdByDate(_35minutesBeforeStartTime);
+        const _35minutesAfterStartTime: Date = addMinutes(
+          new Date(tempSchedule.startTime),
+          CLASS_DURATION - 5
+        );
+        const idLessThan: number = getIdByDate(_35minutesAfterStartTime);
+        return [idGreaterThan, idLessThan];
+      }
+    );
+    setOverlapFilter($overlapFilter);
+  },[weeklyScheduleBySelectedTime]);
+
+  // const [isOverlap, setIsOverlap] = React.useState<boolean[]>(
+  //   new Array(7).fill(false)
   // );
-  // console.log(trueOrFalse); //겹치면 true
-  // const trueOrFalse2 = areIntervalsOverlapping(
-  //   { start: new Date(2014, 1, 10, 1, 0), end: new Date(2014, 1, 10, 1, 40) },
-  //   { start: new Date(2014, 1, 10, 1, 50), end: new Date(2014, 1, 10, 2, 30) }
-  // );
-  // console.log(trueOrFalse2); //안겹치면 false
-
-  const trueOrFalse = fakeSchedule.map(
-    (schedule: { startTime: string; endTime: string }) => {
+  const checkOverlap = (idArray: number[], filterArray: number[][]) => {
+    console.log("startTime으로 만든 filter",filterArray);
+    const temp: boolean[] = new Array(7).fill(false);
+    for (let i = 0; i < idArray.length; i++) {
+      for (let j = 0; j < filterArray.length; j++) {
+        if (
+          idArray[i] >= filterArray[j][0] &&
+          idArray[i] <= filterArray[j][1]
+        ) {
+          temp[j] = true;
+          continue;
+        }
+      }
     }
-  ); //새로 생성 예정인 fake 스케줄이 overlap에 걸리는지 확인해야하기 때문에 fake로 mapping -> real스케줄과 날짜가 같을 경우에만 비교하기 아니면 false(안겹치니까)
+    return temp;
+  };
 
-  // console.log("trueOrFalse", trueOrFalse);
+  React.useEffect(() => {
+    const isOverlap = checkOverlap(weeklyScheduleId, overlapFilter);
+    console.log("temp 밖에 나오면",isOverlap);
+  }, [weeklyScheduleId, overlapFilter]);
+
   return {
-    fakeSchedule,
+    availableDay: [],
   };
 };
 

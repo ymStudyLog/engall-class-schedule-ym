@@ -1,15 +1,15 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import WeeklySchedule from '../pages/WeeklySchedule';
+import WeeklyScheduleTable from '../pages/WeeklyScheduleTable';
 import DefaultLayout from '../layout/DefaultLayout';
-import AddSchedule from '../pages/AddSchedule';
+import AddScheduleTable from '../pages/AddScheduleTable';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<DefaultLayout />}>
-         <Route path='/' element={<WeeklySchedule />} />
-         <Route path='/addschedule' element={<AddSchedule />} />
+         <Route path='/' element={<WeeklyScheduleTable />} />
+         <Route path='/addschedule' element={<AddScheduleTable />} />
         </Route>
       </Routes>
     </BrowserRouter>

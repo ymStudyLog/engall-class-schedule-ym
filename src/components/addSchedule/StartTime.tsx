@@ -6,17 +6,17 @@ import { TimeType } from "../../types/timeType";
 import useAmPm from "../../hooks/useAmPm";
 
 type Props = {
-  setTime: React.Dispatch<React.SetStateAction<TimeType<string>>>;
-  time: TimeType<string>;
+  setSelectedTime: React.Dispatch<React.SetStateAction<TimeType<string>>>;
+  selectedTime: TimeType<string>;
 };
 
 const StartTime = (props: Props) => {
-  const { setTime, time } = props;
+  const { setSelectedTime, selectedTime } = props;
   const [isOpen, setIsOpen] = React.useState<TimeType<boolean>>({
     hour: false,
     minute: false,
   });
-  const { isClicked, handleAmClick, handlePmClick, createTwoDigit } = useAmPm({setTime, time});
+  const { isClicked, handleAmClick, handlePmClick, createTwoDigit } = useAmPm({setSelectedTime});
 
   return (
     <>
@@ -31,7 +31,8 @@ const StartTime = (props: Props) => {
               });
             }}
           >
-            {parseInt(time.hour) >= 12 ? createTwoDigit(parseInt(time.hour) - 12) : time.hour}
+            {/* TODO 맨 처음 렌더링시 = selectedTime이 없으므로 "00"을 보여주게 로직 수정 */}
+            {parseInt(selectedTime.hour) >= 12 ? createTwoDigit(parseInt(selectedTime.hour) - 12) : selectedTime.hour}
             {isOpen.hour ? <AiFillCaretDown /> : ""}
           </DropDownListHeader>
           <DropDownListItemContainer>
@@ -40,7 +41,7 @@ const StartTime = (props: Props) => {
                 return (
                   <DropDownListItem
                     onClick={() => {
-                      setTime({ ...time, hour: optionItem });
+                      setSelectedTime({ ...selectedTime, hour: optionItem });
                       setIsOpen({
                         ...isOpen,
                         hour: !isOpen.hour,
@@ -65,7 +66,8 @@ const StartTime = (props: Props) => {
               });
             }}
           >
-            {time.minute}
+            {/* TODO 맨 처음 렌더링시 = selectedTime이 없으므로 "00"을 보여주게 로직 수정 */}
+            {selectedTime.minute}
             {isOpen.minute ? <AiFillCaretDown /> : ""}
           </DropDownListHeader>
           <DropDownListItemContainer>
@@ -74,7 +76,7 @@ const StartTime = (props: Props) => {
                 return (
                   <DropDownListItem
                     onClick={() => {
-                      setTime({ ...time, minute: optionItem });
+                      setSelectedTime({ ...selectedTime, minute: optionItem });
                       setIsOpen({
                         ...isOpen,
                         minute: !isOpen.minute,
@@ -90,11 +92,11 @@ const StartTime = (props: Props) => {
         </DropDownList>
       </MarginBox>
       <MarginBox>
-        <AmPmButton onClick={handleAmClick} isClicked={isClicked.am}>
+        <AmPmButton onClick={()=>handleAmClick(selectedTime)} isClicked={isClicked.am}>
           AM
         </AmPmButton>
         <MarginBox />
-        <AmPmButton onClick={handlePmClick} isClicked={isClicked.pm}>
+        <AmPmButton onClick={()=>handlePmClick(selectedTime)} isClicked={isClicked.pm}>
           PM
         </AmPmButton>
       </MarginBox>

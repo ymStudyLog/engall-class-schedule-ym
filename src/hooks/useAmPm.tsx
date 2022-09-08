@@ -2,20 +2,19 @@ import React from "react";
 import { TimeType } from "../types/timeType";
 
 type Props = {
-  setTime: React.Dispatch<React.SetStateAction<TimeType<string>>>;
-  time: TimeType<string>;
+  setSelectedTime: React.Dispatch<React.SetStateAction<TimeType<string>>>;
 };
 
 const useAmPm = (props: Props) => {
-  const { setTime, time } = props;
+  const { setSelectedTime } = props;
   const [isClicked, setIsClicked] = React.useState({
     am: false,
     pm: false,
   });
 
-  const handleAmClick = () => {
+  const handleAmClick = (time: TimeType<string>) => {
     if (parseInt(time.hour) >= 12) {
-      setTime({
+      setSelectedTime({
         ...time,
         hour: createTwoDigit(parseInt(time.hour) - 12),
       });
@@ -23,9 +22,9 @@ const useAmPm = (props: Props) => {
     setIsClicked({ ...isClicked, am: true, pm: false });
   };
 
-  const handlePmClick = () => {
+  const handlePmClick = (time: TimeType<string>) => {
     if (parseInt(time.hour) < 12) {
-      setTime({
+      setSelectedTime({
         ...time,
         hour: createTwoDigit(parseInt(time.hour) + 12),
       });
@@ -41,11 +40,11 @@ const useAmPm = (props: Props) => {
     }
   };
 
-  return { 
-    isClicked, 
-    handleAmClick, 
+  return {
+    isClicked,
+    handleAmClick,
     handlePmClick,
-    createTwoDigit
+    createTwoDigit,
   };
 };
 
