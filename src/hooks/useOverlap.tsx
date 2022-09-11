@@ -2,43 +2,46 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import { addMinutes, sub, format } from "date-fns";
 import { mondayToSunday, idFromWeeklySchedule } from "../store/atom";
-import { TimeType } from "../types/timeType";
-import { ScheduleType } from "../types/scheduleType";
+import { TimeType } from "../types/TimeType";
+import { ScheduleType } from "../types/ScheduleType";
 
 type Props = {
   selectedTime: TimeType<string>;
 };
 const CLASS_DURATION: number = 40;
 
+const getIdByDate = (date: Date): number => {
+  const id = parseInt(
+    date.getFullYear().toString() +
+      format(date, "MM").toString() +
+      format(date, "dd").toString() +
+      format(date, "kk").toString() +
+      format(date, "mm").toString() +
+      "00"
+  );
+  return id;
+};
+
+//TODO 코드 순서 정리
 const useOverlap = (props: Props) => {
-  const { selectedTime } = props; 
-  const weeklyScheduleId = useRecoilValue<number[]>(idFromWeeklySchedule);
+  const { selectedTime } = props;
+  console.log("useOverlap", selectedTime);
   const week = useRecoilValue<Date[]>(mondayToSunday);
+  const weeklyScheduleId = useRecoilValue<number[]>(idFromWeeklySchedule);
   const [weeklyScheduleBySelectedTime, setWeeklyScheduleBySelectedTime] =
     React.useState<ScheduleType[]>([]);
-
-  const getIdByDate = (date: Date): number => {
-    const id = parseInt(
-      date.getFullYear().toString() +
-        format(date, "MM").toString() +
-        format(date, "dd").toString() +
-        format(date, "kk").toString() +
-        format(date, "mm").toString() +
-        "00"
-    );
-    return id;
-  };
 
   React.useEffect(() => {
     const scheduleArray = week.map((dayOfWeek: Date) => {
       const start: Date = new Date(
         dayOfWeek.getFullYear(),
         dayOfWeek.getMonth(),
-        dayOfWeek.getDate(),
-        parseInt(selectedTime.hour),
-        parseInt(selectedTime.minute)
+        dayOfWeek.getDate()
+        // parseInt(selectedTime.hour),
+        // parseInt(selectedTime.minute)
       );
-      const end: Date = addMinutes(start, CLASS_DURATION); //TODO 오후 12pm가 12로 저장되어야 되는데 00으로 저장되는 중 StartTime이랑 같이 수정하기
+      // console.log(start);
+      const end: Date = addMinutes(start, CLASS_DURATION);
       const id: number = getIdByDate(start);
 
       return {
@@ -48,10 +51,10 @@ const useOverlap = (props: Props) => {
         date: start.toLocaleDateString(),
       };
     });
+
     setWeeklyScheduleBySelectedTime(scheduleArray);
   }, [week, selectedTime]);
 
-  //TODO 처음 렌더링시 필터 없게 수정하기!!! => selectedTime이 처음부터 넘어오기 때문에 아직 선택하지 않았음에도 값이 있음.
   const [overlapFilter, setOverlapFilter] = React.useState<number[][]>([]);
   React.useEffect(() => {
     const $overlapFilter: number[][] = weeklyScheduleBySelectedTime.map(

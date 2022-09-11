@@ -1,5 +1,5 @@
 import React from "react";
-import { TimeType } from "../types/timeType";
+import { TimeType } from "../types/TimeType";
 
 type Props = {
   setSelectedTime: React.Dispatch<React.SetStateAction<TimeType<string>>>;

@@ -3,7 +3,7 @@ import { useSetRecoilState } from "recoil";
 import { format } from "date-fns";
 import { getSchedule } from "../api/api";
 import { idFromWeeklySchedule } from "../store/atom";
-import { ScheduleType } from "../types/scheduleType";
+import { ScheduleType } from "../types/ScheduleType";
 
 const useWeeklySchedule = () => {
   const setIdFromWeeklySchedule =
