@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { AiFillCaretDown } from "react-icons/ai";
 import { DROPDOWN_OPTIONS } from "../../lib/dropdownOptions";
-import { TimeType } from "../../types/timeType";
+import { TimeType } from "../../types/TimeType";
 import useAmPm from "../../hooks/useAmPm";
 
 type Props = {
@@ -10,13 +10,16 @@ type Props = {
   selectedTime: TimeType<string>;
 };
 
+//TODO 리팩토링?
 const StartTime = (props: Props) => {
   const { setSelectedTime, selectedTime } = props;
   const [isOpen, setIsOpen] = React.useState<TimeType<boolean>>({
     hour: false,
     minute: false,
   });
-  const { isClicked, handleAmClick, handlePmClick, createTwoDigit } = useAmPm({setSelectedTime});
+  const { isClicked, handleAmClick, handlePmClick, createTwoDigit } = useAmPm({
+    setSelectedTime,
+  });
 
   return (
     <>
@@ -31,8 +34,11 @@ const StartTime = (props: Props) => {
               });
             }}
           >
-            {/* TODO 맨 처음 렌더링시 = selectedTime이 없으므로 "00"을 보여주게 로직 수정 */}
-            {parseInt(selectedTime.hour) >= 12 ? createTwoDigit(parseInt(selectedTime.hour) - 12) : selectedTime.hour}
+            {selectedTime.hour.length === 0
+              ? "00"
+              : parseInt(selectedTime.hour) >= 12
+              ? createTwoDigit(parseInt(selectedTime.hour) - 12)
+              : selectedTime.hour}
             {isOpen.hour ? <AiFillCaretDown /> : ""}
           </DropDownListHeader>
           <DropDownListItemContainer>
@@ -66,8 +72,7 @@ const StartTime = (props: Props) => {
               });
             }}
           >
-            {/* TODO 맨 처음 렌더링시 = selectedTime이 없으므로 "00"을 보여주게 로직 수정 */}
-            {selectedTime.minute}
+            {selectedTime.minute.length === 0 ? "00" : selectedTime.minute}
             {isOpen.minute ? <AiFillCaretDown /> : ""}
           </DropDownListHeader>
           <DropDownListItemContainer>
@@ -92,11 +97,17 @@ const StartTime = (props: Props) => {
         </DropDownList>
       </MarginBox>
       <MarginBox>
-        <AmPmButton onClick={()=>handleAmClick(selectedTime)} isClicked={isClicked.am}>
+        <AmPmButton
+          onClick={() => handleAmClick(selectedTime)}
+          isClicked={isClicked.am}
+        >
           AM
         </AmPmButton>
         <MarginBox />
-        <AmPmButton onClick={()=>handlePmClick(selectedTime)} isClicked={isClicked.pm}>
+        <AmPmButton
+          onClick={() => handlePmClick(selectedTime)}
+          isClicked={isClicked.pm}
+        >
           PM
         </AmPmButton>
       </MarginBox>

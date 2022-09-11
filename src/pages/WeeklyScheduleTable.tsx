@@ -7,14 +7,14 @@ import { mondayToSunday } from "../store/atom";
 import Button from "../layout/Button";
 import ScheduleByDay from "../components/weeklySchedule/ScheduleByDay";
 import useWeeklySchedule from "../hooks/useWeeklySchedule";
-import { ScheduleType } from "../types/scheduleType";
+import { ScheduleType } from "../types/ScheduleType";
 import * as PageStyle from "../styles/pageStyle";
 
 const WeeklyScheduleTable = () => {
-  const week = useRecoilValue<Date[]>(mondayToSunday);
+  const thisWeek = useRecoilValue<Date[]>(mondayToSunday);
   const { weeklySchedule, getWeeklySchedule } = useWeeklySchedule();
   React.useEffect(() => {
-    getWeeklySchedule(week);
+    getWeeklySchedule(thisWeek);
     // },[getWeeklySchedule]); //TODO 무한 getWeeklySchedule 중
   }, []);
 
@@ -27,7 +27,7 @@ const WeeklyScheduleTable = () => {
         </Link>
       </TitleAndButtonContainer>
       <DailyScheduleContainer>
-        {week.map((dayOfWeek: Date, index: number) => {
+        {thisWeek.map((dayOfWeek: Date, index: number) => {
           return (
             <DailySchedule key={index}>
               <HorizontalLine />

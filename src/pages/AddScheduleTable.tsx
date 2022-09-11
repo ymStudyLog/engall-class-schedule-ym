@@ -6,20 +6,39 @@ import Button from "../layout/Button";
 import { postSchedule } from "../api/api";
 import { DayButton } from "../layout/DayButton";
 import StartTime from "../components/addSchedule/StartTime";
-import { ScheduleType } from "../types/scheduleType";
-import { TimeType } from "../types/timeType";
+import { ScheduleType } from "../types/ScheduleType";
+import { TimeType } from "../types/TimeType";
 import useOverlap from "../hooks/useOverlap";
 import * as PageStyle from "../styles/pageStyle";
 
 const AddScheduleTable = () => {
-  const [newSchedule, setNewSchedule] = React.useState<ScheduleType[]>([]);
+  // const [selectedTime, setSelectedTime] = React.useState<TimeType<string>>({
+  //   hour: "00",
+  //   minute: "00",
+  // });
   const [selectedTime, setSelectedTime] = React.useState<TimeType<string>>({
-    hour: "00",
-    minute: "00",
-  }); //기본값을 빈문자열로 바꾸고 StartTime에서 로직 수정해서 처음 렌더링시에는 00보이게 하기
+    hour: "",
+    minute: "",
+  });
+  /**
+   * selectedTime값이 처음 없을 경우
+   * 1. StartTime : 기본 값이 00으로 보이게 해야함 -> DONE
+   * 2. useOverlap : weeklyScheduleBySelectedTime을 생성하면 안됨! 
+   * => selectedTime이 없으면 weeklyScheduleBySelectedTime도 없음
+   * -> weeklyScheduleBySelectedTime 없으면 DayButton mapping을 weeklyScheduleBySelectedTime로 하지 말고 다른 값으로 해야됨
+   * -> newSchedule에 값이 추가되어서도 안됨
+   */
   const { isOverlap, weeklyScheduleBySelectedTime } = useOverlap({
     selectedTime,
   });
+  console.log(weeklyScheduleBySelectedTime);
+
+  const [newSchedule, setNewSchedule] = React.useState<ScheduleType[]>([]);
+  const handleSave = () => {
+    newSchedule.forEach((schedule: ScheduleType) => {
+      postSchedule(schedule);
+    });
+  };
 
   const [isDayClicked, setIsDayClicked] = React.useState<boolean[]>(
     new Array(7).fill(false)
@@ -52,24 +71,25 @@ const AddScheduleTable = () => {
                   key={index}
                   isClicked={isDayClicked[index]}
                   disabled={isOverlap[index]}
-                  onClick={() => {
-                    const dateArray = newSchedule?.map(
-                      (schedule: ScheduleType) => {
-                        return schedule.date;
-                      }
-                    );
-                    if (dateArray.includes(dayOfWeek.toLocaleDateString())) {
-                      const FilteredSchedule = newSchedule.filter(
-                        (schedule: ScheduleType) =>
-                          schedule.date !== dayOfWeek.toLocaleDateString()
+                  onClick={
+                    () => {
+                      const dateArray = newSchedule?.map(
+                        (schedule: ScheduleType) => {
+                          return schedule.date;
+                        }
                       );
-                      setNewSchedule(FilteredSchedule);
-                    } else {
-                      setNewSchedule([...newSchedule].concat(dailySchedule));
-                    }
-                    changeColor(index);
-                  } //handleButtonClick
-                }
+                      if (dateArray.includes(dayOfWeek.toLocaleDateString())) {
+                        const FilteredSchedule = newSchedule.filter(
+                          (schedule: ScheduleType) =>
+                            schedule.date !== dayOfWeek.toLocaleDateString()
+                        );
+                        setNewSchedule(FilteredSchedule);
+                      } else {
+                        setNewSchedule([...newSchedule].concat(dailySchedule));
+                      }
+                      changeColor(index);
+                    } //handleButtonClick
+                  }
                 >
                   {format(dayOfWeek, "EEEE")}
                 </DayButton>
@@ -81,15 +101,7 @@ const AddScheduleTable = () => {
 
       <ButtonContainer>
         <Link to="/">
-          <Button
-            onClick={() => {
-              newSchedule.forEach((schedule: ScheduleType) => {
-                postSchedule(schedule); //handleSave
-              });
-            }}
-          >
-            Save
-          </Button>
+          <Button onClick={handleSave}>Save</Button>
         </Link>
       </ButtonContainer>
     </>
