@@ -134,6 +134,7 @@ const DropDownListItem = styled.li`
   margin: 0;
   padding: 0;
   border: 1px solid var(--color-border);
+  cursor: default;
 `;
 
 const DropDownListItemContainer = styled.div`
@@ -145,6 +146,7 @@ const DropDownListItemContainer = styled.div`
 
 const DropDownListHeader = styled(DropDownListItem)<{ isOpen: boolean }>`
   position: relative;
+  cursor: pointer;
   background-color: ${(props) =>
     props.isOpen ? "rgba(180, 180, 180, 0.3)" : "#fff"};
 `;

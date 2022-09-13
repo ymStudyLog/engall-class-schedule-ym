@@ -2,8 +2,8 @@ import styled, { css } from "styled-components";
 
 type Props = {
   children: React.ReactNode;
-  isClicked: boolean;
   disabled: boolean;
+  isClicked: boolean;
   onClick: () => void;
 };
 
