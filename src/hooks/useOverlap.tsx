@@ -5,11 +5,7 @@ import { mondayToSunday, idFromWeeklySchedule } from "../store/atom";
 import { TimeType } from "../types/TimeType";
 import { ScheduleType } from "../types/ScheduleType";
 
-type Props = {
-  selectedTime: TimeType<string>;
-};
 const CLASS_DURATION: number = 40;
-
 const getIdByDate = (date: Date): number => {
   const id = parseInt(
     date.getFullYear().toString() +
@@ -23,37 +19,37 @@ const getIdByDate = (date: Date): number => {
 };
 
 //TODO 코드 순서 정리
-const useOverlap = (props: Props) => {
-  const { selectedTime } = props;
-  console.log("useOverlap", selectedTime);
+const useOverlap = () => {
   const week = useRecoilValue<Date[]>(mondayToSunday);
   const weeklyScheduleId = useRecoilValue<number[]>(idFromWeeklySchedule);
   const [weeklyScheduleBySelectedTime, setWeeklyScheduleBySelectedTime] =
     React.useState<ScheduleType[]>([]);
 
-  React.useEffect(() => {
-    const scheduleArray = week.map((dayOfWeek: Date) => {
-      const start: Date = new Date(
-        dayOfWeek.getFullYear(),
-        dayOfWeek.getMonth(),
-        dayOfWeek.getDate()
-        // parseInt(selectedTime.hour),
-        // parseInt(selectedTime.minute)
-      );
-      // console.log(start);
-      const end: Date = addMinutes(start, CLASS_DURATION);
-      const id: number = getIdByDate(start);
+  const createWeeklyScheduleBySelectedTime = React.useCallback(
+    (time: TimeType<string>) => {
+      const scheduleArray = week.map((dayOfWeek: Date) => {
+        const start: Date = new Date(
+          dayOfWeek.getFullYear(),
+          dayOfWeek.getMonth(),
+          dayOfWeek.getDate(),
+          parseInt(time.hour),
+          parseInt(time.minute)
+        );
+        const end: Date = addMinutes(start, CLASS_DURATION);
+        const id: number = getIdByDate(start);
 
-      return {
-        id: id,
-        startTime: start.toString(),
-        endTime: end.toString(),
-        date: start.toLocaleDateString(),
-      };
-    });
+        return {
+          id: id,
+          startTime: start.toString(),
+          endTime: end.toString(),
+          date: start.toLocaleDateString(),
+        };
+      });
 
-    setWeeklyScheduleBySelectedTime(scheduleArray);
-  }, [week, selectedTime]);
+      setWeeklyScheduleBySelectedTime(scheduleArray);
+    },
+    [week]
+  );
 
   const [overlapFilter, setOverlapFilter] = React.useState<number[][]>([]);
   React.useEffect(() => {
@@ -102,6 +98,7 @@ const useOverlap = (props: Props) => {
   return {
     isOverlap,
     weeklyScheduleBySelectedTime,
+    createWeeklyScheduleBySelectedTime,
   };
 };
 
