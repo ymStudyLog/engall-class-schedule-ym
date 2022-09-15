@@ -1,14 +1,13 @@
 import styled, { css } from "styled-components";
-import { DayTitle } from "./DayTitle";
 
 type Props = {
   children: React.ReactNode;
-  date: string;
+  disabled: boolean;
   isClicked: boolean;
   onClick: () => void;
 };
 
-const DayButtonDiv = styled.div<{ isClicked: boolean }>`
+const StyledButton = styled.button<{ isClicked: boolean; disabled: boolean }>`
   width: 150px;
   height: 45px;
   border: 1px solid;
@@ -18,10 +17,17 @@ const DayButtonDiv = styled.div<{ isClicked: boolean }>`
   align-items: center;
 
   ${(props) =>
-    props.isClicked
+    props.disabled
       ? css`
           background-color: var(--color-light-gray);
           color: var(--color-gray);
+          border-color: var(--color-border);
+          cursor: default;
+        `
+      : props.isClicked
+      ? css`
+          background-color: var(--color-blue);
+          color: var(--color-white);
           border-color: var(--color-border);
         `
       : css`
@@ -31,8 +37,17 @@ const DayButtonDiv = styled.div<{ isClicked: boolean }>`
         `};
 `;
 
+const Day = styled.h1`
+  font-family: "Karla", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 23px;
+  text-align: center;
+`;
+
 export const DayButton = (props: Props) => (
-  <DayButtonDiv {...props}>
-    <DayTitle>{props.children}</DayTitle>
-  </DayButtonDiv>
+  <StyledButton {...props}>
+    <Day>{props.children}</Day>
+  </StyledButton>
 );

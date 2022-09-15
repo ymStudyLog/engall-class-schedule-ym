@@ -1,4 +1,46 @@
+import React from "react";
 import styled from "styled-components";
+import { deleteSchedule } from "../../api/api";
+
+type Props = {
+  id: number;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const ConfirmDeleteModal = (props: Props) => {
+  const { id, setIsModalOpen } = props;
+
+  const handleDeleteClick = () => {
+    deleteSchedule(id);
+    setIsModalOpen(false);
+  };
+  
+  const handleCancelClick = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleOutsideClick = () => {
+    //다른 곳 클릭하면 모달 닫히기
+  };
+
+  return (
+    <ModalContainer>
+      <ConfirmDeleteText>
+        Sure to delete?
+      </ConfirmDeleteText>
+      <ButtonContainer>
+        <ModalButton onClick={handleDeleteClick}>
+          Delete
+        </ModalButton>
+        <ModalButton onClick={handleCancelClick}>
+          Cancel
+        </ModalButton>
+      </ButtonContainer>
+    </ModalContainer>
+  );
+};
+
+export default ConfirmDeleteModal;
 
 export const ModalContainer = styled.div`
   width: 160px;

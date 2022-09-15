@@ -1,13 +1,23 @@
 import styled from "styled-components";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const DefaultLayout = () => {
+  const navigate = useNavigate();
+
   return (
     <Background>
       <Header>
-      <Logo src={"./images/logo.png"} alt="Logo Img" />
+        <Logo
+          src={"./images/logo.png"}
+          alt="Logo Img"
+          onClick={() => {
+            navigate("/");
+          }}
+        />
       </Header>
-      <Outlet />
+      <Main>
+        <Outlet />
+      </Main>
     </Background>
   );
 };
@@ -22,7 +32,7 @@ const Background = styled.div`
 
 const Header = styled.div`
   width: 100%;
-  height: 58px; 
+  height: 58px;
   position: sticky;
   top: 0px;
   left: 0px;
@@ -35,4 +45,11 @@ const Logo = styled.img`
   position: absolute;
   left: 25px;
   bottom: 0px;
+  cursor: pointer;
+`;
+
+const Main = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 `;

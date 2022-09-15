@@ -10,7 +10,7 @@ type Props = {
 
 const ScheduleBox = (props: Props) => {
   const { time, id } = props;
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false);
   const handleDelete = () => {
     setIsModalOpen(!isModalOpen);
   };
