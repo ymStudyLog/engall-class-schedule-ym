@@ -1,7 +1,7 @@
 import { atom, selector } from "recoil";
 import { getDay, toDate, addDays } from "date-fns";
 
-const getMondayToSunday = selector({
+const getMondayToSunday = selector<Date[]>({
   key: "getMondayToSunday",
   get: () => {
     const now: Date = new Date();
@@ -22,7 +22,7 @@ const getMondayToSunday = selector({
   },
 });
 
-export const mondayToSunday = atom({
+export const mondayToSunday = atom<Date[]>({
   key: "mondayToSunday",
   default: getMondayToSunday,
 });
